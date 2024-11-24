@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # ! OUR APPS 
     'registration.apps.RegistrationConfig',
+    'tasks.apps.TasksConfig',
 ]
 
 MIDDLEWARE = [
