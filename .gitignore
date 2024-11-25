@@ -1,0 +1,43 @@
+# Python bytecode and cache files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment directory
+venv/
+env/
+
+# Django specific files
+db.sqlite3
+*.log
+
+# Local settings
+settings_local.py
+
+# Media/uploads (if not version-controlled)
+media/
+uploads/
+
+# Static files (if collected and not version-controlled)
+staticfiles/
+
+# Environment variables
+.env
+
+# VSCode and other editor/IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS files
+.DS_Store
+
+# Windows thumbnail cache files
+Thumbs.db
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
