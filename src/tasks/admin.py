@@ -7,7 +7,7 @@ admin.site.register(Phase)
 admin.site.register(Category)
 # admin.site.register(Task)
 admin.site.register(TaskTest)
-admin.site.register(TaskSolution)
+# admin.site.register(TaskSolution)
 
 @admin.register(Task)
 class TaskAdmin(ModelAdmin):
@@ -25,19 +25,20 @@ class TaskAdmin(ModelAdmin):
             return obj.title
         return obj.title[:15] + "..."
     
-# @admin.register(TaskSolution)
-# class TaskSolutionAdmin(ModelAdmin):
+@admin.register(TaskSolution)
+class TaskSolutionAdmin(ModelAdmin):
     
-#     model = TaskSolution
-#     list_display = ('_title','phase','level','category','points')
-#     list_display_links = list_display
+    model = TaskSolution
+    list_display = ('task__phase','team__name','_title','task__level',"task__category",'score','tries')
+    list_display_links = list_display
     
-#     search_fields = ('_title',)
-#     list_filter = ('phase', 'level', 'category')
+    search_fields = ('_title',"team__name")
+    list_filter = ('task__phase','task__level','task__category')
     
     
-#     def _title(self, obj):
-#         if len(obj.title) <= 15:
-#             return obj.title
-#         return obj.title[:15] + "..."
+    def _title(self, obj):
+        if len(obj.task.title) <= 15:
+            return obj.task.title
+        return obj.task.title[:15] + "..."
+    
     

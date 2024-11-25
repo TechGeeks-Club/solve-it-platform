@@ -11,7 +11,7 @@ class Phase(models.Model):
         return self.name
     
 class Category(models.Model):
-    name = models.TextField(null=False)
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
