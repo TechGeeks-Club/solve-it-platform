@@ -172,6 +172,6 @@ main {
     text-align: center;
   }
   .content-section {
-    padding-right: 0px;
+    padding: 15px;
   }
 }
