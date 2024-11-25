@@ -10,6 +10,9 @@ body {
   min-height: 100vh;
   background-color: #e7ebee;
   padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .all-Page {
   height: 100%;
@@ -244,6 +247,48 @@ body {
   background: #eee;
 }
 
+.menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  background-color: #444;
+  border: 1px solid #555;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
+.menu a {
+  text-decoration: none;
+  color: white;
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #555;
+}
+
+.menu a:hover {
+  background-color: #555;
+}
+
+.menu a:last-child {
+  border-bottom: none;
+}
+
+/* Hamburger button styling */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger span {
+  background-color: black;
+  height: 3px;
+  width: 25px;
+  margin: 3px 0;
+}
+
 @media (max-width: 768px) {
   .challenge-card {
     flex-direction: column;
@@ -256,12 +301,23 @@ body {
     gap: 1rem;
     width: 100%;
   }
-  body {
+  /* body {
     padding-right: 17px;
-  }
+  } */
   .challenge-info {
     display: flex;
     gap: 1rem;
     align-items: start;
+  }
+  .hamburger {
+    display: flex;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .nav-links {
+    display: none;
   }
 }

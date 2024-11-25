@@ -16,6 +16,16 @@
           <a href="#">Rules</a>
           <a href="#" class="sign-in">Sign in</a>
         </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu" id="dropdownMenu">
+          <a href="#" onclick="closeDropDown()">Challenges</a>
+          <a href="#" onclick="closeDropDown()">Leaderboard</a>
+          <a href="#" onclick="closeDropDown()">Logout</a>
+        </div>
       </nav>
       <main>
         <section class="hero">
@@ -47,6 +57,15 @@
       </main>
     </section>
 
-    <script src="script.js"></script>
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+      function closeDropDown() {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu.style.display === "flex") menu.style.display = "none";
+      }
+    </script>
   </body>
 </html>
