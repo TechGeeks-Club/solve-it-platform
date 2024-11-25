@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMirror Example (C Language)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+  <style>
+    .CodeMirror {
+      height: 500px; /* Adjust height */
+      border: 1px solid #ccc; /* Optional border */
+    }
+  </style>
+</head>
+<body>
+  <textarea id="codeEditor">// Write your C code here
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+  </textarea>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+        lineNumbers: true,       // Display line numbers
+        mode: "text/x-csrc",     // Mode for C language
+        theme: "monokai",        // Theme
+        indentUnit: 4,           // Number of spaces for indentation
+        matchBrackets: true      // Highlight matching brackets
+      });
+    });
+  </script>
+</body>
+</html>
