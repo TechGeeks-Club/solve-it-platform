@@ -6,14 +6,14 @@ from .models import Phase, Category, Task, TaskTest, TaskSolution
 admin.site.register(Phase)
 admin.site.register(Category)
 # admin.site.register(Task)
-admin.site.register(TaskTest)
+# admin.site.register(TaskTest)
 # admin.site.register(TaskSolution)
 
 @admin.register(Task)
 class TaskAdmin(ModelAdmin):
     
     model = Task
-    list_display = ('_title','phase','level','category','points')
+    list_display = ('id','_title','phase','level','category','points')
     list_display_links = list_display
     
     search_fields = ('_title',)
@@ -29,7 +29,7 @@ class TaskAdmin(ModelAdmin):
 class TaskSolutionAdmin(ModelAdmin):
     
     model = TaskSolution
-    list_display = ('task__phase','team__name','_title','task__level',"task__category",'score','tries')
+    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'score','tries')
     list_display_links = list_display
     
     search_fields = ('_title',"team__name")

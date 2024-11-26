@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
-
 class Team(models.Model):
     name = models.CharField(max_length=70,unique=True)
     password = models.CharField(max_length=255) # ? to make sure that the size will fit the hashed password
@@ -11,7 +10,7 @@ class Team(models.Model):
         if self.password:
             self.password = make_password(self.password)
         return super().save(*args, **kwargs)
-    
+        
     def __str__(self):
         return self.name
 

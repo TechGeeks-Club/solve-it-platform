@@ -4,7 +4,7 @@ from registration.models import Participant, Team
 from django.core.validators import MaxValueValidator
 
 class Phase(models.Model):
-    name = models.TextField(null=False)
+    name = models.CharField(max_length=128)
     is_locked = models.BooleanField(default=False)
 
     def __str__(self):
@@ -55,6 +55,7 @@ class TaskSolution(models.Model):
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)
+    submitted_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
     score = models.IntegerField(null=False)
     tries = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(3)] )
     
