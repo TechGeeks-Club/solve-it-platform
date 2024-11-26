@@ -46,7 +46,7 @@ class TaskTest(models.Model):
 
 
 def get_file_path(participant, filename):
-    file_extention = filename.split('.')[-1]
+    _ = filename.split('.')[-1]
     
     return f'upload/{participant.team.name}/{filename}_{participant.id}.c'
 
@@ -56,8 +56,9 @@ class TaskSolution(models.Model):
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)
     submitted_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    score = models.IntegerField(null=False)
+    score = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(100)] ) 
     tries = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(3)] )
-    
+            
+        
     def __str__(self):
         return self.task.title + " tests"

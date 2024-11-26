@@ -3,11 +3,22 @@ from django.contrib.admin import ModelAdmin
 
 from .models import Phase, Category, Task, TaskTest, TaskSolution
 
-admin.site.register(Phase)
-admin.site.register(Category)
-# admin.site.register(Task)
-# admin.site.register(TaskTest)
-# admin.site.register(TaskSolution)
+
+@admin.register(Phase)
+class PhaseAdmin(ModelAdmin):
+    
+    model = Phase
+    list_display = ('id','name','is_locked')
+    list_display_links = list_display
+
+
+@admin.register(Category)
+class CategoryAdmin(ModelAdmin):
+    
+    model = Category
+    list_display = ('id','name')
+    list_display_links = list_display
+
 
 @admin.register(Task)
 class TaskAdmin(ModelAdmin):
@@ -29,12 +40,17 @@ class TaskAdmin(ModelAdmin):
 class TaskSolutionAdmin(ModelAdmin):
     
     model = TaskSolution
-    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'score','tries')
+    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score','tries')
     list_display_links = list_display
     
     search_fields = ('_title',"team__name")
     list_filter = ('task__phase','task__level','task__category')
     
+    readonly_fields = ('task','participant','team','code','submitted_at','tries')
+    
+    
+    def _score(self, obj):
+        return f"{obj.score}%"
     
     def _title(self, obj):
         if len(obj.task.title) <= 15:
