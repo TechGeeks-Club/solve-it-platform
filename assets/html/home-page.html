@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solve It - Programming Challenge Platform</title>
+    <link rel="stylesheet" href="../css/home-page.css" />
+  </head>
+  <body>
+    <section class="all-Page">
+      <nav class="navbar">
+        <a href="#" class="logo">λ</a>
+        <div class="nav-links">
+          <a href="#">Home</a>
+          <a href="#">Leaderboard</a>
+          <a href="#">Rules</a>
+          <a href="#" class="sign-in">Sign in</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu" id="dropdownMenu">
+          <a href="#" onclick="closeDropDown()">Challenges</a>
+          <a href="#" onclick="closeDropDown()">Leaderboard</a>
+          <a href="#" onclick="closeDropDown()">Logout</a>
+        </div>
+      </nav>
+      <main>
+        <section class="hero">
+          <h1>Solve It</h1>
+          <p>
+            Join the Code Challenge and compete against others in a set of
+            programming problems
+          </p>
+          <div class="button-group">
+            <a href="#" class="button primary-button">Join A Team</a>
+            <a href="#" class="button secondary-button">Create Team</a>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <div><h2>What's Solve It?</h2></div>
+          <p>
+            The C Code Challenge is a programming competition that focuses on
+            the C language. It's a great opportunity to showcase your coding
+            skills, learn new programming techniques, and connect with other
+            developers. We'll provide a set of problems for you to solve, and
+            you'll have a limited time to complete as many as you can. The top
+            participants will receive prizes and recognition for their
+            achievements. Whether you're a seasoned developer or just getting
+            started, the C Code Challenge is a fun and rewarding way to test
+            your skills and build your portfolio.
+          </p>
+        </section>
+      </main>
+    </section>
+
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+      function closeDropDown() {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu.style.display === "flex") menu.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
