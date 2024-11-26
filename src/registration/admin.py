@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
-from django.db.models import Sum
+from django.db.models import F, Sum
 
 
 from .models import Team,Participant
@@ -20,8 +20,16 @@ class TeamAdmin(ModelAdmin):
     def submeted_taskes(self, obj):
         return obj.tasksolution_set.count()
 
-    def team_score(self,obj):
-        return obj.tasksolution_set.aggregate(total_score=Sum('score'))["total_score"] or 0
+    def team_score(self, obj):
+        """
+        Calculate and display the total score for a team in the admin panel.
+        """
+        total_score = TaskSolution.objects.filter(team=obj).annotate(
+            task_points_score=F('task__points') * F('score') / 100
+        ).aggregate(total_score=Sum('task_points_score'))['total_score']
+        
+        return total_score or 0
+    
 @admin.register(Participant)
 class ParticipantAdmin(ModelAdmin):
     
