@@ -2,9 +2,20 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 from django.db.models import F, Sum
 
+from django.contrib.auth.models import User
 
 from .models import Team,Participant
 from tasks.models import TaskSolution
+
+from django.contrib.admin import StackedInline,TabularInline
+
+
+
+class ParticipantStackedInline(TabularInline):
+    model = Participant 
+    extra = 1
+    tab = True
+    
 
 
 @admin.register(Team)
@@ -14,6 +25,9 @@ class TeamAdmin(ModelAdmin):
     list_display = ("id",'name',"members_num","submeted_taskes","team_score")
     list_display_links = list_display
 
+    inlines = [ParticipantStackedInline,]
+
+    
     def members_num(self, obj):
         return f"{obj.participant_set.count()} / 4" #participant_set : this is reverce FK
     
@@ -30,6 +44,7 @@ class TeamAdmin(ModelAdmin):
         
         return total_score or 0
     
+    
 @admin.register(Participant)
 class ParticipantAdmin(ModelAdmin):
     
@@ -40,4 +55,7 @@ class ParticipantAdmin(ModelAdmin):
     search_fields = ('team__name','user__first_name','user__last_name')
     list_filter = ('team__name',)
     
+  
+
+  
  

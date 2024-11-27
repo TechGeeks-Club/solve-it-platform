@@ -4,6 +4,22 @@ from django.contrib.admin import ModelAdmin
 from .models import Phase, Category, Task, TaskTest, TaskSolution
 
 
+
+from django.contrib.admin import StackedInline,TabularInline
+
+
+
+class TaskSolutionStackedInline(TabularInline):
+    model = TaskSolution 
+    fields = ['pk','team',"participant",'score','tries']
+    show_change_link = True
+    readonly_fields = fields
+    can_delete = False
+    extra = 0
+    tab = True
+    
+
+
 @admin.register(Phase)
 class PhaseAdmin(ModelAdmin):
     
@@ -30,6 +46,8 @@ class TaskAdmin(ModelAdmin):
     search_fields = ('_title',)
     list_filter = ('phase', 'level', 'category')
     
+    inlines =  [TaskSolutionStackedInline]
+    
     
     def _title(self, obj):
         if len(obj.title) <= 15:
@@ -47,6 +65,7 @@ class TaskSolutionAdmin(ModelAdmin):
     list_filter = ('task__phase','task__level','task__category')
     
     readonly_fields = ('task','participant','team','code','submitted_at','tries')
+    
     
     
     def _score(self, obj):
