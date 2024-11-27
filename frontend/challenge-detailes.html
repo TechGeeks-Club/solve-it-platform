@@ -3,17 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style></style>
-    <title>challenge details</title>
+    <title>Challenge Details</title>
+
     <link rel="stylesheet" href="challenge-page.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css"
-    />
+
+    <link rel="stylesheet" href="lib/codemirror.min.css" />
+
+    <link rel="stylesheet" href="lib/monokai.min.css" />
   </head>
   <body>
     <section class="all-Page" id="all-Page-details">
@@ -58,25 +54,23 @@
           </p>
         </div>
         <div class="challenge-example">
-          <h3>Example :</h3>
+          <h3>Example:</h3>
           <div>
-            <span>Input : [ 1, 2, 3, 4, 5, 6, 8 ]</span>
-            <span>Output : Seven</span>
+            <span>Input: [1, 2, 3, 4, 5, 6, 8]</span>
+            <span>Output: Seven</span>
           </div>
         </div>
         <div class="challenge-code">
-          <h2>code :</h2>
-          <!-- placeholder="Enter your code here..." -->
+          <h2>Code:</h2>
           <textarea id="textInput">
-            // Write your C code here
-          #include <stdio.h>
+// Write your C code here
+#include <stdio.h>
 
-            int main() {
-                printf("Hello, World!\n");
-                return 0;
-            }
-        </textarea
-          >
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+          </textarea>
         </div>
         <div class="challenge-submit">
           <div class="challenge-meta">
@@ -87,17 +81,32 @@
         </div>
       </main>
     </section>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
+
+    <script src="lib/codemirror.min.js"></script>
+
+    <script src="lib/clike.min.js"></script>
     <script>
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");
         menu.style.display = menu.style.display === "flex" ? "none" : "flex";
       }
+
       function closeDropDown() {
         const menu = document.getElementById("dropdownMenu");
         if (menu.style.display === "flex") menu.style.display = "none";
       }
+
+      // Initialize CodeMirror
+      document.addEventListener("DOMContentLoaded", function () {
+        CodeMirror.fromTextArea(document.getElementById("textInput"), {
+          lineNumbers: true,
+          mode: "text/x-csrc",
+          theme: "monokai",
+          indentUnit: 4,
+          matchBrackets: true,
+        });
+      });
+
       document
         .getElementById("downloadBtn")
         .addEventListener("click", async function () {
@@ -105,12 +114,6 @@
 
           const file = new File([text], "code.txt", { type: "text/plain" });
 
-          const blob = new Blob([text], { type: "text/plain" });
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = "code.txt";
-          //  a.click();
-          URL.revokeObjectURL(a.href);
           const formData = new FormData();
           formData.append("file", file);
 
@@ -135,16 +138,6 @@
             alert("An error occurred while sending the file.");
           }
         });
-
-      document.addEventListener("DOMContentLoaded", function () {
-        CodeMirror.fromTextArea(document.getElementById("textInput"), {
-          lineNumbers: true,
-          mode: "text/x-csrc",
-          theme: "monokai",
-          indentUnit: 4,
-          matchBrackets: true,
-        });
-      });
     </script>
   </body>
 </html>
