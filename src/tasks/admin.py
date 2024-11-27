@@ -69,7 +69,18 @@ class TaskSolutionAdmin(ModelAdmin):
     search_fields = ('_title',"team__name")
     list_filter = ('task__phase','task__level','task__category')
     
-    # readonly_fields = ('task','team','submitted_at','tries')
+    readonly_fields = ('task','team','submitted_at','tries',"participant")
+    
+    fieldsets = (
+    ("Submition Information", {"fields": (("task", "tries","submitted_at"),("team","participant"))}),
+    (
+        ("Submition"),
+        {
+            "fields": (("score",),"code_src"),
+            "classes": ["tab"],
+        },
+    ),
+    )
     
     
     def has_add_permission(self, request):

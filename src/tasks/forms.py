@@ -26,6 +26,12 @@ class TaskSolutionForm(forms.ModelForm):
         model = TaskSolution
         fields = ["task", "code_src", "score", "tries"]
         readonly_fields = ('task', 'team', 'submitted_at', 'score', 'tries', 'code_src')
-        
        
-    
+        
+        
+    class Media:
+        js = ('editor/js/clike.min.js', 'editor/js/codemirror.min.js','editor/js/editor.js')
+        css = {
+            'all': ('editor/css/codemirror.min.css','editor/css/monokai.min.css'),
+        }
+  

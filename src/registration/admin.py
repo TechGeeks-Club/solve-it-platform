@@ -13,7 +13,7 @@ from django.contrib.admin import StackedInline,TabularInline
 
 class ParticipantStackedInline(TabularInline):
     model = Participant 
-    extra = 1
+    extra = 0
     tab = True
     
 
