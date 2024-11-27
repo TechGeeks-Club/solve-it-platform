@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 
+from django import forms
+
+
 from .models import Phase, Category, Task, TaskTest, TaskSolution
-
-
+from .forms import TaskSolutionForm
 
 from django.contrib.admin import StackedInline,TabularInline
 
@@ -54,18 +56,27 @@ class TaskAdmin(ModelAdmin):
             return obj.title
         return obj.title[:15] + "..."
     
+    
+    
 @admin.register(TaskSolution)
 class TaskSolutionAdmin(ModelAdmin):
-    
+    form = TaskSolutionForm
     model = TaskSolution
+    
     list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score','tries')
     list_display_links = list_display
     
     search_fields = ('_title',"team__name")
     list_filter = ('task__phase','task__level','task__category')
     
-    readonly_fields = ('task','participant','team','code','submitted_at','tries')
+    # readonly_fields = ('task','team','submitted_at','tries')
     
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
     
     
     def _score(self, obj):
