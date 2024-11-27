@@ -13,9 +13,26 @@ from django.contrib.admin import StackedInline,TabularInline
 
 class ParticipantStackedInline(TabularInline):
     model = Participant 
-    extra = 1
+    fields = ['pk','user','first_name','last_name','submit',"personal_score"]
+
+    readonly_fields = fields
+
+    extra = 0
     tab = True
     
+    def first_name(self, obj):
+        return obj.user.first_name
+    def last_name(self, obj):
+        return obj.user.last_name
+    def submit(self,obj):
+        # the numbers of task submitted by the participant
+        return obj.tasksolution_set.count()
+    def personal_score(self,obj):
+        # the total score of the participant
+        return obj.tasksolution_set.annotate(
+            task_points_score=F('task__points') * F('score') / 100
+        ).aggregate(total_score=Sum('task_points_score'))['total_score']
+  
 
 
 @admin.register(Team)
@@ -49,13 +66,20 @@ class TeamAdmin(ModelAdmin):
 class ParticipantAdmin(ModelAdmin):
     
     model = Participant
-    list_display = ("id",'user__first_name','user__last_name','team__name')
+    list_display = ("id",'user__first_name','user__last_name','team__name',"submit","personal_score")
     list_display_links = list_display
     
     search_fields = ('team__name','user__first_name','user__last_name')
     list_filter = ('team__name',)
     
   
-
+    def submit(self,obj):
+        # the numbers of task submitted by the participant
+        return obj.tasksolution_set.count()
+    def personal_score(self,obj):
+        # the total score of the participant
+        return obj.tasksolution_set.annotate(
+            task_points_score=F('task__points') * F('score') / 100
+        ).aggregate(total_score=Sum('task_points_score'))['total_score']
   
  
