@@ -15,7 +15,7 @@ class TaskSolutionStackedInline(TabularInline):
     model = TaskSolution 
     fields = ['pk','team',"participant",'score','tries']
     show_change_link = True
-    readonly_fields = fields
+    readonly_fields = ['pk','team',"participant",'score','tries']
     can_delete = False
     extra = 0
     tab = True
@@ -68,6 +68,7 @@ class TaskSolutionAdmin(ModelAdmin):
     
     search_fields = ('_title',"team__name")
     list_filter = ('task__phase','task__level','task__category')
+    
     
     readonly_fields = ('task','team','submitted_at','tries',"participant")
     
