@@ -6,6 +6,14 @@
     <style></style>
     <title>challenge details</title>
     <link rel="stylesheet" href="challenge-page.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css"
+    />
   </head>
   <body>
     <section class="all-Page" id="all-Page-details">
@@ -58,20 +66,29 @@
         </div>
         <div class="challenge-code">
           <h2>code :</h2>
-          <textarea
-            id="code-input"
-            placeholder="Enter your code here..."
-          ></textarea>
+          <!-- placeholder="Enter your code here..." -->
+          <textarea id="textInput">
+            // Write your C code here
+          #include <stdio.h>
+
+            int main() {
+                printf("Hello, World!\n");
+                return 0;
+            }
+        </textarea
+          >
         </div>
         <div class="challenge-submit">
           <div class="challenge-meta">
             <span>Your Score: 90 points</span>
             <span>Tried: 0/3</span>
           </div>
-          <button>Submit</button>
+          <button id="downloadBtn">Submit</button>
         </div>
       </main>
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
     <script>
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");
@@ -81,6 +98,53 @@
         const menu = document.getElementById("dropdownMenu");
         if (menu.style.display === "flex") menu.style.display = "none";
       }
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", async function () {
+          const text = document.getElementById("textInput").value;
+
+          const file = new File([text], "code.txt", { type: "text/plain" });
+
+          const blob = new Blob([text], { type: "text/plain" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "code.txt";
+          //  a.click();
+          URL.revokeObjectURL(a.href);
+          const formData = new FormData();
+          formData.append("file", file);
+
+          const endpoint = "http://localhost:5000/api/upload";
+
+          try {
+            const response = await fetch(endpoint, {
+              method: "POST",
+              body: formData,
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              console.log("Success:", result);
+              alert("File sent successfully!");
+            } else {
+              console.error("Error:", response.statusText);
+              alert("Failed to send the file. Please try again.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred while sending the file.");
+          }
+        });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        CodeMirror.fromTextArea(document.getElementById("textInput"), {
+          lineNumbers: true,
+          mode: "text/x-csrc",
+          theme: "monokai",
+          indentUnit: 4,
+          matchBrackets: true,
+        });
+      });
     </script>
   </body>
 </html>

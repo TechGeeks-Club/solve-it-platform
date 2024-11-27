@@ -385,75 +385,70 @@ body {
   text-decoration-skip-ink: none;
   color: #afb5bb;
 }
+/* Styles for the code section */
 .challenge-code {
-  max-width: 979px;
+  max-width: 100%;
   height: 313px;
-  top: 419px;
-  left: 206px;
-  gap: 0px;
-  border-radius: 20px 0px 0px 0px;
-  border: 1px 0px 0px 0px;
-  opacity: 0px;
+  border-radius: 20px 0 0 0;
+  border: 1px solid #ddd; /* Light border */
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-.challenge-code div {
-  width: 66px;
-  height: 16px;
-  top: 419px;
-  left: 206px;
-  gap: 0px;
-  opacity: 0px;
-  color: #afb5bb;
-}
-.challenge-code textarea {
-  max-width: 979px; /* Matches the provided width */
-  height: 281px; /* Matches the provided height */
-  padding: 15px; /* Inner padding for better spacing */
-  border-radius: 20px; /* Smoothly rounded corners */
-  border: 1px solid #ccc; /* Light border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
-  font-size: 18px; /* Text size inside the input */
-  line-height: 1.4; /* Comfortable line spacing */
-  resize: none; /* Disable resize for textareas */
-  outline: none; /* Remove default browser outline */
-  background-color: #f0f3f4; /* Clean white background */
-  color: #333; /* Dark text color for readability */
-}
-.challenge-code textarea:hover {
-  border-color: #888; /* Darker border on hover */
+  padding: 10px;
+  background-color: #f9f9f9; /* Light background */
 }
 
-/* Focus state */
-.challenge-code textarea:focus {
-  border-color: #007bff; /* Blue border for focus */
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Glow effect */
+/* Textarea styling */
+.challenge-code textarea {
+  max-width: 100%;
+  height: 281px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-size: 16px;
+  line-height: 1.4;
+  resize: none; /* Disable resize */
+  outline: none;
+  background-color: #f0f3f4;
+  color: #333;
 }
+
+.challenge-code textarea:hover {
+  border-color: #888;
+}
+
+/* Focus effect */
+.challenge-code textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+/* Submit section styling */
 .challenge-submit {
   max-width: 940px;
-  height: 48px;
-  top: 752px;
-  left: 206px;
-  gap: 0px;
-  opacity: 0px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* Submit button styling */
 .challenge-submit button {
-  width: Hug (217px) px;
-  height: Hug (48px) px;
-  padding: 14px 80px 14px 80px;
-  gap: 8px;
-  border-radius: 12px;
-  opacity: 0px;
+  padding: 10px 20px;
+  border-radius: 8px;
   background: #1980e6;
-  border: white;
+  border: none;
   color: white;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
+
+.challenge-submit button:hover {
+  background-color: #005bb5;
+}
+
 @media (max-width: 768px) {
   .challenge-card {
     flex-direction: column;
