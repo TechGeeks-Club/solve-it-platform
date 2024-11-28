@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Challenge Details</title>
-
     <link rel="stylesheet" href="challenge-page.css" />
-
     <link rel="stylesheet" href="lib/codemirror.min.css" />
-
     <link rel="stylesheet" href="lib/monokai.min.css" />
   </head>
   <body>
@@ -80,10 +77,14 @@ int main() {
           <button id="downloadBtn">Submit</button>
         </div>
       </main>
+      <div style="display: none">
+        <form action="submit" method="POST">
+          <input type="file" name="uploadedFile" id="code-input" />
+        </form>
+      </div>
     </section>
 
     <script src="lib/codemirror.min.js"></script>
-
     <script src="lib/clike.min.js"></script>
     <script>
       function toggleMenu() {
@@ -109,34 +110,24 @@ int main() {
 
       document
         .getElementById("downloadBtn")
-        .addEventListener("click", async function () {
-          const text = document.getElementById("textInput").value;
+        .addEventListener("click", function () {
+          const textContent = document.getElementById("textInput").value;
 
-          const file = new File([text], "code.txt", { type: "text/plain" });
+          const file = new Blob([textContent], { type: "text/plain" });
 
-          const formData = new FormData();
-          formData.append("file", file);
+          const inputElement = document.getElementById("code-input");
 
-          const endpoint = "http://localhost:5000/api/upload";
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(new File([file], "code.txt"));
+          inputElement.files = dataTransfer.files;
 
-          try {
-            const response = await fetch(endpoint, {
-              method: "POST",
-              body: formData,
-            });
+          // const reader = new FileReader();
+          // reader.onload = function (event) {
+          //   console.log("File content:", event.target.result); // Prints the file's content
+          // };
 
-            if (response.ok) {
-              const result = await response.json();
-              console.log("Success:", result);
-              // alert("File sent successfully!");
-            } else {
-              console.error("Error:", response.statusText);
-              alert("Failed to send the file. Please try again.");
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            // alert("An error occurred while sending the file.");
-          }
+          // // Read the first file from the input element
+          // reader.readAsText(inputElement.files[0]);
         });
     </script>
   </body>
