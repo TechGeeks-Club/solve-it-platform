@@ -36,7 +36,7 @@ class Task(models.Model):
     
 
 class TaskTest(models.Model):
-    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE, related_name="task_tests")
     input = models.TextField(null=False)
     output = models.TextField(null=False)
     display = models.BooleanField(default=False)
