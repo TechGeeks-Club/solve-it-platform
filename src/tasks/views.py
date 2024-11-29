@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.db import transaction
+from django.db.models import Prefetch
 
-from .models import Phase,Task,TaskSolution
+from .models import Phase,Task,TaskSolution,TaskTest
 from registration.models import Participant
 
 
@@ -24,11 +25,19 @@ def checkParticipationExistance(task:Task, participant:Participant):
         
 
 def taskView(request:HttpRequest, task_id:int):
-    taskObj = Task.objects.get(id=task_id)
+    task_tests_query = TaskTest.objects.filter(display=True)
+    taskObj = Task.objects.prefetch_related(Prefetch('task_tests', queryset=task_tests_query)).get(id=task_id)
+    solutionObj = None
+    try:
+        solutionObj = TaskSolution.objects.get(task=taskObj)
+    except :
+        pass
+
     err = None
 
     context = {
         "task" : taskObj,
+        "solution" : solutionObj,
         "err" : err
     }
 

@@ -50,8 +50,10 @@
         <div class="challenge-example">
           <h3>Example:</h3>
           <div>
-            <span>Input: [1, 2, 3, 4, 5, 6, 8]</span>
-            <span>Output: Seven</span>
+            {% for test in task.task_tests.all %}
+              <span>Input: {{test.input}}</span>
+              <span>Output: {{test.output}}</span>
+            {% endfor %}
           </div>
         </div>
         <div class="challenge-code">
@@ -62,8 +64,8 @@
         </div>
         <div class="challenge-submit">
           <div class="challenge-meta">
-            <span>Your Score: 90 points</span>
-            <span>Tried: 0/3</span>
+            <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
+            <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span>
           </div>
           <button id="downloadBtn">Submit</button>
         </div>
