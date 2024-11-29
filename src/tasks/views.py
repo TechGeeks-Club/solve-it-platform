@@ -12,7 +12,7 @@ def tasksDisplayView(request:HttpRequest):
     context = {
         "phases" : phases
     }
-    return render(request,"tasks/displayTasks.html",context)
+    return render(request,"tasks/challenges-page.html",context)
 
 
 def checkParticipationExistance(task:Task, participant:Participant):
@@ -24,11 +24,16 @@ def checkParticipationExistance(task:Task, participant:Participant):
         
 
 def taskView(request:HttpRequest, task_id:int):
-    pass
+    taskObj = Task.objects.get(id=task_id)
+    err = None
 
+    context = {
+        "task" : taskObj,
+        "err" : err
+    }
+
+    return render(request,"tasks/task.html",context)
     # ! This work is not ready yet
-    # taskObj = Task.objects.get(id=task_id)
-    # err = None
 
     # if request.method == "POST" :
     #     # ? i don't want the access to this page to require authentication, just the code submition
@@ -64,8 +69,3 @@ def taskView(request:HttpRequest, task_id:int):
     #     else :
     #         err = "User is not authenticated"
 
-    # context = {
-    #     "taskObj" : taskObj,
-    #     "err" : err
-    # }
-    # # return render(request,"tasks/task.html",context)
