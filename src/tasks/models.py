@@ -23,7 +23,7 @@ class Task(models.Model):
         ("medium","Medium"),
         ("hard","Hard"),
     ]
-    phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL)
+    phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL, related_name="phase_tasks")
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=128,null=False)
     context = models.TextField(null=False)
