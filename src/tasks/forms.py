@@ -29,7 +29,7 @@ class TaskSolutionForm(forms.ModelForm):
         
               
     class Media:
-        js = ('editor/js/clike.min.js', 'editor/js/codemirror.min.js','editor/js/editor.js')
+        js = ('editor/js/codemirror.min.js','editor/js/clike.min.js','editor/js/editor.js')
         css = {
             'all': ('editor/css/codemirror.min.css','editor/css/monokai.min.css'),
         }

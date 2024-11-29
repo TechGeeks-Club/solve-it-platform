@@ -10,7 +10,9 @@ from .forms import TaskSolutionForm
 from django.contrib.admin import StackedInline,TabularInline
 
 from .filters import TaskSolutionListFilter
+from .action import Get_task
 
+from django.utils.html import format_html
 
 class TaskSolutionStackedInline(TabularInline):
     model = TaskSolution 
@@ -64,27 +66,29 @@ class TaskSolutionAdmin(ModelAdmin):
     form = TaskSolutionForm
     model = TaskSolution
     
-    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score','tries')
+    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score',"is_corrected")
     list_display_links = list_display
     
+    
     search_fields = ('_title',"team__name")
-    list_filter = ('task__phase',TaskSolutionListFilter,'task__level','task__category')
+    list_filter = ('task__phase',TaskSolutionListFilter,'is_corrected','task__level','task__category')
     
+    actions = [Get_task]
     
-    readonly_fields = ('task','team','submitted_at','tries',"participant")
+    readonly_fields = ('task','team','submitted_at',"participant")
     
     fieldsets = (
-    ("Submition Information", {"fields": (("task", "tries","submitted_at"),("team","participant"))}),
+    ("Submition Information", {"fields": (("task", "submitted_at"),("team","participant"))}),
     (
         ("Submition"),
         {
-            "fields": (("score",),"code_src"),
+            "fields": (("score","is_corrected"),"code_src"),
             "classes": ["tab"],
         },
     ),
     )
     
-    
+
     def has_add_permission(self, request):
         return False
     

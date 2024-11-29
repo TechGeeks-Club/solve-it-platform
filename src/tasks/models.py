@@ -58,10 +58,18 @@ class TaskSolution(models.Model):
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)
+    is_corrected = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
     score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)] ) 
     tries = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(3)] )
             
+    def save(self):
+        if self.score > 0:
+            self.is_corrected = True
+        super().save()
+
+            
+    
         
     def __str__(self):
         return self.task.title + " tests"
@@ -77,4 +85,3 @@ class TaskCorrecton(models.Model):
     
     class meta:
         unique_together = ('user', 'task_solution')
-        
