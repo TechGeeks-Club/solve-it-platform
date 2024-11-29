@@ -3,6 +3,8 @@ from django.db import models
 from registration.models import Participant, Team
 from django.core.validators import MaxValueValidator
 
+from django.contrib.auth.models import User
+
 class Phase(models.Model):
     name = models.CharField(max_length=128)
     is_locked = models.BooleanField(default=False)
@@ -64,3 +66,16 @@ class TaskSolution(models.Model):
         
     def __str__(self):
         return self.task.title + " tests"
+
+
+class TaskCorrecton(models.Model):
+    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+    task_solution = models.ForeignKey(TaskSolution, null=False, on_delete=models.CASCADE)
+    corrected_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    
+    def __str__(self):
+        return self.task_solution.task.title
+    
+    class meta:
+        unique_together = ('user', 'task_solution')
+        
