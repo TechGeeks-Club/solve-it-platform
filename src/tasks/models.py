@@ -27,6 +27,7 @@ class Task(models.Model):
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=128,null=False)
     context = models.TextField(null=False)
+    initialCode = models.TextField(null=True)
     level = models.CharField(max_length=8, choices=LEVELS, null=False)
     points = models.IntegerField(null=False)
 
