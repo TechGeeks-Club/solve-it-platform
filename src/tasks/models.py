@@ -23,7 +23,7 @@ class Task(models.Model):
         ("medium","Medium"),
         ("hard","Hard"),
     ]
-    phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL, related_name="phase_tasks")
+    phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=128,null=False)
     context = models.TextField(null=False)
@@ -36,9 +36,10 @@ class Task(models.Model):
     
 
 class TaskTest(models.Model):
-    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE, related_name="task_tests")
     input = models.TextField(null=False)
     output = models.TextField(null=False)
+    display = models.BooleanField(default=False)
     
     def __str__(self):
         return self.task.title + " tests"
