@@ -68,4 +68,4 @@ def taskView(request:HttpRequest, task_id:int):
     #     "taskObj" : taskObj,
     #     "err" : err
     # }
-    # # return render(request,"tasks/task.html",context)
+    # # return render(request,"tasks/task.html",context) #! ma dirch el errors hak , dir bel function hadi ==> messages.error(request, err)
