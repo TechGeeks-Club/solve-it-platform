@@ -100,3 +100,4 @@ class TaskSolutionAdmin(ModelAdmin):
         return obj.task.title[:15] + "..."
     
     
+admin.site.register(TaskTest)

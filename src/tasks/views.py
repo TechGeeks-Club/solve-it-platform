@@ -33,15 +33,12 @@ def taskView(request:HttpRequest, task_id:int):
     except :
         pass
 
-    err = None
-
     context = {
         "task" : taskObj,
         "solution" : solutionObj,
-        "err" : err
     }
 
-    return render(request,"tasks/task.html",context)
+    return render(request,"tasks/challenge-detailes.html",context)
     # ! This work is not ready yet
 
     # if request.method == "POST" :
