@@ -61,19 +61,17 @@ class TaskSolution(models.Model):
     code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)
     is_corrected = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)] ) 
-    tries = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(3)] )
+    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)] )
+    # ? i change the default here to 1 bcz we create obj form this class in the first solution so first try 
+    tries = models.IntegerField(null=False, default=1, validators=[MaxValueValidator(3)] )
             
     def save(self):
         if self.score > 0:
             self.is_corrected = True
         super().save()
 
-            
-    
-        
     def __str__(self):
-        return self.task.title + " tests"
+        return self.task.title + " Solution n"+ str(self.tries) 
 
 
 class TaskCorrecton(models.Model):
