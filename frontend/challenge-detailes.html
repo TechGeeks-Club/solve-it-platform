@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challenge Details</title>
+    <link rel="stylesheet" href="challenge-page.css" />
+    <link rel="stylesheet" href="lib/codemirror.min.css" />
+    <link rel="stylesheet" href="lib/monokai.min.css" />
+  </head>
+  <body>
+    <section class="all-Page" id="all-Page-details">
+      <nav class="navbar">
+        <a href="/" class="logo">λ</a>
+        <div class="nav-links">
+          <a href="#">Challenges</a>
+          <a href="#">Leaderboard</a>
+          <button class="logout-btn">
+            <span><p>Logout</p></span>
+          </button>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu" id="dropdownMenu">
+          <a href="#" onclick="closeDropDown()">Challenges</a>
+          <a href="#" onclick="closeDropDown()">Leaderboard</a>
+          <a href="#" onclick="closeDropDown()">Logout</a>
+        </div>
+      </nav>
+      <main class="container" id="container-details">
+        <div class="challenge-header">
+          <h1>Palindrome</h1>
+          <div class="challenge-meta">
+            <span class="level-tag hard">Level: Hard</span>
+            <span>Score: 90 points</span>
+            <span>Phase: Phase name</span>
+          </div>
+        </div>
+        <div class="challenge-problematic">
+          <p>
+            It is a long established fact that a reader will be distracted by
+            the readable content of a page when looking at its layout. The point
+            of using Lorem Ipsum is that it has a more-or-less normal
+            distribution of letters, as opposed to using 'Content here, content
+            here', making it look like readable English. Many desktop publishing
+            packages and web page editors now use Lorem Ipsum as their default
+            model text, and a search for .
+          </p>
+        </div>
+        <div class="challenge-example">
+          <h3>Example:</h3>
+          <div>
+            <span>Input: [1, 2, 3, 4, 5, 6, 8]</span>
+            <span>Output: Seven</span>
+          </div>
+        </div>
+        <div class="challenge-code">
+          <h2>Code:</h2>
+          <textarea id="textInput">
+// Write your C code here
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+          </textarea>
+        </div>
+        <div class="challenge-submit">
+          <div class="challenge-meta">
+            <span>Your Score: 90 points</span>
+            <span>Tried: 0/3</span>
+          </div>
+          <button id="downloadBtn">Submit</button>
+        </div>
+      </main>
+      <div style="display: none">
+        <form action="submit" method="POST">
+          <input type="file" name="uploadedFile" id="code-input" />
+        </form>
+      </div>
+    </section>
+
+    <script src="lib/codemirror.min.js"></script>
+    <script src="lib/clike.min.js"></script>
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+
+      function closeDropDown() {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu.style.display === "flex") menu.style.display = "none";
+      }
+
+      // Initialize CodeMirror
+      document.addEventListener("DOMContentLoaded", function () {
+        CodeMirror.fromTextArea(document.getElementById("textInput"), {
+          lineNumbers: true,
+          mode: "text/x-csrc",
+          theme: "monokai",
+          indentUnit: 4,
+          matchBrackets: true,
+        });
+      });
+
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", function () {
+          const textContent = document.getElementById("textInput").value;
+
+          const file = new Blob([textContent], { type: "text/plain" });
+
+          const inputElement = document.getElementById("code-input");
+
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(new File([file], "code.txt"));
+          inputElement.files = dataTransfer.files;
+
+          // const reader = new FileReader();
+          // reader.onload = function (event) {
+          //   console.log("File content:", event.target.result); // Prints the file's content
+          // };
+
+          // // Read the first file from the input element
+          // reader.readAsText(inputElement.files[0]);
+        });
+    </script>
+  </body>
+</html>
