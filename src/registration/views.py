@@ -57,7 +57,7 @@ def createParticipantView(request:HttpRequest):
                     teamObj = getTeam(teamForm)
                     userObj = userForm.save()
                     Participant(user=userObj, team=teamObj).save()
-                    return render(request,"registration/createParticipant.html",{ "err" : "DONE"})
+                    # return render(request,"registration/createParticipant.html",{ "err" : "DONE"})
         except Exception as exp:
             err = exp.__str__()[2:-2]
     
@@ -67,7 +67,7 @@ def createParticipantView(request:HttpRequest):
         "err" : err
     }
 
-    return render(request,"registration/createParticipant.html",context)
+    return render(request,"registration/create-participant.html",context)
 
 
 def participantLoginView(request : HttpRequest):

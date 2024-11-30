@@ -1,0 +1,123 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Challenge Details</title>
+    <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
+    <link rel="stylesheet" href="lib/codemirror.min.css" />
+    <link rel="stylesheet" href="lib/monokai.min.css" />
+  </head>
+  <body>
+    <section class="all-Page" id="all-Page-details">
+      <nav class="navbar">
+        <a class="logo">λ</a>
+        <div class="nav-links">
+          <a href="{% url 'tasksDisplay' %}">Challenges</a>
+          <a href="#">Leaderboard</a>
+          <button class="logout-btn">
+            <span><p>Logout</p></span>
+          </button>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu" id="dropdownMenu">
+          <a href="{% url 'tasksDisplay' %}" onclick="closeDropDown()">Challenges</a>
+          <a href="#" onclick="closeDropDown()">Leaderboard</a>
+          <a href="#" onclick="closeDropDown()">Logout</a>
+        </div>
+      </nav>
+
+      <main class="container" id="container-details">
+        <div class="challenge-header">
+          <h1>{{task.title}}</h1>
+          <div class="challenge-meta">
+            <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
+            <span>Score: {{task.points}} points</span>
+            <span>Phase: {{task.phase.name}} </span>
+          </div>
+        </div>
+        <div class="challenge-problematic">
+          <p>{{task.context}}</p>
+        </div>
+        <div class="challenge-example">
+          <h3>Example:</h3>
+          <div>
+            {% for test in task.task_tests.all %}
+              <span>Input: {{test.input}}</span>
+              <span>Output: {{test.output}}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="challenge-code">
+          <h2>Code:</h2>
+          <textarea id="textInput">{{task.initialCode}}</textarea>
+        </div>
+        <div class="challenge-submit">
+          <div class="challenge-meta">
+            <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
+            <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span>
+          </div>
+          <button id="downloadBtn">Submit</button>
+        </div>
+      </main>
+      <div style="display: none">
+        <form action="submit" method="POST">
+          <input type="file" name="uploadedFile" id="code-input" />
+        </form>
+      </div>
+    </section>
+
+    <script src="lib/codemirror.min.js"></script>
+    <script src="lib/clike.min.js"></script>
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+
+      function closeDropDown() {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu.style.display === "flex") menu.style.display = "none";
+      }
+
+      // Initialize CodeMirror
+      document.addEventListener("DOMContentLoaded", function () {
+        CodeMirror.fromTextArea(document.getElementById("textInput"), {
+          lineNumbers: true,
+          mode: "text/x-csrc",
+          theme: "monokai",
+          indentUnit: 4,
+          matchBrackets: true,
+        });
+      });
+
+      document
+        .getElementById("downloadBtn")
+        .addEventListener("click", function () {
+          const textContent = document.getElementById("textInput").value;
+
+          const file = new Blob([textContent], { type: "text/plain" });
+
+          const inputElement = document.getElementById("code-input");
+
+          const dataTransfer = new DataTransfer();
+          dataTransfer.items.add(new File([file], "code.txt"));
+          inputElement.files = dataTransfer.files;
+
+          // const reader = new FileReader();
+          // reader.onload = function (event) {
+          //   console.log("File content:", event.target.result); // Prints the file's content
+          // };
+
+          // // Read the first file from the input element
+          // reader.readAsText(inputElement.files[0]);
+        });
+    </script>
+  </body>
+</html>

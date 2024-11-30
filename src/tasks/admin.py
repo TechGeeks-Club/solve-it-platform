@@ -160,3 +160,5 @@ class TaskCorrectonAdmin(ModelAdmin):
     def score(self, obj):
         return obj.task_solution.score
     # =================================
+
+admin.site.register(TaskTest)
