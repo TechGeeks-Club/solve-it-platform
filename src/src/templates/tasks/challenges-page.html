@@ -37,8 +37,7 @@
           <div class="tabs">
             <div class="tab active">All</div>
             <div class="tab">Phases</div>
-            <div class="tab">Started</div>
-            <div class="tab">Not started</div>
+            <div class="tab">Category</div>
           </div>
         </div>
 
@@ -71,6 +70,21 @@
                     </div>
                     <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
                   </div>
+                  <div class="challenge-card">
+                    <div class="challenge-info">
+                      <div class="challenge-checkbox"><input type="checkbox" /></div>
+                      <div class="challenge-details">
+                        <h3>{{task.title}}</h3>
+                        <div class="challenge-meta">
+                          <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
+                          <span>Score: {{task.points}} points</span>
+                          <span>Category: {{task.category}}</span>
+                          <span>Phase: {{phase.name}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
+                  </div>
                 {% endfor %}
               {% endif %}
             {% endfor %}
@@ -80,6 +94,28 @@
       </main>
     </section>
     <script>
+      document.addEventListener("DOMContentLoaded", function() {
+    const levelSelect = document.querySelector(".level-select");
+
+    // Listen for change in the level select dropdown
+    levelSelect.addEventListener("change", function() {
+      const selectedLevel = levelSelect.value.toLowerCase();  // Get selected level (easy, medium, hard)
+      const tasks = document.querySelectorAll(".challenge-card");  // Get all tasks
+
+      tasks.forEach(task => {
+        const taskLevel = task.querySelector(".level-tag").classList.contains("easy") ? "easy" :
+                          task.querySelector(".level-tag").classList.contains("medium") ? "medium" :
+                          task.querySelector(".level-tag").classList.contains("hard") ? "hard" : "";
+
+        // If a level is selected, show only matching tasks, otherwise show all
+        if (selectedLevel === "" || taskLevel === selectedLevel) {
+          task.style.display = "block";  // Show task
+        } else {
+          task.style.display = "none";  // Hide task
+        }
+      });
+    });
+  });
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");
         menu.style.display = menu.style.display === "flex" ? "none" : "flex";
