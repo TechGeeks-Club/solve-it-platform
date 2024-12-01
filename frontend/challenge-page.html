@@ -34,7 +34,15 @@
           <h1>Challenges</h1>
           <div class="tabs">
             <div class="tab active">All</div>
-            <div class="tab">Phases</div>
+            <div class="tab">
+              <select id="phasesDropdown" style="border: none; outline: none">
+                <option value="all">All</option>
+                <option value="phase1">Phase 1</option>
+                <option value="phase2">Phase 2</option>
+                <option value="phase3">Phase 3</option>
+                <option value="phase4">Phase 4</option>
+              </select>
+            </div>
             <div class="tab">Started</div>
             <div class="tab">Not started</div>
           </div>
@@ -50,8 +58,8 @@
         </div>
 
         <div class="challenge-list">
-          <!-- Hard Challenge -->
-          <div class="challenge-card">
+          <!-- Challenge for Phase 1 -->
+          <div class="challenge-card" data-phase="phase1">
             <div class="challenge-info">
               <div class="challenge-checkbox"><input type="checkbox" /></div>
               <div class="challenge-details">
@@ -59,105 +67,14 @@
                 <div class="challenge-meta">
                   <span class="level-tag hard">Level: Hard</span>
                   <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
+                  <span>Phase: Phase 1</span>
                 </div>
               </div>
             </div>
             <button class="solve-btn">Solve</button>
           </div>
 
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag hard">Level: Hard</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag hard">Level: Hard</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag hard">Level: Hard</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag hard">Level: Hard</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag hard">Level: Hard</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag hard">Level: Hard</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-
-          <!-- Medium Challenge -->
-          <div class="challenge-card">
+          <div class="challenge-card" data-phase="phase1">
             <div class="challenge-info">
               <div class="challenge-checkbox"><input type="checkbox" /></div>
               <div class="challenge-details">
@@ -165,191 +82,70 @@
                 <div class="challenge-meta">
                   <span class="level-tag medium">Level: Medium</span>
                   <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag medium">Level: Medium</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag medium">Level: Medium</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag medium">Level: Medium</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag medium">Level: Medium</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag medium">Level: Medium</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag medium">Level: Medium</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
+                  <span>Phase: Phase 1</span>
                 </div>
               </div>
             </div>
             <button class="solve-btn">Solve</button>
           </div>
 
-          <!-- Easy Challenge -->
-          <div class="challenge-card">
+          <div class="challenge-card" data-phase="phase2">
             <div class="challenge-info">
               <div class="challenge-checkbox"><input type="checkbox" /></div>
               <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
+                <h3>Sort an array</h3>
                 <div class="challenge-meta">
-                  <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
+                  <span class="level-tag medium">Level: Medium</span>
+                  <span>Score: 50 points</span>
+                  <span>Phase: Phase 2</span>
                 </div>
               </div>
             </div>
             <button class="solve-btn">Solve</button>
           </div>
-          <div class="challenge-card">
+
+          <!-- Challenge for Phase 2 -->
+          <div class="challenge-card" data-phase="phase2">
             <div class="challenge-info">
               <div class="challenge-checkbox"><input type="checkbox" /></div>
               <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
+                <h3>Sort an array</h3>
                 <div class="challenge-meta">
                   <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
+                  <span>Score: 50 points</span>
+                  <span>Phase: Phase 2</span>
                 </div>
               </div>
             </div>
             <button class="solve-btn">Solve</button>
           </div>
-          <div class="challenge-card">
+
+          <!-- Challenge for Phase 3 -->
+          <div class="challenge-card" data-phase="phase3">
             <div class="challenge-info">
               <div class="challenge-checkbox"><input type="checkbox" /></div>
               <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
+                <h3>Palindrome checker</h3>
                 <div class="challenge-meta">
                   <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
+                  <span>Score: 30 points</span>
+                  <span>Phase: Phase 3</span>
                 </div>
               </div>
             </div>
             <button class="solve-btn">Solve</button>
           </div>
-          <div class="challenge-card">
+
+          <!-- Challenge visible in all phases -->
+          <div class="challenge-card" data-phase="all">
             <div class="challenge-info">
               <div class="challenge-checkbox"><input type="checkbox" /></div>
               <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
+                <h3>General Knowledge Quiz</h3>
                 <div class="challenge-meta">
                   <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
-                </div>
-              </div>
-            </div>
-            <button class="solve-btn">Solve</button>
-          </div>
-          <div class="challenge-card">
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>Remove vowels from string</h3>
-                <div class="challenge-meta">
-                  <span class="level-tag easy">Level: Easy</span>
-                  <span>Score: 90 points</span>
-                  <span>Phase: Phase name</span>
+                  <span>Score: 20 points</span>
+                  <span>Phase: General</span>
                 </div>
               </div>
             </div>
@@ -358,15 +154,33 @@
         </div>
       </main>
     </section>
+
     <script>
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");
         menu.style.display = menu.style.display === "flex" ? "none" : "flex";
       }
+
       function closeDropDown() {
         const menu = document.getElementById("dropdownMenu");
         if (menu.style.display === "flex") menu.style.display = "none";
       }
+
+      const phasesDropdown = document.getElementById("phasesDropdown");
+      phasesDropdown.addEventListener("change", function () {
+        const selectedPhase = phasesDropdown.value;
+        const challengeCards = document.querySelectorAll(".challenge-card");
+
+        challengeCards.forEach((card) => {
+          const cardPhase = card.getAttribute("data-phase");
+
+          if (selectedPhase === "all" || cardPhase === selectedPhase) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
     </script>
   </body>
 </html>

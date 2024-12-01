@@ -57,8 +57,8 @@
             <span>Output: Seven</span>
           </div>
         </div>
+        <h2>Code:</h2>
         <div class="challenge-code">
-          <h2>Code:</h2>
           <textarea id="textInput">
 // Write your C code here
 #include <stdio.h>
@@ -120,14 +120,6 @@ int main() {
           const dataTransfer = new DataTransfer();
           dataTransfer.items.add(new File([file], "code.txt"));
           inputElement.files = dataTransfer.files;
-
-          // const reader = new FileReader();
-          // reader.onload = function (event) {
-          //   console.log("File content:", event.target.result); // Prints the file's content
-          // };
-
-          // // Read the first file from the input element
-          // reader.readAsText(inputElement.files[0]);
         });
     </script>
   </body>
