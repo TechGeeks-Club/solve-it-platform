@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib.auth import login
+from django.shortcuts import redirect
 
 from .forms import TeamCreationForm,TeamForm,CreateUserForm
 
@@ -16,13 +17,12 @@ from .models import Team,Participant
 def createTeamView(request:HttpRequest):
     form = TeamCreationForm(request.POST or None)
     err = None
-
     if request.method == "POST" :
         try :
             with transaction.atomic():
                 if( form.is_valid() ):
                     form.save()
-                    return render(request,"registration/createTeam.html",{ "err" : "DONE"})
+                    return redirect("home")
         except Exception as exp:
             err = exp.__str__()
     
@@ -57,7 +57,7 @@ def createParticipantView(request:HttpRequest):
                     teamObj = getTeam(teamForm)
                     userObj = userForm.save()
                     Participant(user=userObj, team=teamObj).save()
-                    # return render(request,"registration/createParticipant.html",{ "err" : "DONE"})
+                    return redirect("home")
         except Exception as exp:
             err = exp.__str__()[2:-2]
     
@@ -67,7 +67,7 @@ def createParticipantView(request:HttpRequest):
         "err" : err
     }
 
-    return render(request,"registration/create-participant.html",context)
+    return render(request,"registration/login.html",context)
 
 
 def participantLoginView(request : HttpRequest):
