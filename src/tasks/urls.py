@@ -5,9 +5,11 @@ from django.shortcuts import render
 
 
 
-from .views import tasksDisplayView, taskView 
+from .views import tasksDisplayView, taskView , thirdPhaseView, tasksFileDownload
 
 urlpatterns = [
     path('display', tasksDisplayView, name="tasksDisplay"),
     path("<int:task_id>", taskView, name="task"),
+    path("thirdPhase", thirdPhaseView, name="thirdPhase"),
+    path("tasksFile", tasksFileDownload, name="tasksFile"),
 ]

@@ -26,12 +26,16 @@ class Task(models.Model):
         ("hard","Hard"),
     ]
     phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL, related_name="phase_tasks")
-    category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=128,null=False)
-    context = models.TextField(null=False)
-    initialCode = models.TextField(null=True)
-    level = models.CharField(max_length=8, choices=LEVELS, null=False)
+    context = models.TextField(null=True, blank=True)
+    initialCode = models.TextField(null=True, blank=True)
+    level = models.CharField(max_length=8, choices=LEVELS, null=True, blank=True)
     points = models.IntegerField(null=False)
+
+    nextTask = models.OneToOneField("self", on_delete=models.SET_NULL, null=True, blank=True)
+    openCode = models.CharField(max_length=255, null=True ,unique=True, blank=True)
+    
 
     def __str__(self):
         return self.title
@@ -53,7 +57,7 @@ def get_file_path(participant, filename):
     _ = filename.split('.')[-1]
     
     return f'upload/{participant.team.name}/{filename}_{participant.id}.c'
-
+    
 class TaskSolution(models.Model):
     task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
@@ -84,3 +88,19 @@ class TaskCorrecton(models.Model):
     
     class meta:
         unique_together = ('user', 'task_solution')
+    
+
+
+class ThirdPhaseCode(models.Model):
+    RESULT = [
+        ("win","Win"),
+        ("lose","Lose"),
+    ]
+    # ? Which it's the code
+    id = models.CharField( max_length=255, primary_key=True, unique=True,)
+    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
+    hints_value = models.IntegerField(null=False, default=1)
+    result = models.CharField(max_length=8, choices=RESULT, null=False)
+
+    def __str__(self):
+        return "task: " + self.task.title + " result: " + self.result + " code: " + self.id 
