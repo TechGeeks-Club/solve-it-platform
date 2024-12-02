@@ -41,7 +41,21 @@ class TeamForm(forms.Form):
             'placeholder': 'Enter team password',
         })
 
+from django.contrib.auth.forms import AuthenticationForm
 
+class CustomAuthenticationForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Add or override classes for the username field
+        self.fields['username'].widget.attrs.update({
+            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+            'placeholder': 'Enter your username',
+        })
+        # Add or override classes for the password field
+        self.fields['password'].widget.attrs.update({
+            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+            'placeholder': 'Enter your password',
+        })
 class CreateUserForm(UserCreationForm):    
     class Meta:
         model = User

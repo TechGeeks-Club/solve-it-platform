@@ -6,8 +6,10 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from django.contrib import messages
 
-from .forms import TeamCreationForm,TeamForm,CreateUserForm
+
+from .forms import TeamCreationForm,TeamForm,CreateUserForm, CustomAuthenticationForm
 
 from .models import Team,Participant
 
@@ -67,21 +69,27 @@ def createParticipantView(request:HttpRequest):
         "err" : err
     }
 
-    return render(request,"registration/login.html",context)
+    return render(request,"registration/createParticipant.html",context)
 
 
 def participantLoginView(request : HttpRequest):
-    form = AuthenticationForm(request,request.POST or None)
-    if request.method == "POST" :
-        if( form.is_valid() ):
-            login(request, form.get_user())
-            context = {
-                "form" : form,
-                "status" : "Succed",
-            }
-            return render(request,"registration/participantLogin.html",context)
+    form = CustomAuthenticationForm(request,request.POST or None)
+
     context = {
         "form" : form,
-        "status" : "loading",
     }
+
+    if request.method == "POST" :
+        if( form.is_valid() ):
+            try :
+                login(request, form.get_user())
+                context = {
+                    "form" : form,
+                }
+                return redirect("tasksDisplay")
+            except Exception as e :
+                messages.error(request, f"An error occurred: {e}")
+                return render(request,"registration/participantLogin.html",context)
+        else :
+            messages.error(request, "Form validation failed. Please verify your inputs.")
     return render(request,"registration/participantLogin.html",context)
