@@ -12,7 +12,7 @@ upload/
 migrations/
 
 # Django specific files
-db.sqlite3
+# db.sqlite3
 *.log
 
 # Local settings
