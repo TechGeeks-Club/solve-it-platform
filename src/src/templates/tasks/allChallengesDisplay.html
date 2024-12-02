@@ -22,7 +22,11 @@
               <option value="all">All Phases</option>
               {% for phase in phases.all %} 
                 {% if not phase.is_locked %}
-                  <option value="{{ phase.name }}">{{ phase.name }}</option>
+                  {% if phase.name == "phase 3" %}
+                    <option value="{% url 'thirdPhase' %}">{{ phase.name }}</option>
+                  {% else %}
+                    <option value="{{ phase.name }}">{{ phase.name }}</option>
+                  {% endif %}
                 {% endif %} 
               {% endfor %}
             </select>
@@ -55,13 +59,27 @@
                 <div class="challenge-meta">
                   <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
                   <span>Score: {{ task.points }} points</span>
-                  <span>Category: {{ task.category }}</span>
+                  {% if task.category %}
+                    <span>Category: {{ task.category }}</span>
+                  {% endif %}
                   <span>Phase: {{ phase.name }}</span>
                 </div>
               </div>
             </div>
-            <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
+
+            {% if task.task_solutions.all %}
+              {% if task.task_solutions.all.first and task.task_solutions.all.first.is_corrected %}
+                <div class="solve-btn" style="background-color: #f7d9c4;">Score: {{task.task_solutions.all.first.score}} </div>
+              {% else %}
+                <div class="solve-btn" style="background-color: #F1deee ;">Not Corrected Yet</div>
+              {% endif %}
+              
+            {% else %}
+              <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
+            {% endif %}
           </div>
+
+
               {% endfor %}
             {% endif %}
            {% endfor %} 
@@ -77,23 +95,30 @@
       function filterChallenges() {
         const selectedPhase = phasesDropdown.value;
         const selectedLevel = levelsDropdown.value.toLowerCase();
-        const challengeCards = document.querySelectorAll(".challenge-card");
 
-        challengeCards.forEach((card) => {
-          const cardPhase = card.getAttribute("data-phase");
-          const cardLevel = card.getAttribute("data-level");
-
-          const matchesPhase =
-            selectedPhase === "all" || cardPhase === selectedPhase;
-          const matchesLevel =
-            selectedLevel === "all" || cardLevel === selectedLevel;
-
-          if (matchesPhase && matchesLevel) {
-            card.style.display = "flex";
-          } else {
-            card.style.display = "none";
-          }
-        });
+        console.log(selectedPhase)
+        if (selectedPhase.startsWith("/")) {
+            window.location.href = selectedPhase; // Redirect to the URL
+        }else{
+          const challengeCards = document.querySelectorAll(".challenge-card");
+  
+          challengeCards.forEach((card) => {
+            const cardPhase = card.getAttribute("data-phase");
+            const cardLevel = card.getAttribute("data-level");
+  
+            const matchesPhase =
+              selectedPhase === "all" || cardPhase === selectedPhase;
+            const matchesLevel =
+              selectedLevel === "all" || cardLevel === selectedLevel;
+  
+            if (matchesPhase && matchesLevel) {
+              card.style.display = "flex";
+            } else {
+              card.style.display = "none";
+            }
+          
+          });
+        }
       }
 
       phasesDropdown.addEventListener("change", filterChallenges);

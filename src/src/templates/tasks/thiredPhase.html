@@ -21,12 +21,27 @@
     <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-lg text-center">
         <h1 class="text-2xl font-bold sm:text-3xl">Third Phase</h1>
+        <p class="mt-4 text-gray-500">
+          After you download the tasks file from the button below enter in the next field the codes you get from the tasks. Each time you enter a code, you recive a code to open the next task 
+        </p>
+        
+        <div class="spacing">
+          <a href="{% url 'tasksFile' %}" class="button-6" role="button">Click Here To Download The Tasks File</a>
+        </div>
+
         {% if messages %}
           {% for i in messages %}
-            {{i}}
+          <div class="center">
+            <div class="warn">{{i}}</div>
+          </div>
           {% endfor %}
         {% endif %}
-        
+
+        {% if nextTask %}
+              <div class="center">
+                <div class="success">The code to open the task of '{{nextTask.title}}' is '{{nextTask.openCode}}'</div>
+              </div>
+          {% endif %}
         
           </div>
           
@@ -36,24 +51,20 @@
                 <label for="Code" class="sr-only">Code</label>
           
                 <div class="relative">
-                    <input type="text" name="code" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" placeholder="Code" maxlength="70" required="" id="code">
+                    <input type="text" name="code" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" placeholder="Enter Your Code Here" maxlength="70" required="" id="code">
                 </div>
               </div>
   
+                <div class="flex justify-center items-center">
                   <button
                     type="submit"
-                    class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+                    class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium mx-auto text-white"
                   >Check</button>
                 </div>
+                </div>
               </form>
-              
-              <a href="{% url 'tasksFile' %}" > <button id="downloadButton"
-                type="button"
-                class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white">Check
-              </button></a> 
-          {% if nextTask %}
-            <p>{{nextTask.openCode}}</p>
-          {% endif %}
+
+          
         </div>
   </section>
 
@@ -61,8 +72,9 @@
 </html>
 
 <style>
+
   body {
-  /* width: 1422px; */
+  overflow: hidden;
   height: 100vh;
   gap: 0px;
   opacity: 0px;
@@ -85,28 +97,65 @@
   background-color: white;
   width: 100%;
 }
-.alert {
-  padding: 10px;
-  background-color: #f44336;
-  color: white;
-  /* margin-bottom: 15px; */
-  border-radius: 10%;
+
+.warn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+    color: #ffffff;
+    background-color: #FF8080;
+    font-family: 'Source Sans Pro', sans-serif;
+    border-radius:.5em;
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:12px;
+   width: 400px;
 }
 
-.nextCode {
-  padding: 20px;
-  background-color: #50C878; /* Red */
-  color: white;
-  /* margin-bottom: 15px; */
+.success {
+  color: #ffffff;
+  background-color: #7DDF7C;
+  font-family: 'Source Sans Pro', sans-serif;
+    border-radius:.5em;
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:12px;
+   width: 400px;
+}
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spacing{
+  padding: 20px 0px;
+}
+
+.button-6 {
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin: 0;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
 }
 </style>
-<script>
-
-    // document.getElementById('downloadButton').addEventListener('click', function() {
-    //     const anchor = document.createElement('a');
-    //     anchor.href = `{% url 'tasksFile' %}`;
-    //     anchor.download = ''; 
-    //     anchor.click();
-    // });
-
-</script>

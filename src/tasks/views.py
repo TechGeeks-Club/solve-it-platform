@@ -10,33 +10,29 @@ from django.http import HttpResponseForbidden
 from django.conf import settings
 
 
-
-
-
-
 from .models import Phase,Task,TaskSolution,TaskTest,ThirdPhaseCode
 from registration.models import Participant
 
 
 @login_required
 def tasksDisplayView(request:HttpRequest):
-    phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category")
+    phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
     context = {
         "phases" : phases
     }
-    return render(request,"tasks/challenges-page.html",context)
+    return render(request,"tasks/allChallengesDisplay.html",context)
 
+# ? Check if team already participate in task
 def checkParticipationExistance(task:Task, participant:Participant):
     try :
         solutionObj = TaskSolution.objects.get(task=task, participant__team=participant.team)
-
         return solutionObj
     except :
         return None
 
 @login_required
 def taskView(request:HttpRequest, task_id:int):
-    
+    print(f" [[ For Debug :  CALLED ]] ")
     task_tests_query = TaskTest.objects.filter(display=True)
     taskObj = Task.objects.prefetch_related(Prefetch('task_tests', queryset=task_tests_query)).get(id=task_id)
 
@@ -77,8 +73,16 @@ def taskView(request:HttpRequest, task_id:int):
 
 @login_required
 def thirdPhaseView(request:HttpRequest ):
-    if Phase.objects.get(name = "phase3").is_locked :
+    
+    # ? get the phase and see if it's locked
+    try :
+        # ! I CAN'T USE THE ID TO GET PHASE 3, SO IF THEY CHANGE THE NAME YOU SHOULD CHANGE IT HERE ALSO 
+        phaseObj = Phase.objects.get(name = "phase 3") 
+        if phaseObj.is_locked :
+            return redirect("tasksDisplay")
+    except Exception as exp :
         return redirect("tasksDisplay")
+
     
     if request.method == "POST" :
         inputCode = request.POST.get('code')
@@ -89,7 +93,6 @@ def thirdPhaseView(request:HttpRequest ):
 
             if checkParticipationExistance(codeObj.task,participantObj) :
                 if codeObj.result.lower() == "win" :
-                    print(f" [[ For Debug :  {(codeObj.hints_value*100)/codeObj.task.points} ]] ")
                     TaskSolution(
                         task = codeObj.task,
                         participant = participantObj,
@@ -98,6 +101,7 @@ def thirdPhaseView(request:HttpRequest ):
                         score = 100 - (codeObj.hints_value*100)/codeObj.task.points
                     ).save()
                 else :
+                    # ? If he lose he i'll get mines
                     TaskSolution(
                         task = codeObj.task,
                         participant = participantObj,
@@ -106,16 +110,16 @@ def thirdPhaseView(request:HttpRequest ):
                         score = -1 * (codeObj.hints_value*100)/codeObj.task.points
                     ).save()
             
-                nextTask = codeObj.task.nextTask
-                context = {
-                    "nextTask" : nextTask
-                }
-                return render(request,"tasks/thiredPhase.html",context)
             else :
                 messages.error(request, "You already sent the code of this task")
+            
+            # ? Here i return the next task infrmations anyway becouse they may forget it and they use the old code only to get it
+            context = {
+                "nextTask" : codeObj.task.nextTask
+            }
+            return render(request,"tasks/thiredPhase.html",context)
         except Exception as exp :
             messages.error(request, "Code didn't exist")
-
 
     return render(request,"tasks/thiredPhase.html")
 

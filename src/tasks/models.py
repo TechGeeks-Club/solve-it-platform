@@ -59,7 +59,7 @@ def get_file_path(participant, filename):
     return f'upload/{participant.team.name}/{filename}_{participant.id}.c'
     
 class TaskSolution(models.Model):
-    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE, related_name="task_solutions")
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)

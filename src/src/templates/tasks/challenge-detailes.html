@@ -31,8 +31,10 @@
           <h3>Example:</h3>
           <div>
             {% for test in task.task_tests.all %}
+            <div style="padding: 8px 0px; gap: 4px;">
               <span>Input: {{test.input}}</span>
               <span>Output: {{test.output}}</span>
+            </div>
             {% endfor %}
           </div>
         </div>

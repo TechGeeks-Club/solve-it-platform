@@ -1,7 +1,28 @@
 {% if messages %}
     {% for message in messages %}
-      <div class=" text-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-        <span class="font-medium">Error!</span> {{message}}
+      <div class="center">
+        <div class="warn">{{message}}</div>
       </div>
+      <style>
+        .center{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px 0px;
+        }
+        .warn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #ffffff;
+          background-color: #FF8080;
+          font-family: 'Source Sans Pro', sans-serif;
+          border-radius:.5em;
+          border: 1px solid;
+          margin: 10px 0px;
+          padding:12px;
+          width: 400px;
+        }
+      </style>
     {% endfor %}
 {% endif %}
