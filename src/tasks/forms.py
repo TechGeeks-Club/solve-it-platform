@@ -2,7 +2,6 @@ from django import forms
 from .models import TaskSolution
 
 
-
 class TaskSolutionForm(forms.ModelForm):
     
     code_src = forms.CharField(widget=forms.Textarea)

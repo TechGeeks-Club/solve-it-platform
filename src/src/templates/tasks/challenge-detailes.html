@@ -12,26 +12,8 @@
   </head>
   <body>
     <section class="all-Page" id="all-Page-details">
-      <nav class="navbar">
-        <a class="logo">λ</a>
-        <div class="nav-links">
-          <a href="{% url 'tasksDisplay' %}">Challenges</a>
-          <a href="#">Leaderboard</a>
-          <button class="logout-btn">
-            <span><p>Logout</p></span>
-          </button>
-        </div>
-        <div class="hamburger" onclick="toggleMenu()">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <div class="menu" id="dropdownMenu">
-          <a href="{% url 'tasksDisplay' %}" onclick="closeDropDown()">Challenges</a>
-          <a href="#" onclick="closeDropDown()">Leaderboard</a>
-          <a href="#" onclick="closeDropDown()">Logout</a>
-        </div>
-      </nav>
+      
+      {% include "components/nav.html"%}
 
       <main class="container" id="container-details">
         <div class="challenge-header">
