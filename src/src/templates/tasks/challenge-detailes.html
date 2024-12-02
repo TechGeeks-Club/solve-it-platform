@@ -41,15 +41,11 @@
           <textarea id="textInput">{{task.initialCode}}</textarea>
         </div>
         <div class="challenge-submit">
-          <div class="challenge-meta">
-            <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
-            <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span>
-          </div>
           <button id="downloadBtn">Submit</button>
         </div>
       </main>
       <div style="display: none">
-        <form action="submit" method="POST">
+        <form action="{% url 'task' task.id %}" method="POST">
           <input type="file" name="uploadedFile" id="code-input" />
         </form>
       </div>

@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,8 +9,7 @@
   </head>
   <body>
     <section class="all-Page">
-      
-      {% include "components/nav.html"%}
+      {% include "components/nav.html" %}
 
       <main class="container">
         <div class="page-header">
@@ -20,19 +18,19 @@
 
         <div class="tabs">
           <div class="level-filter">
-            <select class="level-select">
+            <select id="phasesDropdown" class="level-select">
               <option value="all">All Phases</option>
-              {%for phase in phases.all %}
+              {% for phase in phases.all %} 
                 {% if not phase.is_locked %}
-                  <option value="{{phase.name}}">{{phase.name}}</option>
-                {% endif %}
+                  <option value="{{ phase.name }}">{{ phase.name }}</option>
+                {% endif %} 
               {% endfor %}
             </select>
           </div>
 
           <div class="level-filter">
-            <select class="level-select">
-              <option value="allLevels">All Levels</option>
+            <select id="levelsDropdown" class="level-select">
+              <option value="all">All Levels</option>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
@@ -40,82 +38,72 @@
           </div>
         </div>
 
-
-
-        
-
         <div class="challenge-list">
-          {% if phases %}
-            {%for phase in phases.all %}
-              {% if not phase.is_locked %}
-                {%for task in phase.phase_tasks.all %}
-                  <div class="challenge-card" data-phase="{{phase.name}}">
-                    <div class="challenge-info">
-                      <div class="challenge-checkbox"><input type="checkbox" /></div>
-                      <div class="challenge-details">
-                        <h3>{{task.title}}</h3>
-                        <div class="challenge-meta">
-                          <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
-                          <span>Score: {{task.points}} points</span>
-                          <span>Category: {{task.category}}</span>
-                          <span>Phase: {{phase.name}}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
-                  </div>
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
+          {% if phases %} 
+            {% for phase in phases.all %} 
+              {% if not phase.is_locked %} 
+                {% for task in phase.phase_tasks.all %}
+          <div
+            class="challenge-card"
+            data-phase="{{ phase.name }}"
+            data-level="{{ task.level|lower }}"
+          >
+            <div class="challenge-info">
+              <div class="challenge-checkbox"><input type="checkbox" /></div>
+              <div class="challenge-details">
+                <h3>{{ task.title }}</h3>
+                <div class="challenge-meta">
+                  <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
+                  <span>Score: {{ task.points }} points</span>
+                  <span>Category: {{ task.category }}</span>
+                  <span>Phase: {{ phase.name }}</span>
+                </div>
+              </div>
+            </div>
+            <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
+          </div>
+              {% endfor %}
+            {% endif %}
+           {% endfor %} 
           {% endif %}
-
         </div>
       </main>
     </section>
+
     <script>
-  //     document.addEventListener("DOMContentLoaded", function() {
-  //   const levelSelect = document.querySelector(".level-select");
+      const phasesDropdown = document.getElementById("phasesDropdown");
+      const levelsDropdown = document.getElementById("levelsDropdown");
 
-  //   // Listen for change in the level select dropdown
-  //   levelSelect.addEventListener("change", function() {
-  //     const selectedLevel = levelSelect.value.toLowerCase();  // Get selected level (easy, medium, hard)
-  //     const tasks = document.querySelectorAll(".challenge-card");  // Get all tasks
-
-  //     tasks.forEach(task => {
-  //       const taskLevel = task.querySelector(".level-tag").classList.contains("easy") ? "easy" :
-  //                         task.querySelector(".level-tag").classList.contains("medium") ? "medium" :
-  //                         task.querySelector(".level-tag").classList.contains("hard") ? "hard" : "";
-
-  //       // If a level is selected, show only matching tasks, otherwise show all
-  //       if (selectedLevel === "" || taskLevel === selectedLevel) {
-  //         task.style.display = "block";  // Show task
-  //       } else {
-  //         task.style.display = "none";  // Hide task
-  //       }
-  //     });
-  //   });
-  // });
-
-  const phasesDropdown = document.getElementById("phasesDropdown");
-      phasesDropdown.addEventListener("change", function () {
+      function filterChallenges() {
         const selectedPhase = phasesDropdown.value;
+        const selectedLevel = levelsDropdown.value.toLowerCase();
         const challengeCards = document.querySelectorAll(".challenge-card");
 
         challengeCards.forEach((card) => {
           const cardPhase = card.getAttribute("data-phase");
+          const cardLevel = card.getAttribute("data-level");
 
-          if (selectedPhase === "all" || cardPhase === selectedPhase) {
+          const matchesPhase =
+            selectedPhase === "all" || cardPhase === selectedPhase;
+          const matchesLevel =
+            selectedLevel === "all" || cardLevel === selectedLevel;
+
+          if (matchesPhase && matchesLevel) {
             card.style.display = "flex";
           } else {
             card.style.display = "none";
           }
         });
-      });
+      }
+
+      phasesDropdown.addEventListener("change", filterChallenges);
+      levelsDropdown.addEventListener("change", filterChallenges);
 
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");
         menu.style.display = menu.style.display === "flex" ? "none" : "flex";
       }
+
       function closeDropDown() {
         const menu = document.getElementById("dropdownMenu");
         if (menu.style.display === "flex") menu.style.display = "none";

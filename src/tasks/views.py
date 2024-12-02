@@ -34,7 +34,6 @@ def taskView(request:HttpRequest, task_id:int):
 
     participantObj = Participant.objects.get(user = request.user)
     solutionObj = checkParticipationExistance(taskObj,participantObj)
-
     context = {
         "task" : taskObj,
         "solution" : solutionObj,
