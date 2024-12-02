@@ -3,6 +3,8 @@ from django.db import models
 from registration.models import Participant, Team
 from django.core.validators import MaxValueValidator
 
+from django.contrib.auth.models import User
+
 class Phase(models.Model):
     name = models.CharField(max_length=128)
     is_locked = models.BooleanField(default=False)
@@ -23,10 +25,11 @@ class Task(models.Model):
         ("medium","Medium"),
         ("hard","Hard"),
     ]
-    phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL)
+    phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL, related_name="phase_tasks")
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=128,null=False)
     context = models.TextField(null=False)
+    initialCode = models.TextField(null=True)
     level = models.CharField(max_length=8, choices=LEVELS, null=False)
     points = models.IntegerField(null=False)
 
@@ -35,9 +38,10 @@ class Task(models.Model):
     
 
 class TaskTest(models.Model):
-    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE, related_name="task_tests")
     input = models.TextField(null=False)
     output = models.TextField(null=False)
+    display = models.BooleanField(default=False)
     
     def __str__(self):
         return self.task.title + " tests"
@@ -55,10 +59,28 @@ class TaskSolution(models.Model):
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)
+    is_corrected = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    score = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(100)] ) 
-    tries = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(3)] )
+    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)] )
+    # ? i change the default here to 1 bcz we create obj form this class in the first solution so first try 
+    tries = models.IntegerField(null=False, default=1, validators=[MaxValueValidator(3)] )
             
-        
+    def save(self):
+        if self.score > 0:
+            self.is_corrected = True
+        super().save()
+
     def __str__(self):
-        return self.task.title + " tests"
+        return self.task.title + " Solution n"+ str(self.tries) 
+
+
+class TaskCorrecton(models.Model):
+    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+    task_solution = models.ForeignKey(TaskSolution, null=False, on_delete=models.CASCADE)
+    corrected_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    
+    def __str__(self):
+        return self.task_solution.task.title
+    
+    class meta:
+        unique_together = ('user', 'task_solution')
