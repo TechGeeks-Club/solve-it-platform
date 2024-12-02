@@ -1,7 +1,7 @@
 from django import forms
 from .models import TaskSolution
 
-
+class CodeForm()
 
 class TaskSolutionForm(forms.ModelForm):
     

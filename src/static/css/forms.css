@@ -782,6 +782,21 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+
+.alert {
+  padding: 20px;
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+.nextCode {
+  padding: 20px;
+  background-color: #50C878; /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
 @media (min-width: 640px) {
   .sm\:px-6 {
     padding-left: 1.5rem;

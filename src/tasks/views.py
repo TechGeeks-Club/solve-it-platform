@@ -1,11 +1,15 @@
+from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.db import transaction
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
 
 
-from .models import Phase,Task,TaskSolution,TaskTest
+
+
+from .models import Phase,Task,TaskSolution,TaskTest,ThirdPhaseCode
 from registration.models import Participant
 
 
@@ -17,14 +21,13 @@ def tasksDisplayView(request:HttpRequest):
     }
     return render(request,"tasks/challenges-page.html",context)
 
-
 def checkParticipationExistance(task:Task, participant:Participant):
     try :
         solutionObj = TaskSolution.objects.get(task=task, participant__team=participant.team)
+
         return solutionObj
     except :
         return None
-
 
 @login_required
 def taskView(request:HttpRequest, task_id:int):
@@ -66,3 +69,43 @@ def taskView(request:HttpRequest, task_id:int):
 #                     ).save(
 #         except Exception as exp :
 #             err = exp.__str__()
+
+@login_required
+def thirdPhaseView(request:HttpRequest, ):
+    if Phase.objects.get(name = "phase3").is_locked :
+        return redirect("tasksDisplay")
+    
+    if request.method == "POST" :
+        inputCode = request.POST.get('code')
+        try :
+            codeObj = ThirdPhaseCode.objects.get(id=inputCode)
+            participantObj = Participant.objects.get(user = request.user)
+            if codeObj.result.lower() == "win" :
+                TaskSolution(
+                    task = codeObj.task,
+                    participant = participantObj,
+                    team = participantObj.team,
+                    is_corrected = True,
+                    score = codeObj.task.points - codeObj.hints_value
+                )
+            else :
+                TaskSolution(
+                    task = codeObj.task,
+                    participant = participantObj,
+                    team = participantObj.team,
+                    is_corrected = True,
+                    score = -1 * codeObj.hints_value
+                )
+            
+            nextTask = codeObj.task.nextTask
+            context = {
+                "nextTask" : nextTask
+            }
+            return render(request,"tasks/thiredPhase.html",context)
+        
+        except Exception as exp :
+            messages.error(request, "Code didn't exist")
+            return render(request,"tasks/thiredPhase.html")
+
+
+    return render(request,"tasks/thiredPhase.html")

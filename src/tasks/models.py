@@ -33,6 +33,10 @@ class Task(models.Model):
     level = models.CharField(max_length=8, choices=LEVELS, null=False)
     points = models.IntegerField(null=False)
 
+    nextTask = models.OneToOneField("self", on_delete=models.SET_NULL, null=True)
+    openCode = models.CharField(max_length=255, unique=True)
+    
+
     def __str__(self):
         return self.title
     
@@ -54,6 +58,17 @@ def get_file_path(participant, filename):
     
     return f'upload/{participant.team.name}/{filename}_{participant.id}.c'
 
+class ThirdPhaseCode(models.Model):
+    RESULT = [
+        ("win","Win"),
+        ("lose","Lose"),
+    ]
+    # ? Which it's the code
+    id = models.CharField( max_length=255, primary_key=True, unique=True,)
+    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
+    hints_value = models.IntegerField(null=False, default=1)
+    result = models.CharField(max_length=8, choices=RESULT, null=False)
+    
 class TaskSolution(models.Model):
     task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
@@ -84,3 +99,5 @@ class TaskCorrecton(models.Model):
     
     class meta:
         unique_together = ('user', 'task_solution')
+    
+
