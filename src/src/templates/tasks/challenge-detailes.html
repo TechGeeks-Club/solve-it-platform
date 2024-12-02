@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
 
 
-    <link rel="stylesheet" href="{% static 'editor/css/codemirror.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'editor/css/monokai.min.css' %}" />
-    <script src="{% static 'editor/js/codemirror.min.js' %}"></script>
-    <script src="{% static 'editor/js/clike.min.js' %}"></script>
+    {% comment %} <link rel="stylesheet" href="{% static 'editor/css/codemirror.min.css' %}" /> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'editor/css/monokai.min.css' %}" /> {% endcomment %}
+    {% comment %} <script src="{% static 'editor/js/codemirror.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'editor/js/clike.min.js' %}"></script> {% endcomment %}
    
 
   </head>
@@ -42,6 +42,8 @@
             {% endfor %}
           </div>
         </div>
+       
+        {% if not tasksolution%}
         <div class="challenge-code">
           <h2>Code:</h2>
           <textarea id="textInput">{{task.initialCode}}</textarea>
@@ -52,59 +54,68 @@
             <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span> {% endcomment %}
           </div>
           <button id="downloadBtn">Submit</button>
-        </div>
-      </main>
-      <div style="display: none">
-        <form action="submit" method="POST">
-          <input type="file" name="uploadedFile" id="code-input" />
-        </form>
-      </div>
-    </section>
+          {% else %}
+          <div style='display:flex;justify-content: center;align-items:center' class="challenge-code">
+          <h2 style = "color:#1a73e8;justify-content: center;align-items: center;display: flex;">Your or your team alredy do this task</h2>
 
-    
-    <script>
-      function toggleMenu() {
-        const menu = document.getElementById("dropdownMenu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-      }
+        {% endif %}
+</div>
+</main>
+<div style="display: none">
+  <form action="{{task.id}}" method="POST" id="hiddenForm"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="uploadedFile" id="uploadedFile" required />
+  </form>
+</div>
+</section>
 
-      function closeDropDown() {
-        const menu = document.getElementById("dropdownMenu");
-        if (menu.style.display === "flex") menu.style.display = "none";
-      }
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+  }
 
-      // Initialize CodeMirror
-      document.addEventListener("DOMContentLoaded", function () {
-        CodeMirror.fromTextArea(document.getElementById("textInput"), {
-          lineNumbers: true,
-          mode: "text/x-csrc",
-          theme: "monokai",
-          indentUnit: 4,
-          matchBrackets: true,
-        });
-      });
+  function closeDropDown() {
+    const menu = document.getElementById("dropdownMenu");
+    if (menu.style.display === "flex") menu.style.display = "none";
+  }
 
-      document
-        .getElementById("downloadBtn")
-        .addEventListener("click", function () {
-          const textContent = document.getElementById("textInput").value;
+  // Initialize CodeMirror
+  document.addEventListener("DOMContentLoaded", function () {
+    CodeMirror.fromTextArea(document.getElementById("textInput"), {
+      lineNumbers: true,
+      mode: "text/x-csrc",
+      theme: "monokai",
+      indentUnit: 4,
+      matchBrackets: true,
+    });
+  });
 
-          const file = new Blob([textContent], { type: "text/plain" });
+  document.getElementById("downloadBtn").addEventListener("click", function () {
+    const textArea = document.getElementById("textInput");
+    const textContent = textArea.value;
 
-          const inputElement = document.getElementById("code-input");
+    // Create the file
+    const file = new Blob([textContent], { type: "text/plain" });
 
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(new File([file], "code.txt"));
-          inputElement.files = dataTransfer.files;
+    // Set the file as value for the hidden input
+    const inputElement = document.getElementById("uploadedFile");
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(new File([file], "code.txt"));
+    inputElement.files = dataTransfer.files;
 
-          // const reader = new FileReader();
-          // reader.onload = function (event) {
-          //   console.log("File content:", event.target.result); // Prints the file's content
-          // };
+    // Trigger the download
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(file);
+    downloadLink.download = "code.txt";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 
-          // // Read the first file from the input element
-          // reader.readAsText(inputElement.files[0]);
-        });
-    </script>
+    // Submit the form
+    document.getElementById("hiddenForm").submit();
+  });
+</script>
+
   </body>
 </html>
