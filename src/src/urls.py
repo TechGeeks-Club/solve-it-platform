@@ -7,8 +7,8 @@ from registration.views import createTeamView, createParticipantView, participan
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', lambda request: render(request, "home/home-page.html"), name="home"),
-    path('create_team', createTeamView,name="createTeam"),
-    path('create_participant', createParticipantView,name="createParticipant"),
+    path('createTeam', createTeamView,name="createTeam"),
+    path('createParticipant', createParticipantView,name="createParticipant"),
     path('login', participantLoginView,name="login"),
     path('logout', logoutview,name="logout"),
  

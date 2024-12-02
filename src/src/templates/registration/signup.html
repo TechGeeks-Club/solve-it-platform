@@ -14,21 +14,16 @@
     <link rel="stylesheet" href="{% static 'css/forms.css' %}" />
 </head>
 <body>
-
-  {% include "components/nav.html"%}
-
-    {%if err %}
-    <h1>{{err}}</h1>
-    {% endif %}
-
-    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+  
+  <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-lg text-center">
           <h1 class="text-2xl font-bold sm:text-3xl">Create Participant</h1>
           
           <p class="mt-4 text-gray-500">
             Enter here you personal and team information
-            </p>
+          </p>
         </div>
+        {% include "components/error_message.html" %}
         
         <form method="post" action="{% url 'createParticipant' %}" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
             {% csrf_token %}
