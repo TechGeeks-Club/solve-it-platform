@@ -7,6 +7,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login,logout
 from django.shortcuts import redirect
 
+from django.contrib.auth.decorators import login_required
+
+
 
 from .forms import TeamCreationForm,TeamForm,CreateUserForm
 
@@ -68,7 +71,7 @@ def createParticipantView(request:HttpRequest):
         "err" : err
     }
 
-    return render(request,"registration/login.html",context)
+    return render(request,"registration/signup.html",context)
 
 
 def participantLoginView(request : HttpRequest):
@@ -88,6 +91,7 @@ def participantLoginView(request : HttpRequest):
     return render(request,"registration/participantLogin.html",context)
 
 
+@login_required
 def logoutview(request: HttpRequest):
     logout(request)
     return redirect('home')

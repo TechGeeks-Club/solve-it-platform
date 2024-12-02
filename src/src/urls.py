@@ -9,10 +9,8 @@ urlpatterns = [
     path('', lambda request: render(request, "home/home-page.html"), name="home"),
     path('create_team', createTeamView,name="createTeam"),
     path('create_participant', createParticipantView,name="createParticipant"),
-    path('participant_login', participantLoginView,name="participantLogin"),
+    path('login', participantLoginView,name="participantLogin"),
     path('logout', logoutview,name="logout"),
-
-    
-    
+ 
     path('task/', include('tasks.urls')), 
 ]
