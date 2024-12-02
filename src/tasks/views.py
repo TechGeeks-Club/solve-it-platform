@@ -48,7 +48,8 @@ def taskView(request:HttpRequest, task_id:int):
     # if request.method == "POST" :
 #         try :
 #             with transaction.atomic():
-                    #? it means they already paticipate in this task
+                    #? it means they never paticipate in this task
+
 #                 if solutionObj is not None :
 #                     if solutionObj.tries < 3 :
 #                         solutionObj.code = # ! HERE CODE PART 

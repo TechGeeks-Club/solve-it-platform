@@ -43,7 +43,7 @@ main {
 }
 /* background: linear-gradient(to bottom, #ffffff, #f0f4ff);
  */
-.navbar {
+/* .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -74,9 +74,9 @@ main {
   text-decoration: none;
   color: #666;
   font-weight: 500;
-}
+} */
 
-.sign-in {
+/* .sign-in {
   background: #1a73e8;
   color: white !important;
   padding: 0.5rem 1.25rem;
@@ -86,7 +86,7 @@ main {
 
 .sign-in:hover {
   background: #1557b0;
-}
+} */
 
 .hero {
   text-align: center;
@@ -185,7 +185,7 @@ main {
   border-bottom: none;
 }
 
-/* Hamburger button styling */
+/* Hamburger button styling
 .hamburger {
   display: none;
   flex-direction: column;
@@ -197,7 +197,7 @@ main {
   height: 3px;
   width: 25px;
   margin: 3px 0;
-}
+} */
 
 @media (max-width: 768px) {
   /* body {
@@ -236,3 +236,5 @@ main {
     display: none;
   }
 }
+
+
