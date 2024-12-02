@@ -4,8 +4,9 @@ from django.db import transaction
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import AuthenticationForm 
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.shortcuts import redirect
+
 
 from .forms import TeamCreationForm,TeamForm,CreateUserForm
 
@@ -85,3 +86,8 @@ def participantLoginView(request : HttpRequest):
         "status" : "loading",
     }
     return render(request,"registration/participantLogin.html",context)
+
+
+def logoutview(request: HttpRequest):
+    logout(request)
+    return redirect('home')
