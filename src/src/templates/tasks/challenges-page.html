@@ -34,43 +34,29 @@
 
         <div class="challenge-list">
           {% if phases %}
-            {%for phase in phases.all %}
-              {% if not phase.is_locked %}
-                {%for task in phase.phase_tasks.all %}
-                  <div class="challenge-card">
-                    <div class="challenge-info">
-                      <div class="challenge-checkbox"><input type="checkbox" /></div>
-                      <div class="challenge-details">
-                        <h3>{{task.title}}</h3>
-                        <div class="challenge-meta">
-                          <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
-                          <span>Score: {{task.points}} points</span>
-                          <span>Category: {{task.category}}</span>
-                          <span>Phase: {{phase.name}}</span>
-                        </div>
+        {% for phase in phases.all %}
+            {% if not phase.is_locked %}
+                {% for task in phase.phase_tasks.all %}
+                    <div class="challenge-card">
+                        <div class="challenge-info">
+                            <div class="challenge-checkbox"><input type="checkbox" /></div>
+                            <div class="challenge-details">
+                                <h3>{{ task.title }}</h3>
+                                <div class="challenge-meta">
+                                    <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
+                                    <span>Score: {{ task.points }} points</span>
+                                    <span>Category: {{ task.category }}</span>
+                                    <span>Phase: {{ phase.name }}</span>
+                                </div>
+                            </div>
+                          </div>
+                          <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
                       </div>
-                    </div>
-                    <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
-                  </div>
-                  <div class="challenge-card">
-                    <div class="challenge-info">
-                      <div class="challenge-checkbox"><input type="checkbox" /></div>
-                      <div class="challenge-details">
-                        <h3>{{task.title}}</h3>
-                        <div class="challenge-meta">
-                          <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
-                          <span>Score: {{task.points}} points</span>
-                          <span>Category: {{task.category}}</span>
-                          <span>Phase: {{phase.name}}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
-                  </div>
-                {% endfor %}
+                  {% endfor %}
               {% endif %}
-            {% endfor %}
-          {% endif %}
+          {% endfor %}
+      {% endif %}
+
 
         </div>
       </main>
