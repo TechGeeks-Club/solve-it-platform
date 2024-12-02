@@ -4,12 +4,20 @@ from django.db import transaction
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.forms import AuthenticationForm 
-from django.contrib.auth import login
+from django.contrib.auth import login,logout,authenticate
 from django.shortcuts import redirect
 from django.contrib import messages
 
+<<<<<<< HEAD
 
 from .forms import TeamCreationForm,TeamForm,CreateUserForm, CustomAuthenticationForm
+=======
+from django.contrib.auth.decorators import login_required
+
+
+
+from .forms import TeamCreationForm,TeamForm,CreateUserForm
+>>>>>>> 3150fb55588b3e716615345b2aeebd76fab3fd46
 
 from .models import Team,Participant
 
@@ -69,6 +77,7 @@ def createParticipantView(request:HttpRequest):
         "err" : err
     }
 
+<<<<<<< HEAD
     return render(request,"registration/createParticipant.html",context)
 
 
@@ -93,3 +102,52 @@ def participantLoginView(request : HttpRequest):
         else :
             messages.error(request, "Form validation failed. Please verify your inputs.")
     return render(request,"registration/participantLogin.html",context)
+=======
+    return render(request,"registration/signup.html",context)
+
+
+# def participantLoginView(request : HttpRequest):
+#     form = AuthenticationForm(request,request.POST or None)
+
+#     if request.method == "POST" :
+#         if( form.is_valid() ):
+#             login(request, form.get_user())
+#             context = {
+#                 "form" : form,
+#                 "status" : "Succed",
+#             }
+#             return render(request,"registration/login.html",context)
+#     context = {
+#         "form" : form,
+#         "status" : "loading",
+#     }
+#     return render(request,"registration/login.html",context)
+
+# from django.contrib.auth import authenticate, login
+# from django.http import HttpRequest, HttpResponse
+# from django.shortcuts import render, redirect
+
+def participantLoginView(request: HttpRequest):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username, password)
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            context = {
+                "status": "Invalid credentials",
+            }
+            return render(request, "registration/login.html", context)
+    return render(request, "registration/login.html")
+
+
+
+@login_required
+def logoutview(request: HttpRequest):
+    logout(request)
+    return redirect('home')
+>>>>>>> 3150fb55588b3e716615345b2aeebd76fab3fd46

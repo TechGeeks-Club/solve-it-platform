@@ -2,6 +2,7 @@
     <p>{{status}}</p>
 {% endif %}
 
+<<<<<<< HEAD
 {% load static %}
 <!--
   Heads up! 👋
@@ -21,6 +22,16 @@
     {%if err %}
     <h1>{{err}}</h1>
     {% endif %}
+=======
+<form method="post" action="{% url 'participantLogin' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="Login">
+</form>
+
+
+>>>>>>> 3150fb55588b3e716615345b2aeebd76fab3fd46
 
     <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-lg text-center">
