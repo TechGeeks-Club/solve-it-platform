@@ -68,26 +68,3 @@ def taskView(request:HttpRequest, task_id:int):
 
     return render(request,"tasks/challenge-detailes.html",context)
 
-    # ! This work is not ready yet
-
-    # if request.method == "POST" :
-#         try :
-#             with transaction.atomic():
-                    #? it means they never paticipate in this task
-#                 if solutionObj is not None :
-#                     if solutionObj.tries < 3 :
-#                         solutionObj.code = # ! HERE CODE PART 
-#                         solutionObj.tries = solutionObj.tries + 1
-#                         solutionObj.save()
-#                     else :
-#                         err = "You already use all your chances"
-#                 else :
-#                     TaskSolution(
-#                         task= taskObj,
-#                         participant=participantObj,
-#                         team=participantObj.team,
-#                         code= #! HERE CODE PART
-#                     ).save(
-#         except Exception as exp :
-#             err = exp.__str__()
-
