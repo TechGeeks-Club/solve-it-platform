@@ -7,8 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Challenge Details</title>
     <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
-    <link rel="stylesheet" href="lib/codemirror.min.css" />
-    <link rel="stylesheet" href="lib/monokai.min.css" />
+
+
+    <link rel="stylesheet" href="{% static 'editor/css/codemirror.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'editor/css/monokai.min.css' %}" />
+    <script src="{% static 'editor/js/codemirror.min.js' %}"></script>
+    <script src="{% static 'editor/js/clike.min.js' %}"></script>
+   
+
   </head>
   <body>
     <section class="all-Page" id="all-Page-details">
@@ -42,8 +48,8 @@
         </div>
         <div class="challenge-submit">
           <div class="challenge-meta">
-            <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
-            <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span>
+            {% comment %} <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
+            <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span> {% endcomment %}
           </div>
           <button id="downloadBtn">Submit</button>
         </div>
@@ -55,8 +61,7 @@
       </div>
     </section>
 
-    <script src="lib/codemirror.min.js"></script>
-    <script src="lib/clike.min.js"></script>
+    
     <script>
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");

@@ -9,6 +9,8 @@ from django.shortcuts import redirect
 
 from django.contrib.auth.decorators import login_required
 
+from django.contrib import messages
+
 
 
 from .forms import TeamCreationForm,TeamForm,CreateUserForm
@@ -19,23 +21,29 @@ from .models import Team,Participant
 
 
 def createTeamView(request:HttpRequest):
-    form = TeamCreationForm(request.POST or None)
-    err = None
-    if request.method == "POST" :
-        try :
-            with transaction.atomic():
-                if( form.is_valid() ):
-                    form.save()
-                    return redirect("home")
-        except Exception as exp:
-            err = exp.__str__()
-    
-    context = {
-        "form" : form,        
-        "err" : err
-    }
+    if not request.user.is_authenticated:
 
-    return render(request,"registration/createTeam.html",context)
+        form = TeamCreationForm(request.POST or None)
+        err = None
+        if request.method == "POST" :
+            try :
+                with transaction.atomic():
+                    if( form.is_valid() ):
+                        form.save()
+                        return redirect("home")
+            except Exception as exp:
+                err = exp.__str__()
+
+        context = {
+            "form" : form,        
+            "err" : err
+        }
+
+        return render(request,"registration/createTeam.html",context)
+
+    return redirect('tasksDisplay')
+    
+
 
 
 
@@ -49,29 +57,32 @@ def getTeam(teamForm:TeamForm):
     return dbTeam
 
 def createParticipantView(request:HttpRequest):
+    if not request.user.is_authenticated:
 
-    userForm = CreateUserForm(request.POST or None)
-    teamForm = TeamForm(request.POST or None)
-    err = None
+        userForm = CreateUserForm(request.POST or None)
+        teamForm = TeamForm(request.POST or None)
+        err = None
 
-    if request.method == "POST" :
-        try :
-            with transaction.atomic():
-                if( userForm.is_valid() ):
-                    teamObj = getTeam(teamForm)
-                    userObj = userForm.save()
-                    Participant(user=userObj, team=teamObj).save()
-                    return redirect("home")
-        except Exception as exp:
-            err = exp.__str__()[2:-2]
+        if request.method == "POST" :
+            try :
+                with transaction.atomic():
+                    if( userForm.is_valid() ):
+                        teamObj = getTeam(teamForm)
+                        userObj = userForm.save()
+                        Participant(user=userObj, team=teamObj).save()
+                        return redirect("home")
+            except Exception as exp:
+                err = exp.__str__()[2:-2]
+
+        context = {
+            "teamForm" : teamForm,        
+            "userForm" : userForm,        
+            "err" : err
+        }
+
+        return render(request,"registration/signup.html",context)
     
-    context = {
-        "teamForm" : teamForm,        
-        "userForm" : userForm,        
-        "err" : err
-    }
-
-    return render(request,"registration/signup.html",context)
+    return redirect('tasksDisplay')
 
 
 # def participantLoginView(request : HttpRequest):
@@ -96,22 +107,23 @@ def createParticipantView(request:HttpRequest):
 # from django.shortcuts import render, redirect
 
 def participantLoginView(request: HttpRequest):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        print(username, password)
-        
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            context = {
-                "status": "Invalid credentials",
-            }
-            return render(request, "registration/login.html", context)
-    return render(request, "registration/login.html")
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            print(username, password)
 
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                context = {
+                    "status": "Invalid credentials",
+                }
+                return render(request, "registration/login.html", context)
+        return render(request, "registration/login.html")
+    return redirect('home')
 
 
 @login_required
