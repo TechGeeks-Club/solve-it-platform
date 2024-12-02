@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 
 
 from .models import Phase,Task,TaskSolution,TaskTest
-from registration.models import Participant
+
+from registration.models import Participant,Team
 
 
 @login_required
@@ -18,31 +19,55 @@ def tasksDisplayView(request:HttpRequest):
     return render(request,"tasks/challenges-page.html",context)
 
 
-def checkParticipationExistance(task:Task, participant:Participant):
-    try :
-        solutionObj = TaskSolution.objects.get(task=task, participant__team=participant.team)
-        return solutionObj
-    except :
-        return None
+# def checkParticipationExistance(task:Task, participant:Participant):
+#     try :
+#         solutionObj = TaskSolution.objects.get(task=task, participant__team=participant.team)
+#         return solutionObj
+#     except :
+#         return None
 
 
 @login_required
 def taskView(request:HttpRequest, task_id:int):
     
-    task_tests_query = TaskTest.objects.filter(display=True)
-    taskObj = Task.objects.prefetch_related(Prefetch('task_tests', queryset=task_tests_query)).get(id=task_id)
+    # task_tests_query = TaskTest.objects.filter(display=True)
+    # taskObj = Task.objects.prefetch_related(Prefetch('task_tests', queryset=task_tests_query)).get(id=task_id)
 
-    participantObj = Participant.objects.get(user = request.user)
-    solutionObj = checkParticipationExistance(taskObj,participantObj)
+    
+    
+    # solutionObj = checkParticipationExistance(taskObj,participantObj)
+    task = Task.objects.get(id=task_id)
+    participant = Participant.objects.get(user = request.user)
+    tasksolution = TaskSolution.objects.filter(task=task,team=participant.team)
 
-    context = {
-        "task" : taskObj,
-        "solution" : solutionObj,
-    }
+
+    context = {"task" : task,}
+    context["tasksolution"] = True if tasksolution else False
+    
+    
     if request.method == "POST" :
-        print(f" [[ For Debug : {request.FILES} ]] ")
+                
+        if not tasksolution:
+        
+            if "uploadedFile" in request.FILES :
+                file = request.FILES['uploadedFile']
+                try :
+                    with transaction.atomic():
+                        TaskSolution(
+                            task= task,
+                            participant=participant,
+                            team=participant.team,
+                            code= file
+                        ).save()  
+                        context["tasksolution"] = True 
+
+                except Exception as exp :
+                    err = exp.__str__()
+
+                return render(request,"tasks/challenge-detailes.html",context)
 
     return render(request,"tasks/challenge-detailes.html",context)
+
     # ! This work is not ready yet
 
     # if request.method == "POST" :
