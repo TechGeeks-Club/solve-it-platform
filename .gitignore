@@ -23,7 +23,7 @@ media/
 uploads/
 
 # Static files (if collected and not version-controlled)
-staticfiles/
+# staticfiles/
 
 # Environment variables
 .env
