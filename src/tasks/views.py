@@ -18,7 +18,7 @@ from django.contrib import messages
 
 @login_required
 def tasksDisplayView(request:HttpRequest):
-    phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category")
+    phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
     context = {
         "phases" : phases
     }

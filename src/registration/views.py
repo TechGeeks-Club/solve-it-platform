@@ -66,19 +66,24 @@ def createParticipantView(request:HttpRequest):
         if request.method == "POST" :
             try :
                 with transaction.atomic():
+                    teamObj = getTeam(teamForm)
+
                     if( userForm.is_valid() ):
-                        teamObj = getTeam(teamForm)
                         userObj = userForm.save()
                         Participant(user=userObj, team=teamObj).save()
+                        login(request, userObj)
                         return redirect("home")
-            except Exception as exp:
-                err = exp.__str__()[2:-2]
+                    else :
+                        messages.error(request, "Form validation failed. Please verify your inputs.")
 
+            except Exception as exp:
+                msg = exp.__str__()[2:-2]
+                messages.error(request, msg)
         context = {
             "teamForm" : teamForm,        
             "userForm" : userForm,        
-            "err" : err
         }
+        
 
         return render(request,"registration/signup.html",context)
     
@@ -118,10 +123,9 @@ def participantLoginView(request: HttpRequest):
                 login(request, user)
                 return redirect('home')
             else:
-                context = {
-                    "status": "Invalid credentials",
-                }
-                return render(request, "registration/login.html", context)
+                
+                messages.error(request, "Form validation failed. Please verify your inputs.")
+                return render(request, "registration/login.html")
         return render(request, "registration/login.html")
     return redirect('home')
 
