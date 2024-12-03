@@ -18,10 +18,25 @@ from django.contrib import messages
 
 @login_required
 def tasksDisplayView(request:HttpRequest):
-    phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
+    phase = Phase.objects.get(is_locked=False)
+    
+    if phase.name == "phase 3" :
+        return redirect("thirdPhase")
+    
+    
+    tasks = Task.objects.filter(phase=phase).prefetch_related('task_solutions')
+    # print(tasks.all()[3].task_solutions)
+    
+    
+    # tasks = phase.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
+    # task = Task.objects.filter(phase=phase)
+    
+    # phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
     context = {
-        "phases" : phases
+        "tasks" : tasks,
+        "phase" : phase
     }
+    
     return render(request,"tasks/challenges-page.html",context)
 
 
@@ -89,10 +104,6 @@ def taskView(request:HttpRequest, task_id:int):
      
     else:
         return redirect("tasksDisplay")
-
-
-    
-    
 
 
 

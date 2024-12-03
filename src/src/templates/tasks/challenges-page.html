@@ -43,10 +43,10 @@
         </div>
 
         <div class="challenge-list">
-          {% if phases %} 
-            {% for phase in phases.all %} 
-              {% if not phase.is_locked %} 
-                {% for task in phase.phase_tasks.all %}
+          {% if tasks %} 
+            {% comment %} {% for phase in phases.all %}  {% endcomment %}
+              {% comment %} {% if not phase.is_locked %}  {% endcomment %}
+                {% for task in tasks.all %}
           <div
             class="challenge-card"
             data-phase="{{ phase.name }}"
@@ -77,54 +77,39 @@
 
 
               {% endfor %}
-            {% endif %}
-           {% endfor %} 
+            {% comment %} {% endif %} {% endcomment %}
+           {% comment %} {% endfor %}  {% endcomment %}
           {% endif %}
         </div>
       </main>
     </section>
 
     <script>
-      const phasesDropdown = document.getElementById("phasesDropdown");
       const levelsDropdown = document.getElementById("levelsDropdown");
-
+    
       function filterChallenges() {
-        const selectedPhase = phasesDropdown.value;
         const selectedLevel = levelsDropdown.value.toLowerCase();
-
-        console.log(selectedPhase)
-        if (selectedPhase.startsWith("/")) {
-            window.location.href = selectedPhase; // Redirect to the URL
-        }else{
-          const challengeCards = document.querySelectorAll(".challenge-card");
-  
-          challengeCards.forEach((card) => {
-            const cardPhase = card.getAttribute("data-phase");
-            const cardLevel = card.getAttribute("data-level");
-  
-            const matchesPhase =
-              selectedPhase === "all" || cardPhase === selectedPhase;
-            const matchesLevel =
-              selectedLevel === "all" || cardLevel === selectedLevel;
-  
-            if (matchesPhase && matchesLevel) {
-              card.style.display = "flex";
-            } else {
-              card.style.display = "none";
-            }
-          
-          });
-        }
+        const challengeCards = document.querySelectorAll(".challenge-card");
+    
+        challengeCards.forEach((card) => {
+          const cardLevel = card.getAttribute("data-level");
+          const matchesLevel = selectedLevel === "all" || cardLevel === selectedLevel;
+    
+          if (matchesLevel) {
+            card.style.display = "flex";
+          } else {
+            card.style.display = "none";
+          }
+        });
       }
-
-      phasesDropdown.addEventListener("change", filterChallenges);
+    
       levelsDropdown.addEventListener("change", filterChallenges);
-
+    
       function toggleMenu() {
         const menu = document.getElementById("dropdownMenu");
         menu.style.display = menu.style.display === "flex" ? "none" : "flex";
       }
-
+    
       function closeDropDown() {
         const menu = document.getElementById("dropdownMenu");
         if (menu.style.display === "flex") menu.style.display = "none";
