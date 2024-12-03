@@ -131,7 +131,7 @@ def thirdPhaseView(request:HttpRequest ):
 
 @login_required
 def tasksFileDownload(request:HttpRequest):
-    file_path = os.path.join(settings.MEDIA_ROOT, "tasks.c")
+    file_path = os.path.join(settings.MEDIA_ROOT, "tasks.rar")
     if os.path.exists(file_path):
         return FileResponse(open(file_path, 'rb'), as_attachment=True)
     raise Http404
