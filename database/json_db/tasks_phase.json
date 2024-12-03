@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "is_locked": 0,
+        "name": "phase 1"
+    },
+    {
+        "id": 2,
+        "is_locked": 1,
+        "name": "phase 2"
+    },
+    {
+        "id": 3,
+        "is_locked": 1,
+        "name": "phase 3"
+    }
+]
