@@ -31,9 +31,11 @@
           </div>
         </div>
         <div class="challenge-problematic">
-          <p>{{task.context}}</p>
+          <p>{{ task.context|linebreaksbr }}</p>
         </div>
         <div class="challenge-example">
+          
+        {% if task.task_tests.all%}  
           <h3>Example:</h3>
           <div>
             {% for test in task.task_tests.all %}
@@ -41,11 +43,14 @@
               <span>Output: {{test.output}}</span>
             {% endfor %}
           </div>
+          {% endif %}
         </div>
+        
        
         {% if not tasksolution%}
+        <h2>Code:</h2>
         <div class="challenge-code">
-          <h2>Code:</h2>
+          
           <textarea id="textInput">{{task.initialCode}}</textarea>
         </div>
         <div class="challenge-submit">
