@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [".vercel.app","localhost","127.0.0.1"]
 
-LOGIN_URL = '/participant_login'
+LOGIN_URL = '/login'
 # Application definition
 
 INSTALLED_APPS = [
@@ -132,3 +132,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

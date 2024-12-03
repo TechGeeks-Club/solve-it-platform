@@ -68,11 +68,7 @@
             </div>
 
             {% if task.task_solutions.all %}
-              {% if task.task_solutions.all.first and task.task_solutions.all.first.is_corrected %}
-                <div class="solve-btn" style="background-color: #f7d9c4;">Score: {{task.task_solutions.all.first.score}} </div>
-              {% else %}
-                <div class="solve-btn" style="background-color: #F1deee ;">Not Corrected Yet</div>
-              {% endif %}
+              <div class="solve-btn" style="background-color: #46e34c69 ;">Done</div>
               
             {% else %}
               <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
