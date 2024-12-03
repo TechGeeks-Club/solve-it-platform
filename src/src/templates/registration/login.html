@@ -17,9 +17,8 @@
 
   {% include "components/nav.html"%}
 
-    {%if message %}
-      <h1>{{message}}</h1>
-    {% endif %}
+  
+
 
     <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-lg text-center">
@@ -29,7 +28,7 @@
             Enter here you personal and team information
             </p>
         </div>
-        
+        {% include "components/error_message.html" %}
         <form method="post" action="{% url 'login' %}" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
             {% csrf_token %}
             
