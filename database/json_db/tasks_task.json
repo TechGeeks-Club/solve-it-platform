@@ -1,7 +1,7 @@
 [
     {
         "category_id": 1,
-        "context": "Write an algorithm to convert Cartesian coordinates (x, y) to polar coordinates (r, t). The conversion formulas are as follows:\r\n1. r^2 = x^2 + y^2\r\n2. If x = 0, then:\r\n   - t = π/2 if y > 0,\r\n   - t = -π/2 if y < 0,\r\n   - t is undefined if y = 0.\r\n3. Otherwise, t = arctan(y/x), and add π if x < 0.\r\n\r\nNote: Assume that arctan(x) is a predefined function.",
+        "context": "Write an algorithm to convert Cartesian coordinates (x, y) to polar coordinates (r, t). The conversion formulas are as follows:\r\n\r\n1. r^2 = x^2 + y^2\r\n2. If x = 0, then:\r\n   - t = π/2 if y > 0,\r\n   - t = -π/2 if y < 0,\r\n   - t is undefined if y = 0.\r\n3. Otherwise, t = arctan(y/x), and add π if x < 0.\r\n\r\nNote: Assume that arctan(x) is a predefined function.",
         "id": 1,
         "initialCode": "// Enter code here",
         "level": "easy",
@@ -13,7 +13,7 @@
     },
     {
         "category_id": 1,
-        "context": "Write an algorithm that calculates the number of bits needed to encode an integer N in binary. \r\nIt is not necessary to provide the binary representation of N. \r\nExample: If N = 13, then the result must be 4, because in binary, the number 13 is 1101.",
+        "context": "Write an algorithm that calculates the number of bits needed to encode an integer N in binary. \r\nIt is not necessary to provide the binary representation of N. \r\n\r\nExample: If N = 13, then the result must be 4, because in binary, the number 13 is 1101.",
         "id": 2,
         "initialCode": "// Entercode here",
         "level": "easy",
@@ -37,7 +37,7 @@
     },
     {
         "category_id": 1,
-        "context": "Write an algorithm that reads a positive non-zero integer N and a base B \r\nless than 10, then checks and displays whether N belongs to base B or not. \r\nExample: N = 743\r\n\r\n743 belongs to the octal base B = 8 because the digits of 743 (3, 4, and 7) are all less than 8. \r\nBut 743 does not belong to the base B = 4 nor to the base B = 7.",
+        "context": "Write an algorithm that reads a positive non-zero integer N and a base B \r\nless than 10, then checks and displays whether N belongs to base B or not. \r\n\r\nExample: N = 743\r\n\r\n743 belongs to the octal base B = 8 because the digits of 743 (3, 4, and 7) are all less than 8. \r\nBut 743 does not belong to the base B = 4 nor to the base B = 7.",
         "id": 4,
         "initialCode": "// Enter code here",
         "level": "easy",

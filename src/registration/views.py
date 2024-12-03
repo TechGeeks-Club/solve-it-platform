@@ -24,19 +24,21 @@ def createTeamView(request:HttpRequest):
     if not request.user.is_authenticated:
 
         form = TeamCreationForm(request.POST or None)
-        err = None
+        # err = None
         if request.method == "POST" :
             try :
                 with transaction.atomic():
                     if( form.is_valid() ):
                         form.save()
                         return redirect("home")
+                    else :
+                        messages.error(request, "Form validation failed. Please verify your inputs.")
             except Exception as exp:
-                err = exp.__str__()
+                messages.error(request, "some thing went wrong")
 
         context = {
             "form" : form,        
-            "err" : err
+            # "err" : err
         }
 
         return render(request,"registration/createTeam.html",context)
