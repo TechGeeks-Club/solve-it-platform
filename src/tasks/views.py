@@ -43,7 +43,19 @@ def taskView(request:HttpRequest, task_id:int):
     
     
     # solutionObj = checkParticipationExistance(taskObj,participantObj)
+    
     task = Task.objects.get(id=task_id)
+    
+    # ? get the phase and see if it's locked
+    try :
+        # ! I CAN'T USE THE ID TO GET PHASE 3, SO IF THEY CHANGE THE NAME YOU SHOULD CHANGE IT HERE ALSO 
+        phaseObj = Phase.objects.get(name = task.phase.name) 
+        if phaseObj.is_locked :
+            return redirect("tasksDisplay")
+    except Exception as exp :
+        return redirect("tasksDisplay")
+    
+    
     participant = Participant.objects.get(user = request.user)
     tasksolution = TaskSolution.objects.filter(task=task,team=participant.team)
 
@@ -51,10 +63,10 @@ def taskView(request:HttpRequest, task_id:int):
     context = {"task" : task,}
     context["tasksolution"] = True if tasksolution else False
     
-    
-    if request.method == "POST" :
+    if not checkParticipationExistance(task,participant) :
+        if request.method == "POST" :
                 
-        if not tasksolution:
+
         
             if "uploadedFile" in request.FILES :
                 file = request.FILES['uploadedFile']
@@ -72,8 +84,15 @@ def taskView(request:HttpRequest, task_id:int):
                     err = exp.__str__()
 
                 return render(request,"tasks/challenge-detailes.html",context)
+        else : #! GET
+            return render(request,"tasks/challenge-detailes.html",context)
+     
+    else:
+        return redirect("tasksDisplay")
 
-    return render(request,"tasks/challenge-detailes.html",context)
+
+    
+    
 
 
 

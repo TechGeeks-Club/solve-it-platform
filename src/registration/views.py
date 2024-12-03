@@ -13,7 +13,7 @@ from django.contrib import messages
 
 
 
-from .forms import TeamCreationForm,TeamForm,CreateUserForm
+from .forms import TeamCreationForm,TeamForm,CreateUserForm,CustomAuthenticationForm
 
 from .models import Team,Participant
 
@@ -111,23 +111,49 @@ def createParticipantView(request:HttpRequest):
 # from django.http import HttpRequest, HttpResponse
 # from django.shortcuts import render, redirect
 
-def participantLoginView(request: HttpRequest):
-    if not request.user.is_authenticated:
-        if request.method == "POST":
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            print(username, password)
+# def participantLoginView(request: HttpRequest):
+#     if not request.user.is_authenticated:
+#         if request.method == "POST":
+#             username = request.POST.get('username')
+#             password = request.POST.get('password')
+#             print(username, password)
 
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-            else:
+#             user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 login(request, user)
+#                 return redirect('home')
+#             else:
                 
-                messages.error(request, "Form validation failed. Please verify your inputs.")
-                return render(request, "registration/login.html")
-        return render(request, "registration/login.html")
-    return redirect('home')
+#                 messages.error(request, "Form validation failed. Please verify your inputs.")
+#                 return render(request, "registration/login.html")
+#         return render(request, "registration/login.html")
+#     return redirect('home')
+
+
+
+def participantLoginView(request : HttpRequest):
+    form = CustomAuthenticationForm(request,request.POST or None)
+
+    context = {
+        "form" : form,
+    }
+
+    if request.method == "POST" :
+        if( form.is_valid() ):
+            try :
+                login(request, form.get_user())
+                context = {
+                    "form" : form,
+                }
+                return redirect("tasksDisplay")
+            except Exception as e :
+                messages.error(request, f"An error occurred: {e}")
+        else :
+            messages.error(request, "Form validation failed. Please verify your inputs.")
+    return render(request,"registration/login.html",context)
+
+
+
 
 
 @login_required
