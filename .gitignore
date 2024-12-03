@@ -12,7 +12,7 @@ upload/
 migrations/
 
 # Django specific files
-db.sqlite3
+# db.sqlite3
 *.log
 
 # Local settings
@@ -23,7 +23,7 @@ media/
 uploads/
 
 # Static files (if collected and not version-controlled)
-staticfiles/
+# staticfiles/
 
 # Environment variables
 .env
