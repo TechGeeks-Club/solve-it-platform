@@ -14,4 +14,8 @@ services:
       ports:
         - ${GUNICORN_PORT}:${GUNICORN_PORT}
       container_name: django_app
-      command: ["python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn -c conf/gunicorn.py techgeeks.wsgi:application"]
+      command: >
+          sh -c "python manage.py makemigrations &&
+                python manage.py migrate &&
+                python manage.py collectstatic --noinput &&
+                gunicorn -c conf/gunicorn.py src.wsgi:application"
