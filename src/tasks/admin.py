@@ -4,7 +4,7 @@ from django.contrib.admin import ModelAdmin
 from django import forms
 
 
-from .models import Phase, Category, Task, TaskTest, TaskSolution,TaskCorrecton
+from .models import Phase, Category, Task, TaskTest, TaskSolution,TaskCorrecton,ThirdPhaseCode
 from .forms import TaskSolutionForm
 
 from django.contrib.admin import StackedInline,TabularInline
@@ -24,6 +24,11 @@ class TaskSolutionStackedInline(TabularInline):
     tab = True
     
 
+
+@admin.register(ThirdPhaseCode)
+class ThirdPhaseCodeAdmin(ModelAdmin):
+    
+    model = ThirdPhaseCode
 
 @admin.register(Phase)
 class PhaseAdmin(ModelAdmin):
