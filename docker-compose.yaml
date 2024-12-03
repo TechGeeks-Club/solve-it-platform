@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  web:
+      build: ./src
+      volumes:
+        - ./src:/app/
+        - /var/www/tech-geeks/static:/app/static
+        # - /var/www/tech-geeks/media:/app/media
+        - ./volumes/log/gunicorn/:/log/gunicorn/
+      env_file:
+        - .env
+  
+      ports:
+        - ${GUNICORN_PORT}:${GUNICORN_PORT}
+      container_name: django_app
+      command: ["python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn -c conf/gunicorn.py techgeeks.wsgi:application"]
