@@ -9,6 +9,13 @@ class Phase(models.Model):
     name = models.CharField(max_length=128)
     is_locked = models.BooleanField(default=False)
 
+    #  update function
+    
+    def save(self, *args, **kwargs):
+        if not self.is_locked:
+            Phase.objects.all().update(is_locked=True)
+        return super().save(*args, **kwargs)
+    
     def __str__(self):
         return self.name
     
