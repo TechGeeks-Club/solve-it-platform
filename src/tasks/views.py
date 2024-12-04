@@ -18,8 +18,12 @@ from django.contrib import messages
 
 @login_required
 def tasksDisplayView(request:HttpRequest):
-    phase = Phase.objects.get(is_locked=False)
-    
+    try:
+        phase = Phase.objects.get(is_locked=False)
+        print("donn")
+    except:
+        messages.error(request, "wait please")
+        return redirect("home")
     if phase.name == "phase 3" :
         return redirect("thirdPhase")
     
