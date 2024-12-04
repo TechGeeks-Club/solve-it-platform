@@ -10,7 +10,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Cartesian Coordinates"
         }
     },
@@ -25,7 +25,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "How many bits for N?"
         }
     },
@@ -40,7 +40,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Extracting the integer part"
         }
     },
@@ -55,7 +55,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Number and base"
         }
     },
@@ -70,7 +70,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Inequation"
         }
     },
@@ -85,7 +85,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Binary or not?"
         }
     },
@@ -100,7 +100,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 25,
             "title": "Balanced number"
         }
     },
@@ -220,7 +220,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 7,
+            "points": 10,
             "title": "Triangle ?"
         }
     },
@@ -235,7 +235,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Array Element Finder"
         }
     },
@@ -250,7 +250,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Vowel Counter"
         }
     },
@@ -265,7 +265,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Array Reversal"
         }
     },
@@ -280,7 +280,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Prime Number Check"
         }
     },
@@ -295,7 +295,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Maximum sum for consecutive pairs"
         }
     },
@@ -310,7 +310,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 10,
+            "points": 20,
             "title": "Diagonal Swap"
         }
     },
@@ -325,7 +325,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "The perfect square"
         }
     },
@@ -340,7 +340,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Automorphic number"
         }
     },
@@ -355,7 +355,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Simplifying a fraction"
         }
     },
@@ -370,7 +370,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Well-ordered numbers"
         }
     },
@@ -385,7 +385,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Diagonal Swap"
         }
     },
@@ -400,7 +400,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Recursion and numbers: number of occurrences"
         }
     },
@@ -415,7 +415,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Approximation of Pi"
         }
     },
@@ -430,7 +430,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Histogram of an image"
         }
     },
@@ -445,7 +445,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "CCP account key"
         }
     },
@@ -460,7 +460,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "centered and reduced matrix"
         }
     },
@@ -475,7 +475,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Reorganizing the elements of an array"
         }
     },
@@ -490,7 +490,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Anagram"
         }
     },
@@ -505,7 +505,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "Cross Addition Of Rows"
         }
     },
@@ -520,7 +520,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 30,
+            "points": 70,
             "title": "pronic numbers"
         }
     },
@@ -535,7 +535,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 70,
+            "points": 300,
             "title": "the colons of a matrix"
         }
     },
@@ -550,7 +550,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 70,
+            "points": 300,
             "title": "Sibling numbers"
         }
     },
@@ -565,7 +565,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 70,
+            "points": 300,
             "title": "Determinant Calculator"
         }
     },
@@ -580,7 +580,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 70,
+            "points": 300,
             "title": "Forming a Magic Square"
         }
     },
@@ -595,7 +595,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 70,
+            "points": 500,
             "title": "Traveling Salesman Problem (TSP)"
         }
     },
@@ -610,7 +610,7 @@
             "nextTask": null,
             "openCode": null,
             "phase": 1,
-            "points": 70,
+            "points": 300,
             "title": "Matrix Rotation Problem"
         }
     },
@@ -627,7 +627,7 @@
             "context": "The program tries to count the number of even numbers in a sequence, but it never terminates, leading to an infinite loop.\r\nHints:\r\nConsider how z determines loop termination.\r\nIs the condition for z correctly aligned with the logic?",
             "initialCode": "#include <stdio.h>\r\nint main() {\r\n    int y = 0, z = 1, c = 0;\r\n    while (z) {\r\n        y++;\r\n        if (y % 2 = 0) {\r\n            c++;\r\n            z = (y % 10 != 0);\r\n        }\r\n    }\r\n    printf(\"Total: %d\\n\", count);\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -642,7 +642,7 @@
             "context": "The program attempts to remove duplicates of an array, but encounters unexpected behavior where:\r\n- Data vanishes entirely\r\n- The output array contains unintended results",
             "initialCode": "int function(int *arr, int n) {\r\n    int index = 0;\r\n    for (int i = 0; i < n; i++) {\r\n        for (int j = 0; j < i; j++) {\r\n            if (arr[i] == arr[j]) break;\r\n        }\r\n        arr[index++] = arr[i];\r\n    }\r\n    return index;\r\n}\r\n\r\nint main() {\r\n    int arr[] = {1, 2, 3, 2, 1, 4, 5};\r\n    int n = sizeof(arr) / sizeof(arr[0]);\r\n    int newSize = function(arr, n);\r\n    for (int i = 0; i < newSize; i++) {\r\n        printf(\"%d \", arr[i]);\r\n    }\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -657,7 +657,7 @@
             "context": "The program is designed to check a grid for specific \"islands\" of connected values. However, it doesn't work properly",
             "initialCode": "#define ROWS 3\r\n#define COLS 3\r\n\r\nint detectIsland(int grid[][]) {\r\n    int found;\r\n    for (int i = 0; i < ROWS; i++) {\r\n        for (int j = 0; j < COLS; j++) {\r\n            if (grid[i][j] == 1) {\r\n                found = 1;\r\n            }\r\n        }\r\n        found = 0;\r\n    }\r\n    return found;\r\n}\r\n\r\nint main() {\r\n    int grid[ROWS][COLS] = {\r\n        {0, 1, 0},\r\n        {0, 1, 1},\r\n        {0, 0, 0}\r\n    };\r\n    if (detectIsland(grid)) {\r\n        printf(\"Island found!\\n\");\r\n    } else {\r\n        printf(\"No islands found.\\n\");\r\n    }\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -672,7 +672,7 @@
             "context": "The program is intended to calculate the **sum of numbers** entered by the user. However, it produces **incorrect results**",
             "initialCode": "#include <stdio.h>\r\nmain() {\r\n    int x, sum = 0;\r\n    char end;\r\n    do {\r\n        scanf(\"%d\", &x);\r\n        sum += x;\r\n    } while (end !='q')\r\n    printf(\"Total sum: %d\\n\", sum);\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -687,7 +687,7 @@
             "context": "The program is designed to calculate the **weighted average of values**, but the output is **inconsistent**, suggesting an error in the data flow or logic.",
             "initialCode": "#include <stdio.h>\r\nfloat avg(int a, int b) {\r\n    return a / b * 0.5;\r\n}\r\n\r\nint main() {\r\n    int u = 10, v = 20;\r\n    float result = avg(v, u);\r\n    printf(\"Weighted average: %.2f\\n\", result);\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -702,7 +702,7 @@
             "context": "The program is intended to copy a string from `src` to `des `. HoweveIt's**, leading to undefined behavior.",
             "initialCode": "#include <stdio.h>\r\n\r\nvoid copyString(char *dest, char *src) {\r\n    while (*src) {\r\n        *ds too small\r\n        src++;\r\n        dest++;\r\n    }\r\n}\r\n\r\nint main() {\r\n    char src[] = \"Hello, World!\";\r\n    char dest[5]; \r\n    copyString(dest, src);\r\n    printf(\"%s\\n\", de```\r\n\r\n## Correction\r\n\r\n```c\r\nvoid copyString(char *dest, char *src) {\r\n    while (*src && dest - start_dest < max_length - 1) { // Add bounds check\r\n        *dest = *src;\r\n        src++;\r\n        dest++;\r\n    }\r\n    *dest = '\\0'; // Null-terminate the string\r\n}\r\nst);\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -717,7 +717,7 @@
             "context": "- This was the code of a fictif participant during the first phase, can you recognize where the issue(s)'s in ?\r\n- Remainder : A positive integer N (where $N>0$ ) is called an automorphic number if its square (N2) ends \r\nwith the number N itself. Examples: The numbers $25, 76,$ and 890625 are automorphic",
             "initialCode": "#include <stdio.h>\r\n\r\nvoid check_automorphic() {\r\n    int N, N2;\r\n    bool isAutomorphic = false;\r\n\r\n    N2 = N * N;\r\n\r\n    while (N != 0 && isAutomorphic) {\r\n        if (N / 10 != N2 / 10) {\r\n            isAutomorphic = false;\r\n        }\r\n        N %= 10;  // Remove the last digit of N\r\n        N2 %= 10; // Remove the last digit of N2\r\n    }\r\n\r\n    if (isAutomorphic) {\r\n        printf(\"%d is an automorphic number.\\n\", N);\r\n    } else {\r\n        printf(\"%d is not an automorphic number.\\n\", N);\r\n    }\r\n}\r\n\r\nint main() {\r\n    check_automorphic();\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 150,
             "nextTask": null,
             "openCode": null
         }
@@ -732,7 +732,7 @@
             "context": "- Given the first lines of a code that should determine for an array of integers and a target value, the number of pairs of array elements that have a difference equal to the target value, complete the missing instructions to ensure that the code works as intended\r\n- **Note** : assume that the `qsort` function and `compare` are correct  \r\n- **Input Format** : The first line contains two space-separated integers  and , the size of  and the target value.\r\nThe second line contains  space-separated integers of the array .",
             "initialCode": "#include <stdio.h>\r\n#include <stdlib.h>\r\n\r\n// Comparison function for sorting\r\nint compare(const void *a, const void *b) {\r\n    return (*(int *)a - *(int *)b);\r\n}\r\n\r\n// Function to count pairs with a difference of k\r\nint pairs(int k, int arr[], int n) {\r\n    int count = 0;\r\n    int i = 0, j = 0;\r\n\r\n    // Sort the array\r\n    qsort(arr, n, sizeof(int), compare);\r\n\r\n    // Missing instructions ...\r\n\r\n    return count;\r\n}\r\n\r\nint main() {\r\n    int n, k;\r\n    \r\n    // Missing implementation of Main function ..\r\n\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -747,7 +747,7 @@
             "context": "A student tries to concatenate two strings using the `+` operator, but in C programming language ?",
             "initialCode": "#include <stdio.h>\r\n#include <string.h>\r\n\r\nint main() {\r\n    char str1[10] = \"Hello\";\r\n    char str2[] = \"World\";\r\n    char result[10];\r\n    \r\n    result = str1 + str2; \r\n    printf(\"%s\\n\", result);\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 50,
             "nextTask": null,
             "openCode": null
         }
@@ -762,7 +762,7 @@
             "context": "You are designing a program to calculate the minimum cost to traverse from the top-left corner to the bottom-right corner of a grid. Each cell in the grid contains a cost, and you can move only down or right. However, the program has logical bugs and is incomplete. The task is to fix the errors and complete the missing functionality to solve the problem.",
             "initialCode": "#include <stdio.h>\r\n#include <stdlib.h>\r\n#include <limits.h>\r\n\r\n// Function to calculate the minimum cost\r\nint minCost(int **grid, int n, int m) {\r\n    int dp[n][m];  // Dynamic programming table\r\n\r\n    // Initialize the top-left cell\r\n    dp[0][0] = grid[0][0];\r\n\r\n    // Fill the first row\r\n    for (int i = 0; i < n; i++) {\r\n        dp[0][i] = dp[0][i - 1] + grid[0][i]; \r\n    }\r\n\r\n    // Fill the first column\r\n    for (int j = 1; j < m; j++) {\r\n        dp[j][0] = dp[j - 1][0] + grid[j][0];\r\n    }\r\n\r\n    // Fill the rest of the dp table \r\n    for (int i = 1; i < n; i++) {\r\n        for (int j = 1; j < m; j++) {\r\n            dp[i][j] = grid[i][j]; \r\n        }\r\n    }\r\n\r\n    return dp[n - 1][m - 1];\r\n}\r\n\r\nint main() {\r\n    int n, m;\r\n    scanf(\"%d %d\", &n, &m);\r\n\r\n    // Allocate memory for the grid\r\n    int **grid = (int **)malloc(n * sizeof(int *));\r\n    for (int i = 0; i < n; i++) {\r\n        grid[i] = (int *)malloc(m * sizeof(int));\r\n        for (int j = 0; j < m; j++) {\r\n            scanf(\"%d\", &grid[i][j]);\r\n        }\r\n    }\r\n\r\n    printf(\"Minimum Cost: %d\\n\", minCost(grid, n, m));\r\n\r\n    // Free allocated memory\r\n    for (int i = 0; i < n; i++) {\r\n        free(grid[i]);\r\n    }\r\n    free(grid);\r\n\r\n    return 0;\r\n}",
             "level": null,
-            "points": -1,
+            "points": 250,
             "nextTask": null,
             "openCode": null
         }
