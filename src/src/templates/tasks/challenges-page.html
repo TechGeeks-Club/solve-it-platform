@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Challenges | Solve It</title>
     <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
+    {% include "components/com_header.html"%}
+
   </head>
   <body>
     <section class="all-Page">
@@ -57,8 +59,11 @@
               <div class="challenge-details">
                 <h3>{{ task.title }}</h3>
                 <div class="challenge-meta">
-                  <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
-                  <span>Score: {{ task.points }} points</span>
+                  {% if task.level %}
+                    <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
+                  {% endif %}
+
+                    <span>Score: {{ task.points }} points</span>
                   {% if task.category %}
                     <span>Category: {{ task.category }}</span>
                   {% endif %}

@@ -766,6 +766,521 @@
             "nextTask": null,
             "openCode": null
         }
-    }
+    },
 
+
+
+    {
+        "model": "tasks.task",
+        "pk": 53,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Cryptarithms",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": null,
+            "openCode": "JQK584971"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 54,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Chess",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 11,
+            "openCode": "MFO248316"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 55,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Cypher",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 12,
+            "openCode": "GNB761594"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 56,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Alpha equation",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 13,
+            "openCode": "XTL483762"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 57,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Go game",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 14,
+            "openCode": "CRJ867249"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 58,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Math riddle",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 15,
+            "openCode": "PVQ695317"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 59,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Morse",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 16,
+            "openCode": "ZME125847"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 60,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Recursive code puzzle",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 17,
+            "openCode": "LKO947516"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 61,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Fibonacci sequence",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 18,
+            "openCode": "BTX194682"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 62,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Math riddle 2",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": -1,
+            "nextTask": 19,
+            "openCode": null
+        }
+    },
+
+
+
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "0z9y8x7w",
+        "fields": {
+            "task": 55,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "1a2b3c4d",
+        "fields": {
+            "task": 54,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "1m2n3o4p",
+        "fields": {
+            "task": 62,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "4d3c2b1a",
+        "fields": {
+            "task": 54,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "4w5x6y7z",
+        "fields": {
+            "task": 53,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "5f6g7h8i",
+        "fields": {
+            "task": 55,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "5z6y7x8w",
+        "fields": {
+            "task": 62,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "7h6g5f4e",
+        "fields": {
+            "task": 60,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "7x8y9z1a",
+        "fields": {
+            "task": 57,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "8u7i6o5p",
+        "fields": {
+            "task": 62,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9d8c7b6a",
+        "fields": {
+            "task": 58,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9f8e7d6c",
+        "fields": {
+            "task": 54,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9m8n7o6p",
+        "fields": {
+            "task": 56,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9r8s7t6u",
+        "fields": {
+            "task": 61,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "a1b2c3d4",
+        "fields": {
+            "task": 54,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "a5b6c7d8",
+        "fields": {
+            "task": 57,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "a9b8c7d6",
+        "fields": {
+            "task": 60,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "b3c4d5e6",
+        "fields": {
+            "task": 58,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "b4c5d6e7",
+        "fields": {
+            "task": 62,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "c1d2e3f4",
+        "fields": {
+            "task": 57,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "c8d7e9f2",
+        "fields": {
+            "task": 59,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "d1c2b3a4",
+        "fields": {
+            "task": 55,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "e5d6c7b8",
+        "fields": {
+            "task": 60,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "f5e4d3c2",
+        "fields": {
+            "task": 61,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "f6g7h8i9",
+        "fields": {
+            "task": 53,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "g1h2i3j4",
+        "fields": {
+            "task": 56,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "h3j4k5l6",
+        "fields": {
+            "task": 59,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "k7l8m9n1",
+        "fields": {
+            "task": 53,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "m9n8o7p6",
+        "fields": {
+            "task": 57,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "n7m8l9k1",
+        "fields": {
+            "task": 59,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "p0o9i8u7",
+        "fields": {
+            "task": 58,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "p2q3r4s5",
+        "fields": {
+            "task": 56,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "p5q6r7s8",
+        "fields": {
+            "task": 61,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "q1w2e3r4",
+        "fields": {
+            "task": 55,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "r1s2t3u4",
+        "fields": {
+            "task": 59,
+            "hints_value": 5,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "t5u6v7w8",
+        "fields": {
+            "task": 56,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "u1v2w3x4",
+        "fields": {
+            "task": 53,
+            "hints_value": 5,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "w3x2y1z4",
+        "fields": {
+            "task": 61,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "x7y8z9a1",
+        "fields": {
+            "task": 58,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "z1x2c3v4",
+        "fields": {
+            "task": 60,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    }
 ]
