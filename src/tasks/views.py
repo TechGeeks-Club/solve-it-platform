@@ -140,12 +140,8 @@ def thirdPhaseView(request:HttpRequest ):
                     # ? If he lose he i'll get mines
                     
                     
-                    loseScore = (((30*codeObj.task.points)/100 + codeObj.hints_value) *100)/codeObj.task.points
+                    loseScore = (((55*codeObj.task.points)/100 + codeObj.hints_value) *100)/codeObj.task.points
                     
-                    
-                    print(loseScore)
-                    print(codeObj.hints_value)
-                    print(codeObj.task.points)
                     
                     TaskSolution(
                         task = codeObj.task,
