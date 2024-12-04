@@ -37,7 +37,7 @@ class Task(models.Model):
     title = models.CharField(max_length=128,null=False)
     context = models.TextField(null=False)
     initialCode = models.TextField(null=True)
-    level = models.CharField(max_length=8, choices=LEVELS, null=False)
+    level = models.CharField(max_length=8, choices=LEVELS, null=True,blank=True)
     points = models.IntegerField(null=False)
 
     nextTask = models.OneToOneField("self", on_delete=models.SET_NULL, null=True, blank=True)

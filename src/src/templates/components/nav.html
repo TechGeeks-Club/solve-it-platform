@@ -1,5 +1,10 @@
+{%load static%}
+
+
 <nav class="navbar" style="z-index:1">
-    <a class="logo">λ</a>
+    <a class="logo" href="{% url 'home' %}">
+      <img src="{% static 'img/favicon.webp' %}" alt="Logo" style="height: 25px;">
+    </a>
     
     {% if request.user.is_authenticated %}
         <div style="font-weight: 500;" >
