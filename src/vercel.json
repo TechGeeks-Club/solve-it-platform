@@ -6,7 +6,8 @@
             "use": "@vercel/python",
             "config": {
                 "maxLambdaSize": "15mb",
-                "runtime": "python3.12"
+                "runtime": "python3.12",
+                "entrypoint": "gunicorn src.wsgi:application --bind 0.0.0.0:$PORT"
             }
         }
     ],
