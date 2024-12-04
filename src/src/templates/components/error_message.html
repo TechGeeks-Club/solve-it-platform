@@ -1,0 +1,28 @@
+{% if messages %}
+    {% for message in messages %}
+      <div class="center">
+        <div class="warn">{{message}}</div>
+      </div>
+      <style>
+        .center{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px 0px;
+        }
+        .warn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #ffffff;
+          background-color: #FF8080;
+          font-family: 'Source Sans Pro', sans-serif;
+          border-radius:.5em;
+          border: 1px solid;
+          margin: 10px 0px;
+          padding:12px;
+          width: 400px;
+        }
+      </style>
+    {% endfor %}
+{% endif %}

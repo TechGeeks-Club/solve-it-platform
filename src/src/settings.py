@@ -26,9 +26,9 @@ SECRET_KEY = 'django-insecure-@9al=@0xvy#m_)%8q8m=e^b3k+@-mki*zs(ch0c6d%9!l+!cy5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".vercel.app","localhost","127.0.0.1"]
 
-LOGIN_URL = '/participant_login'
+LOGIN_URL = '/login'
 # Application definition
 
 INSTALLED_APPS = [
@@ -85,6 +85,18 @@ DATABASES = {
 }
 
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "SolveItDB",
+#         'USER': "SolveItDB_owner",
+#         'PASSWORD': "v9g6CLEFscjk",
+#         'HOST': "ep-plain-water-a25evwjr.eu-central-1.aws.neon.tech",
+#         'PORT': 5432,
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -121,10 +133,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "static"
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "src/static",
     # "/var/www/static/",
 ]
 
@@ -132,3 +144,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

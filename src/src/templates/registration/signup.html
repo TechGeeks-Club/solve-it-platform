@@ -12,14 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Participant</title>
     <link rel="stylesheet" href="{% static 'css/forms.css' %}" />
+    {% include "components/com_header.html"%}
+
 </head>
 <body>
 
   {% include "components/nav.html"%}
-
-    {%if err %}
-    <h1>{{err}}</h1>
-    {% endif %}
 
     <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-lg text-center">
@@ -29,7 +27,7 @@
             Enter here you personal and team information
             </p>
         </div>
-        
+        {% include "components/error_message.html" %}
         <form method="post" action="{% url 'createParticipant' %}" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
             {% csrf_token %}
             <!-- ! Field -->
@@ -73,6 +71,18 @@
             <div class="relative">
                 {{ userForm.last_name}}
             </div>
+          </div>
+
+          
+          <div>
+            <p class="text-gray-500" style="font-size: 16px;">Password must meet the following requirements:</p>
+            <ul>
+              <li class="text-gray-500" style="font-size: 12px;">At least 8 characters long</li>
+              <li class="text-gray-500" style="font-size: 12px;">At least one lowercase letter</li>
+              <li class="text-gray-500" style="font-size: 12px;">At least one uppercase letter</li>
+              <li class="text-gray-500" style="font-size: 12px;">At least one digit</li>
+              <li class="text-gray-500" style="font-size: 12px;">At least one special character (e.g., !@#$%^&*)</li>
+            </ul>
           </div>
           
           <div>
