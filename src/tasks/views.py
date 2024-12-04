@@ -138,13 +138,26 @@ def thirdPhaseView(request:HttpRequest ):
                     ).save()
                 else :
                     # ? If he lose he i'll get mines
+                    
+                    
+                    loseScore = (((55*codeObj.task.points)/100 + codeObj.hints_value) *100)/codeObj.task.points
+                    
+                    
                     TaskSolution(
                         task = codeObj.task,
                         participant = participantObj,
                         team = participantObj.team,
                         is_corrected = True,
-                        score = -1 * (codeObj.hints_value*100)/codeObj.task.points
-                    ).save()
+                        score = -1 * loseScore
+                    ).save()              
+                    
+                    # TaskSolution(
+                    #     task = codeObj.task,
+                    #     participant = participantObj,
+                    #     team = participantObj.team,
+                    #     is_corrected = True,
+                    #     score = -1 * (codeObj.hints_value*100)/codeObj.task.points
+                    # ).save()
             
             else :
                 messages.error(request, "You already sent the code of this task")
