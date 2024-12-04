@@ -1,5 +1,55 @@
 [
     {
+        "model": "tasks.phase",
+        "pk": 1,
+        "fields": {
+            "name": "phase 1",
+            "is_locked": false
+        }
+    },
+    {
+        "model": "tasks.phase",
+        "pk": 2,
+        "fields": {
+            "name": "phase 2",
+            "is_locked": true
+        }
+    },
+    {
+        "model": "tasks.phase",
+        "pk": 3,
+        "fields": {
+            "name": "phase 3",
+            "is_locked": true
+        }
+    },
+
+
+    {
+        "model": "tasks.category",
+        "pk": 1,
+        "fields": {
+            "name": "Math Problems"
+        }
+    },
+    {
+        "model": "tasks.category",
+        "pk": 2,
+        "fields": {
+            "name": "Arrays & Strings"
+        }
+    },
+    {
+        "model": "tasks.category",
+        "pk": 3,
+        "fields": {
+            "name": "Control Structures"
+        }
+    },
+
+
+
+    {
         "model": "tasks.Task",
         "pk": 1,
         "fields": {
