@@ -1,5 +1,25 @@
 [
     {
+        "model": "auth.group",
+        "pk": 1,
+        "fields": {
+            "name": "TG_Stuff",
+            "permissions": [
+                16,
+                32,
+                28,
+                44,
+                46,
+                48,
+                60
+            ]
+        }
+    },
+
+
+
+    
+    {
         "model": "tasks.phase",
         "pk": 1,
         "fields": {
