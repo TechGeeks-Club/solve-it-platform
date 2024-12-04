@@ -12,4 +12,13 @@ def Get_task(modeladmin, request, queryset):
         if not TaskCorrecton.objects.filter(task_solution=qs).exists():
             TaskCorrecton.objects.create(task_solution=qs, user=request.user)
         else:
-            messages.error(request, "This task is already taken by another user")
+            messages.error(request, "This task is already taken by you or another user")
+
+@admin.action(description="Exclude the selected tasks")
+def Exclude_task(modeladmin, request, queryset):
+    for qs in queryset:
+        
+        if TaskCorrecton.objects.filter(task_solution=qs).exists() and TaskCorrecton.objects.get(task_solution=qs).user == request.user:
+            TaskCorrecton.objects.get(task_solution=qs).delete()
+        else:
+            messages.error(request, "This task is not taken by user")
