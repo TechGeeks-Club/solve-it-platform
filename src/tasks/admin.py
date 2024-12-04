@@ -10,7 +10,7 @@ from .forms import TaskSolutionForm
 from django.contrib.admin import StackedInline,TabularInline
 
 from .filters import TaskSolutionListFilter
-from .action import Get_task
+from .action import Get_task,Exclude_task
 
 from django.utils.html import format_html
 
@@ -71,14 +71,14 @@ class TaskSolutionAdmin(ModelAdmin):
     form = TaskSolutionForm
     model = TaskSolution
     
-    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score',"is_corrected")
+    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score',"is_corrected","is_taken")
     list_display_links = list_display
     
     
     search_fields = ('_title',"team__name")
     list_filter = ('task__phase',TaskSolutionListFilter,'is_corrected','task__level','task__category')
     
-    actions = [Get_task]
+    actions = [Get_task,Exclude_task]
     
     readonly_fields = ('task','team','submitted_at',"participant")
     
@@ -93,6 +93,14 @@ class TaskSolutionAdmin(ModelAdmin):
     ),
     )
     
+
+    def is_taken(self, obj):
+        if TaskCorrecton.objects.filter(task_solution=obj).exists():
+            
+            return format_html('<img src="/static/admin/img/icon-yes.svg" alt="True">')
+        else:
+            return format_html('<img src="/static/admin/img/icon-no.svg" alt="False">')
+        
 
     def has_add_permission(self, request):
         return False
