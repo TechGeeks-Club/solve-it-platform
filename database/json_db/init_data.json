@@ -830,7 +830,7 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
+            "points": 300,
             "nextTask": null,
             "openCode": "JQK584971"
         }
@@ -845,8 +845,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 11,
+            "points": 250,
+            "nextTask": 53,
             "openCode": "MFO248316"
         }
     },
@@ -860,8 +860,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 12,
+            "points": 200,
+            "nextTask": 54,
             "openCode": "GNB761594"
         }
     },
@@ -875,8 +875,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 13,
+            "points": 150,
+            "nextTask": 55,
             "openCode": "XTL483762"
         }
     },
@@ -890,8 +890,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 14,
+            "points": 140,
+            "nextTask": 56,
             "openCode": "CRJ867249"
         }
     },
@@ -905,8 +905,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 15,
+            "points": 120,
+            "nextTask": 57,
             "openCode": "PVQ695317"
         }
     },
@@ -920,8 +920,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 16,
+            "points": 100,
+            "nextTask": 58,
             "openCode": "ZME125847"
         }
     },
@@ -935,8 +935,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 17,
+            "points": 50,
+            "nextTask": 59,
             "openCode": "LKO947516"
         }
     },
@@ -950,8 +950,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 18,
+            "points": 30,
+            "nextTask": 60,
             "openCode": "BTX194682"
         }
     },
@@ -965,8 +965,8 @@
             "context": "empty",
             "initialCode": "empty",
             "level": null,
-            "points": -1,
-            "nextTask": 19,
+            "points": 20,
+            "nextTask": 61,
             "openCode": null
         }
     },
@@ -978,7 +978,7 @@
         "pk": "0z9y8x7w",
         "fields": {
             "task": 55,
-            "hints_value": 5,
+            "hints_value": 80,
             "result": "win"
         }
     },
@@ -1005,7 +1005,7 @@
         "pk": "4d3c2b1a",
         "fields": {
             "task": 54,
-            "hints_value": 5,
+            "hints_value": 100,
             "result": "lose"
         }
     },
@@ -1032,7 +1032,7 @@
         "pk": "5z6y7x8w",
         "fields": {
             "task": 62,
-            "hints_value": 5,
+            "hints_value": 10,
             "result": "win"
         }
     },
@@ -1050,7 +1050,7 @@
         "pk": "7x8y9z1a",
         "fields": {
             "task": 57,
-            "hints_value": 5,
+            "hints_value": 45,
             "result": "win"
         }
     },
@@ -1059,7 +1059,7 @@
         "pk": "8u7i6o5p",
         "fields": {
             "task": 62,
-            "hints_value": 5,
+            "hints_value": 10,
             "result": "lose"
         }
     },
@@ -1068,7 +1068,7 @@
         "pk": "9d8c7b6a",
         "fields": {
             "task": 58,
-            "hints_value": 5,
+            "hints_value": 50,
             "result": "win"
         }
     },
@@ -1077,7 +1077,7 @@
         "pk": "9f8e7d6c",
         "fields": {
             "task": 54,
-            "hints_value": 5,
+            "hints_value": 100,
             "result": "win"
         }
     },
@@ -1086,7 +1086,7 @@
         "pk": "9m8n7o6p",
         "fields": {
             "task": 56,
-            "hints_value": 5,
+            "hints_value": 60,
             "result": "win"
         }
     },
@@ -1122,7 +1122,7 @@
         "pk": "a9b8c7d6",
         "fields": {
             "task": 60,
-            "hints_value": 5,
+            "hints_value": 20,
             "result": "win"
         }
     },
@@ -1176,7 +1176,7 @@
         "pk": "e5d6c7b8",
         "fields": {
             "task": 60,
-            "hints_value": 5,
+            "hints_value": 20,
             "result": "lose"
         }
     },
@@ -1185,7 +1185,7 @@
         "pk": "f5e4d3c2",
         "fields": {
             "task": 61,
-            "hints_value": 5,
+            "hints_value": 10,
             "result": "lose"
         }
     },
@@ -1194,7 +1194,7 @@
         "pk": "f6g7h8i9",
         "fields": {
             "task": 53,
-            "hints_value": 5,
+            "hints_value": 140,
             "result": "lose"
         }
     },
@@ -1203,7 +1203,7 @@
         "pk": "g1h2i3j4",
         "fields": {
             "task": 56,
-            "hints_value": 5,
+            "hints_value": 60,
             "result": "lose"
         }
     },
@@ -1212,7 +1212,7 @@
         "pk": "h3j4k5l6",
         "fields": {
             "task": 59,
-            "hints_value": 5,
+            "hints_value": 30,
             "result": "win"
         }
     },
@@ -1230,7 +1230,7 @@
         "pk": "m9n8o7p6",
         "fields": {
             "task": 57,
-            "hints_value": 5,
+            "hints_value": 45,
             "result": "lose"
         }
     },
@@ -1248,7 +1248,7 @@
         "pk": "p0o9i8u7",
         "fields": {
             "task": 58,
-            "hints_value": 5,
+            "hints_value": 50,
             "result": "lose"
         }
     },
@@ -1266,7 +1266,7 @@
         "pk": "p5q6r7s8",
         "fields": {
             "task": 61,
-            "hints_value": 5,
+            "hints_value": 10,
             "result": "win"
         }
     },
@@ -1275,7 +1275,7 @@
         "pk": "q1w2e3r4",
         "fields": {
             "task": 55,
-            "hints_value": 5,
+            "hints_value": 80,
             "result": "lose"
         }
     },
@@ -1284,7 +1284,7 @@
         "pk": "r1s2t3u4",
         "fields": {
             "task": 59,
-            "hints_value": 5,
+            "hints_value": 30,
             "result": "lose"
         }
     },
@@ -1302,7 +1302,7 @@
         "pk": "u1v2w3x4",
         "fields": {
             "task": 53,
-            "hints_value": 5,
+            "hints_value": 140,
             "result": "win"
         }
     },
