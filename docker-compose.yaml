@@ -13,9 +13,10 @@ services:
   
       ports:
         - ${GUNICORN_PORT}:${GUNICORN_PORT}
-      container_name: django_app
+      container_name: django_app2
       command: >
           sh -c "python manage.py makemigrations &&
                 python manage.py migrate &&
                 python manage.py collectstatic --noinput &&
+                python manage.py loaddata conf\init_data.json &&
                 gunicorn -c conf/gunicorn.py src.wsgi:application"
