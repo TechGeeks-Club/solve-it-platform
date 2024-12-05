@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@9al=@0xvy#m_)%8q8m=e^b3k+@-mki*zs(ch0c6d%9!l+!cy5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [".univ-guelma.dz","localhost","127.0.0.1" , "10.10.10.103"]
 

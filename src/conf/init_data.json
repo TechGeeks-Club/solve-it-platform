@@ -1,0 +1,1356 @@
+[
+    {
+        "model": "auth.group",
+        "pk": 1,
+        "fields": {
+            "name": "TG_Stuff",
+            "permissions": [
+                16,
+                32,
+                28,
+                44,
+                46,
+                48,
+                60
+            ]
+        }
+    },
+
+
+
+    
+    {
+        "model": "tasks.phase",
+        "pk": 1,
+        "fields": {
+            "name": "phase 1",
+            "is_locked": false
+        }
+    },
+    {
+        "model": "tasks.phase",
+        "pk": 2,
+        "fields": {
+            "name": "phase 2",
+            "is_locked": true
+        }
+    },
+    {
+        "model": "tasks.phase",
+        "pk": 3,
+        "fields": {
+            "name": "phase 3",
+            "is_locked": true
+        }
+    },
+
+
+    {
+        "model": "tasks.category",
+        "pk": 1,
+        "fields": {
+            "name": "Math Problems"
+        }
+    },
+    {
+        "model": "tasks.category",
+        "pk": 2,
+        "fields": {
+            "name": "Arrays & Strings"
+        }
+    },
+    {
+        "model": "tasks.category",
+        "pk": 3,
+        "fields": {
+            "name": "Control Structures"
+        }
+    },
+
+
+
+    {
+        "model": "tasks.Task",
+        "pk": 1,
+        "fields": {
+            "category": 1,
+            "context": "Write an algorithm to convert Cartesian coordinates (x, y) to polar coordinates (r, t). The conversion formulas are as follows:\r\n\r\n1. r^2 = x^2 + y^2\r\n2. If x = 0, then:\r\n   - t = \u03c0/2 if y > 0,\r\n   - t = -\u03c0/2 if y < 0,\r\n   - t is undefined if y = 0.\r\n3. Otherwise, t = arctan(y/x), and add \u03c0 if x < 0.\r\n\r\nNote: Assume that arctan(x) is a predefined function.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Cartesian Coordinates"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 2,
+        "fields": {
+            "category": 1,
+            "context": "Write an algorithm that calculates the number of bits needed to encode an integer N in binary. \r\nIt is not necessary to provide the binary representation of N. \r\n\r\nExample: If N = 13, then the result must be 4, because in binary, the number 13 is 1101.",
+            "initialCode": "// Entercode here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "How many bits for N?"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 3,
+        "fields": {
+            "category": 1,
+            "context": "Write an algorithm to enter a positive non-zero real number, and to calculate and display its integer part. \r\ncalculate and display its integer part.",
+            "initialCode": "// Entercode here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Extracting the integer part"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 4,
+        "fields": {
+            "category": 1,
+            "context": "Write an algorithm that reads a positive non-zero integer N and a base B \r\nless than 10, then checks and displays whether N belongs to base B or not. \r\n\r\nExample: N = 743\r\n\r\n743 belongs to the octal base B = 8 because the digits of 743 (3, 4, and 7) are all less than 8. \r\nBut 743 does not belong to the base B = 4 nor to the base B = 7.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Number and base"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 5,
+        "fields": {
+            "category": 1,
+            "context": "Write an algorithm to solve the following inequation:  \r\nax + b > 0 \r\nwith  a, b  two real numbers entered by the user.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Inequation"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 6,
+        "fields": {
+            "category": 1,
+            "context": "Write an algorithm that allows you to enter a positive non-zero integer `N`, check whether it represents a binary number or not, and then calculate and display the number. \r\nwhether it represents a binary number or not, and then calculate and display the number of zeros \r\nof zeros (0) and ones (1) it contains.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Binary or not?"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 7,
+        "fields": {
+            "category": 1,
+            "context": "A number `N` is said to be balanced if it contains the same number of odd \r\nand even numbers. Write an algorithm to enter a positive non-zero integer `M`, then \r\nzero integer `M`, then display all balanced numbers less than or equal to `M`.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 25,
+            "title": "Balanced number"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 8,
+        "fields": {
+            "category": 3,
+            "context": "Check Even or Odd\r\nProblem Statement:\r\nWrite a program to check if a given integer  `n` is even or odd.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Parity Check"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 9,
+        "fields": {
+            "category": 3,
+            "context": "Sum of Natural Numbers\r\nProblem Statement:\r\nWrite a program to find the sum of the first  `n` natural numbers.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Natural Number Summation"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 10,
+        "fields": {
+            "category": 3,
+            "context": "Check Prime\r\nProblem Statement:\r\nWrite a program to check if a given number `n`",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Prime Number Check"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 11,
+        "fields": {
+            "category": 3,
+            "context": "Print a Right-Angled Triangle\r\nProblem Statement:\r\nWrite a program to print a right-angled triangle pattern of stars.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Star Triangle Pattern"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 12,
+        "fields": {
+            "category": 3,
+            "context": "Number Pyramid\r\nProblem Statement:\r\nWrite a program to print a pyramid pattern of numbers.",
+            "initialCode": "// Enter code herea",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Numerical Pyramid Pattern"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 13,
+        "fields": {
+            "category": 3,
+            "context": "Factorial Calculation\r\nProblem Statement:\r\nWrite a program to calculate the factorial of a given number \r\n`n`",
+            "initialCode": "// Enter code herea",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Factorial Finder"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 14,
+        "fields": {
+            "category": 3,
+            "context": "Write a program in c to enter three digits A, B (a digit is a number between \r\n0 and 9) and calculates and displays the largest number that can be formed using the \r\nA, B and C.",
+            "initialCode": "// Enter code herea",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Maximum permutation"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 15,
+        "fields": {
+            "category": 3,
+            "context": "3 segments can form a triangle if the sum of the lengths of the two shorter \r\nsides is greater than the length of the longest side. \r\nWrite a program in c to read three non-zero positive real numbers, and check that \r\nverify that they can be the lengths of the sides of a triangle.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 10,
+            "title": "Triangle ?"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 16,
+        "fields": {
+            "category": 2,
+            "context": "Find an Element in an Array\r\nProblem Statement:\r\nWrite a program to check if an element exists in an array.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Array Element Finder"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 17,
+        "fields": {
+            "category": 2,
+            "context": "Count Vowels in a String\r\nProblem Statement:\r\nWrite a program to count the number of vowels in a given string.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Vowel Counter"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 18,
+        "fields": {
+            "category": 2,
+            "context": "Reverse an Array\r\nProblem Statement:\r\nWrite a program to reverse a given array of integers.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Array Reversal"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 19,
+        "fields": {
+            "category": 2,
+            "context": "Stack Operations\r\nProblem Statement:\r\nImplement a stack using an array and perform push and pop operations.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Prime Number Check"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 20,
+        "fields": {
+            "category": 2,
+            "context": "Given an array A of 8 integers, Write a program in c for entering the array A, calculating, and \r\ndisplay the greatest sum of two consecutive elements in A.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Maximum sum for consecutive pairs"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 22,
+        "fields": {
+            "category": 2,
+            "context": "Given a square matrix M(N, N) of integers (N=5). Write an algorithm that permutes the \r\nelements of the main diagonal with the elements of the secondary diagonal.",
+            "initialCode": "// Enter code here",
+            "level": "easy",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 20,
+            "title": "Diagonal Swap"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 23,
+        "fields": {
+            "category": null,
+            "context": "Write a program in c to determine whether an integer is a perfect square. A perfect \r\nis an integer that can be expressed as the square of another integer. For example, \r\nFor example, 0, 1, 4, 9, 16, 25, 36 and 49 are all perfect squares.  \r\nUse of the sqrt() function is prohibited. The use of loops is mandatory.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "The perfect square"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 24,
+        "fields": {
+            "category": null,
+            "context": "A positive integer N (where N>0) is called an automorphic number if its square (N2) ends \r\nwith the number N itself. Examples: The numbers 25, 76, and 890625 are automorphic \r\nbecause: \r\n 252=625  (the square ends with 25) \r\n 762=5776 (the square ends with 76) \r\n 8906252=793212890625 (the square ends with  890625) \r\nWrite a program in c to input a positive integer N and determine whether it is an \r\nautomorphic number or not.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Automorphic number"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 25,
+        "fields": {
+            "category": null,
+            "context": "A rational number is the quotient of two integers: a numerator and a denominator.   \r\nWrite a subroutine simplify (...) that simplifies the rational number R. \r\n\r\nOptional hint:  \r\nUse a PGCD function.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Simplifying a fraction"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 26,
+        "fields": {
+            "category": null,
+            "context": "An integer is said to be well-ordered if its digits, read from right to left, \r\nare in descending order.  \r\nExample:  \r\nThe number 249 is well-ordered because 9>4>2 \r\nThe number 36478 is not well-ordered because 4\u22646 \r\nWrite a program that enters a positive non-zero integer nb, then \r\nchecks whether it is well-ordered or not, using a recursive function \r\nwell-ordered(nb).",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Well-ordered numbers"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 27,
+        "fields": {
+            "category": null,
+            "context": "Given a square matrix M(N, N) of integers (N=5). Write a program in c that permutes the \r\nelements of the main diagonal with the elements of the secondary diagonal.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Diagonal Swap"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 28,
+        "fields": {
+            "category": null,
+            "context": "Write a recursive function nb_Occ(ch, n) which calculates and returns the number \r\nof occurrences of the digit ch (0 \u2264 ch \u2264 9) in the positive non-zero integer n.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Recursion and numbers: number of occurrences"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 29,
+        "fields": {
+            "category": null,
+            "context": "We propose that you use the following mathematical expression to calculate an approximate value of \u03c0 \r\napproximate value of \u03c0:  \r\n\u03c0/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ... \r\nWrite an algorithm that calculates and displays an approximate value of \u03c0, using the \r\nusing the above expression.  \r\nThe calculation stops when the difference between two consecutive values of this expression \r\nbecomes strictly less than 10-3 .",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Approximation of Pi"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 30,
+        "fields": {
+            "category": null,
+            "context": "Consider `Im` grayscale image, represented by an integer matrix with 60 rows and \r\n120   columns . The values of this matrix range from 0 to 255. \r\nThe histogram of image Im is an array H of 256 integers (0..255), where H[i] \r\nrepresents the number of occurrences of value i in the Im matrix. \r\nWrite a program in c to load the image Im (enter the matrix Im), calculate and display its histogram. \r\ndisplay its histogram.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Histogram of an image"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 31,
+        "fields": {
+            "category": null,
+            "context": "A CCP postal current account number consists of 6, 7 or 8 digits. Each \r\nnumber is associated with a key, which is used to verify the accuracy of an \r\naccount number. \r\nThe key for an account N is calculated as follows:  \r\nCalculate the sum S of the products of the first digit of N (from the right) by 4, \r\nof the second digit by 5, of the third digit by 6, and so on. The key is formed \r\nby the first two digits (from the right) of the sum S. \r\nFor example:  \r\nIf the CCP number is 6132756, the key is 98. \r\n\r\nS = 6*4+5*5+7*6+2*7+3*8+1*9+6*10 =198 \u2192 the key for this Number is 98\r\nWrite a program in c to enter a CCP number, check its validity, and then calculate its key. \r\nthen calculate its key.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "CCP account key"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 32,
+        "fields": {
+            "category": null,
+            "context": "Let A be a matrix of real numbers (L=10, C=20). \r\nWrite a program in c to enter A, then center and reduce it, \r\nand then display it.  \r\nTo do this  \r\n1- Calculate an array Moy (C=20), which contains the average of each column. \r\ncolumn. \r\n\r\n2- Subtract from each element of matrix A, the average of its column. \r\nThe resulting matrix is called a centered matrix. \r\n\r\n3- Calculate a table E (C=20) containing the standard deviation of each column. \r\ncolumn. \r\n\r\nThe standard deviation of column j is given by the following formula: \r\n\r\nE\ud835\udc57 = \u221a1/\ud835\udc3f \ud835\udc56=\ud835\udc3f\u22121 \ud835\udc56=0\u2211 (\ud835\udc34[\ud835\udc56,\ud835\udc57]\u2212\ud835\udc40\ud835\udc5c\ud835\udc66\ud835\udc57)2\r\n\r\nWhere \ud835\udc40\ud835\udc5c\ud835\udc66\ud835\udc57 is the average of column j \r\n4- Divide each element of the centered matrix by the standard deviation of its column. \r\ncolumn. \r\n\r\nNote: use root (x) which is a predefined function that calculates and returns \r\nthe square root of x.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "centered and reduced matrix"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 33,
+        "fields": {
+            "category": null,
+            "context": "Let T be an array of 50 integers.  \r\nWrite a program in c to enter the array T, and replace all repeating values with \r\nvalues with 0 (i.e. keep only the first occurrence). Then, to \r\ngroup the null values at the end of array T, and the non-null values at the beginning, keeping \r\nkeeping them in their original order. \r\nDon't forget to display the T array after each step. \r\n\r\nExample:\r\n\r\nOriginal array T:  \r\n[8, 3, 2, 3, 4, 8, 8, 5, 4]\r\n\r\nT after replacing specific values with 0:  \r\n[8, 3, 2, 0, 4, 0, 0, 5, 0]\r\n\r\nT after grouping all 0 values to the end:  \r\n[8, 3, 2, 4, 5, 0, 0, 0, 0]",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Reorganizing the elements of an array"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 34,
+        "fields": {
+            "category": null,
+            "context": "A word is said to be an anagram of another word if it is made up of the same letters. \r\nExamples: `CHIEN` anagram of `CHINE`, `NICHE`. \r\nWrite a program to enter two strings of characters S1 and S2, then determine \r\ndetermine whether they represent two anagram words. \r\n\r\nOptional hint:  \r\nUse the length of a string, and the number of occurrences of a character in a string.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Anagram"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 35,
+        "fields": {
+            "category": null,
+            "context": "Let Mat be a matrix of N rows and M columns of real numbers.  \r\nWrite a program in c that captures the matrix Mat, then constructs a second matrix \r\nsecond matrix Mat2 of N rows and M columns of reals, such that each element of \r\nMat2[i, j] is the sum of the elements in row i and the elements in row j of the \r\nmatrix Mat.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "Cross Addition Of Rows"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 36,
+        "fields": {
+            "category": null,
+            "context": "A positive integer `N` is said to be pronic (almost square) if it is the product of two consecutive numbers k \r\nand (k+1), i.e. `N = k * (k+1)`. It is also the sum of the first `k` even numbers. \r\n\r\nFor example, the integers `0, 2, 6, 12, 20, 30` and `42` are pronounced numbers. \r\n\r\nHint:To find the value of `k`, calculate the sum of the first `k` even numbers until this sum \r\nbecomes greater than or equal to `N`. \r\n\r\nExamples:\r\n - If N = 20 then S = 2+4+6+8 = N  ==>  N is pronic and `k = 4 (20 = 4 * 5)`. \r\n - If `N = 23` then `S = 2+4+6+8+10 = 30 > N  ==>  N is not pronic and `k = 5 (23 < 5*6)`. \r\n \r\nWrite a program in c that checks whether an integer `N` is a pronounced number or not and displays the value of `k`.",
+            "initialCode": "// Enter code here",
+            "level": "medium",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 70,
+            "title": "pronic numbers"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 37,
+        "fields": {
+            "category": null,
+            "context": "Let A be a matrix of 10 x 20 real numbers; \r\nWrite a program in c to enter A, then calculate the number of elements that are both \r\nof both their row and column. \r\n\r\nExample: In this matrix, there are 2 elements that are maximum of their rows and columns at the same time. \r\ncolumns at the same time.",
+            "initialCode": "// Enter code here",
+            "level": "hard",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 300,
+            "title": "the colons of a matrix"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 38,
+        "fields": {
+            "category": null,
+            "context": "Two strictly positive integers N1 and N2 are said to be brothers if each digit of N1 is found in N2 and conversely, each digit of N2 is found in N1. \r\nN2 and, conversely, each digit of N2 is found in N1. \r\n\r\nExamples: \r\n- 1164 and 641 are brothers because the digits 1, 6 and 4 are present in both numbers. \r\n- 905 and 5909 are brothers because the digits 9, 0, and 5 are present in both numbers. \r\n- 405 and 554 are not brothers because although the digits 4 and 5 are present in both \r\nnumbers, the digit 0 is present in 405 but absent from 554.",
+            "initialCode": "// Enter code here",
+            "level": "hard",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 300,
+            "title": "Sibling numbers"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 39,
+        "fields": {
+            "category": null,
+            "context": "Write a program that calculates the determinant of a given square matrix. The matrix will be represented as a 2D array, and your program should output the determinant value of the matrix.\r\n\r\n# Input:\r\n- A square matrix A of size n \u00d7 n (where n \u2265 1)\r\n- The matrix will be given as a 2D array of integers\r\n\r\n# Output:\r\n- The determinant of the given matrix A\r\n\r\n# Constraints:\r\n- The size of the matrix n can range from 1 to 10\r\n- The elements of the matrix will be integers\r\n\r\n# Explanation:\r\nThe determinant of a 3\u00d73 matrix is calculated as:\r\n\r\ndeterminant = 1 * (5 * 9 - 6 * 8) - 2 * (4 * 9 - 6 * 7) + 3 * (4 * 8 - 5 * 7) = 0\r\n\r\nThe determinant of a 2\u00d72 matrix is calculated as:\r\n\r\ndeterminant = 1 * 4 - 2 * 3 = -2\r\n\r\nYou can use either a recursive approach or LU decomposition for the determinant calculation.\r\n\r\n\r\n# Note:\r\nThis problem can be solved using:\r\n1. Recursive Method\r\n2. LU Decomposition\r\n\r\nThe solution should handle different matrix sizes efficiently and provide accurate results for all valid input cases.",
+            "initialCode": "// Enter code here",
+            "level": "hard",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 300,
+            "title": "Determinant Calculator"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 40,
+        "fields": {
+            "category": null,
+            "context": "We define a magic square to be an n \u00d7 n matrix of distinct positive integers from 1 to n\u00b2 where the sum of any row, column, or diagonal of length n is always equal to the same number: the magic constant.\r\n\r\nYou will be given a 3 \u00d7 3 matrix s of integers in the inclusive range [1, 9]. We can convert any digit a to any other digit b in the range [1, 9] at a cost of |a - b|. Given s, convert it into a magic square at minimal cost. Print this cost on a new line.\r\n\r\nNote:\r\nThe resulting magic square must contain distinct integers in the inclusive range [1, 9].\r\n\r\nExample:\r\n\r\nInput matrix like this:\r\n[ [5, 3, 4],\r\n  [1, 5, 8],\r\n  [6, 4, 2] ]\r\n\r\nWe can convert it to the following magic square:\r\n[ [8, 3, 4],\r\n  [1, 5, 9],\r\n  [6, 7, 2] ]\r\n\r\nThis took three replacements at a cost of |5 - 8| + |8 - 9| + |4 - 7| = 7.\r\n\r\nFunction Description:\r\nComplete the formingMagicSquare function in the editor below.\r\n\r\nformingMagicSquare has the following parameter(s):\r\n- int s[3][3]: a 3 \u00d7 3 array of integers\r\n\r\nReturns:\r\n- int: the minimal total cost of converting the input square to a magic square\r\n\r\nInput Format:\r\nEach of the 3 lines contains three space-separated integers of row s[i].\r\n\r\nConstraints:\r\n- s[i][j] \u2208 [1, 9]\r\n\r\nSample Input 0:\r\n[ [4, 9, 2],\r\n  [3, 5, 7],\r\n  [8, 1, 5] ]\r\n\r\nSample Output 0:\r\n1\r\n\r\nExplanation 0:\r\nIf we change the bottom right value, s[2][2], from 5 to 6 at a cost of |6 - 5| = 1, s becomes a magic square at the minimum possible cost.\r\n\r\nSample Input 1:\r\n[ [4, 8, 2],\r\n  [4, 5, 7],\r\n  [6, 1, 6] ]\r\n\r\nSample Output 1:\r\n4\r\n\r\nExplanation 1:\r\nUsing 0-based indexing, if we make:\r\n- s[0][1] \u2192 9 at a cost of |9 - 8| = 1\r\n- s[1][0] \u2192 3 at a cost of |3 - 4| = 1\r\n- s[2][0] \u2192 8 at a cost of |8 - 6| = 2\r\n\r\nThen the total cost will be 1 + 1 + 2 = 4.",
+            "initialCode": "// Enter code here",
+            "level": "hard",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 300,
+            "title": "Forming a Magic Square"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 41,
+        "fields": {
+            "category": null,
+            "context": "You are tasked with solving the **Traveling Salesman Problem (TSP)**, which requires finding the shortest possible route that visits all cities exactly once and returns to the origin city. The cities and their distances are represented by a distance matrix. Your program should calculate the shortest route and output the total distance of the route.\r\n\r\n### Input:\r\n- The input will consist of:\r\n  1. An integer n representing the number of cities (where n >= 2).\r\n  2. A 2D array (matrix) of size n x n where each element D[i][j] represents the distance between city i and city j.\r\n\r\n### Output:\r\n- The shortest possible distance that visits all cities exactly once and returns to the starting city.\r\n\r\n### Constraints:\r\n- The number of cities n will be between 2 and 10.\r\n- The distance between two cities will be a positive integer.\r\n- The distance from a city to itself (i.e., D[i][i]) will be 0.\r\n\r\n### Example 1:\r\n#### Input:\r\n0 10 15 20\r\n10 0 35 25\r\n15 35 0 30\r\n20 25 30 0\r\n\r\n#### Output:\r\n80\r\n\r\n#### Explanation:\r\nFor a 4-city problem with the given distance matrix, the shortest route is:\r\nCity 1 \u2192 City 2 \u2192 City 4 \u2192 City 3 \u2192 City 1, and the total distance is 80.\r\n\r\n### Example 2:\r\n#### Input:\r\n0   5  10\r\n5   0   8\r\n10 8   0\r\n\r\n#### Output:\r\n23\r\n\r\n#### Explanation:\r\nFor a 3-city problem with the given distance matrix, the shortest route is:\r\nCity 1 \u2192 City 2 \u2192 City 3 \u2192 City 1, and the total distance is 23.",
+            "initialCode": "// Enter code here",
+            "level": "hard",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 500,
+            "title": "Traveling Salesman Problem (TSP)"
+        }
+    },
+    {
+        "model": "tasks.Task",
+        "pk": 42,
+        "fields": {
+            "category": null,
+            "context": "You are given a **2D matrix** of dimensions m x n and a positive integer r. Your task is to rotate the matrix r times in the **anti-clockwise direction** and print the resultant matrix.\r\n\r\n### Rotation Rules:\r\n- A single rotation involves shifting all elements in the matrix **by one step** in an anti-clockwise direction.\r\n- The rotation should happen layer by layer, starting from the outermost layer and proceeding inwards.\r\n\r\n### Input:\r\n1. Two integers, m and n, representing the number of rows and columns of the matrix, respectively.\r\n2. A positive integer r, representing the number of rotations.\r\n3. A 2D matrix of size m x n, where each element is a non-negative integer.\r\n\r\n### Output:\r\n- The resultant matrix after performing r anti-clockwise rotations.\r\n\r\n### Constraints:\r\n- m, n >= 2\r\n- r >= 1\r\n- min(m, n) is guaranteed to be even.\r\n\r\n### Example 1:\r\n#### Input:\r\n1   2   3   4\r\n5   6   7   8\r\n9   10 11 12\r\n13 14 15 16\r\n\r\n#### Output:\r\n3 4 8 12\r\n2 11 10 16\r\n1 7 6 15\r\n5 9 13 14\r\n\r\n#### Explanation:\r\n- After one rotation, the elements of the matrix are shifted **anti-clockwise** layer by layer.",
+            "initialCode": "// Enter code here",
+            "level": "hard",
+            "nextTask": null,
+            "openCode": null,
+            "phase": 1,
+            "points": 300,
+            "title": "Matrix Rotation Problem"
+        }
+    },
+
+
+
+    {
+        "model": "tasks.task",
+        "pk": 43,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Infinite Loop - Ambiguous Flags",
+            "context": "The program tries to count the number of even numbers in a sequence, but it never terminates, leading to an infinite loop.\r\nHints:\r\nConsider how z determines loop termination.\r\nIs the condition for z correctly aligned with the logic?",
+            "initialCode": "#include <stdio.h>\r\nint main() {\r\n    int y = 0, z = 1, c = 0;\r\n    while (z) {\r\n        y++;\r\n        if (y % 2 = 0) {\r\n            c++;\r\n            z = (y % 10 != 0);\r\n        }\r\n    }\r\n    printf(\"Total: %d\\n\", count);\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 44,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "The Vanishing Data",
+            "context": "The program attempts to remove duplicates of an array, but encounters unexpected behavior where:\r\n- Data vanishes entirely\r\n- The output array contains unintended results",
+            "initialCode": "int function(int *arr, int n) {\r\n    int index = 0;\r\n    for (int i = 0; i < n; i++) {\r\n        for (int j = 0; j < i; j++) {\r\n            if (arr[i] == arr[j]) break;\r\n        }\r\n        arr[index++] = arr[i];\r\n    }\r\n    return index;\r\n}\r\n\r\nint main() {\r\n    int arr[] = {1, 2, 3, 2, 1, 4, 5};\r\n    int n = sizeof(arr) / sizeof(arr[0]);\r\n    int newSize = function(arr, n);\r\n    for (int i = 0; i < newSize; i++) {\r\n        printf(\"%d \", arr[i]);\r\n    }\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 45,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Detecting islands",
+            "context": "The program is designed to check a grid for specific \"islands\" of connected values. However, it doesn't work properly",
+            "initialCode": "#define ROWS 3\r\n#define COLS 3\r\n\r\nint detectIsland(int grid[][]) {\r\n    int found;\r\n    for (int i = 0; i < ROWS; i++) {\r\n        for (int j = 0; j < COLS; j++) {\r\n            if (grid[i][j] == 1) {\r\n                found = 1;\r\n            }\r\n        }\r\n        found = 0;\r\n    }\r\n    return found;\r\n}\r\n\r\nint main() {\r\n    int grid[ROWS][COLS] = {\r\n        {0, 1, 0},\r\n        {0, 1, 1},\r\n        {0, 0, 0}\r\n    };\r\n    if (detectIsland(grid)) {\r\n        printf(\"Island found!\\n\");\r\n    } else {\r\n        printf(\"No islands found.\\n\");\r\n    }\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 46,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Unexpected Behavior - Mismanaged Input",
+            "context": "The program is intended to calculate the **sum of numbers** entered by the user. However, it produces **incorrect results**",
+            "initialCode": "#include <stdio.h>\r\nmain() {\r\n    int x, sum = 0;\r\n    char end;\r\n    do {\r\n        scanf(\"%d\", &x);\r\n        sum += x;\r\n    } while (end !='q')\r\n    printf(\"Total sum: %d\\n\", sum);\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 47,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Obfuscated Logical Error - Incorrect Data Flow",
+            "context": "The program is designed to calculate the **weighted average of values**, but the output is **inconsistent**, suggesting an error in the data flow or logic.",
+            "initialCode": "#include <stdio.h>\r\nfloat avg(int a, int b) {\r\n    return a / b * 0.5;\r\n}\r\n\r\nint main() {\r\n    int u = 10, v = 20;\r\n    float result = avg(v, u);\r\n    printf(\"Weighted average: %.2f\\n\", result);\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 48,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Incorrect String Handling with Pointers",
+            "context": "The program is intended to copy a string from `src` to `des `. HoweveIt's**, leading to undefined behavior.",
+            "initialCode": "#include <stdio.h>\r\n\r\nvoid copyString(char *dest, char *src) {\r\n    while (*src) {\r\n        *ds too small\r\n        src++;\r\n        dest++;\r\n    }\r\n}\r\n\r\nint main() {\r\n    char src[] = \"Hello, World!\";\r\n    char dest[5]; \r\n    copyString(dest, src);\r\n    printf(\"%s\\n\", de```\r\n\r\n## Correction\r\n\r\n```c\r\nvoid copyString(char *dest, char *src) {\r\n    while (*src && dest - start_dest < max_length - 1) { // Add bounds check\r\n        *dest = *src;\r\n        src++;\r\n        dest++;\r\n    }\r\n    *dest = '\\0'; // Null-terminate the string\r\n}\r\nst);\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 49,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Not automorphic enough",
+            "context": "- This was the code of a fictif participant during the first phase, can you recognize where the issue(s)'s in ?\r\n- Remainder : A positive integer N (where $N>0$ ) is called an automorphic number if its square (N2) ends \r\nwith the number N itself. Examples: The numbers $25, 76,$ and 890625 are automorphic",
+            "initialCode": "#include <stdio.h>\r\n\r\nvoid check_automorphic() {\r\n    int N, N2;\r\n    bool isAutomorphic = false;\r\n\r\n    N2 = N * N;\r\n\r\n    while (N != 0 && isAutomorphic) {\r\n        if (N / 10 != N2 / 10) {\r\n            isAutomorphic = false;\r\n        }\r\n        N %= 10;  // Remove the last digit of N\r\n        N2 %= 10; // Remove the last digit of N2\r\n    }\r\n\r\n    if (isAutomorphic) {\r\n        printf(\"%d is an automorphic number.\\n\", N);\r\n    } else {\r\n        printf(\"%d is not an automorphic number.\\n\", N);\r\n    }\r\n}\r\n\r\nint main() {\r\n    check_automorphic();\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 150,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 50,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Pairs Difference",
+            "context": "- Given the first lines of a code that should determine for an array of integers and a target value, the number of pairs of array elements that have a difference equal to the target value, complete the missing instructions to ensure that the code works as intended\r\n- **Note** : assume that the `qsort` function and `compare` are correct  \r\n- **Input Format** : The first line contains two space-separated integers  and , the size of  and the target value.\r\nThe second line contains  space-separated integers of the array .",
+            "initialCode": "#include <stdio.h>\r\n#include <stdlib.h>\r\n\r\n// Comparison function for sorting\r\nint compare(const void *a, const void *b) {\r\n    return (*(int *)a - *(int *)b);\r\n}\r\n\r\n// Function to count pairs with a difference of k\r\nint pairs(int k, int arr[], int n) {\r\n    int count = 0;\r\n    int i = 0, j = 0;\r\n\r\n    // Sort the array\r\n    qsort(arr, n, sizeof(int), compare);\r\n\r\n    // Missing instructions ...\r\n\r\n    return count;\r\n}\r\n\r\nint main() {\r\n    int n, k;\r\n    \r\n    // Missing implementation of Main function ..\r\n\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 51,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Wrong String Concatenation",
+            "context": "A student tries to concatenate two strings using the `+` operator, but in C programming language ?",
+            "initialCode": "#include <stdio.h>\r\n#include <string.h>\r\n\r\nint main() {\r\n    char str1[10] = \"Hello\";\r\n    char str2[] = \"World\";\r\n    char result[10];\r\n    \r\n    result = str1 + str2; \r\n    printf(\"%s\\n\", result);\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 50,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 52,
+        "fields": {
+            "phase": 2,
+            "category": null,
+            "title": "Dynamic Grid Navigation",
+            "context": "You are designing a program to calculate the minimum cost to traverse from the top-left corner to the bottom-right corner of a grid. Each cell in the grid contains a cost, and you can move only down or right. However, the program has logical bugs and is incomplete. The task is to fix the errors and complete the missing functionality to solve the problem.",
+            "initialCode": "#include <stdio.h>\r\n#include <stdlib.h>\r\n#include <limits.h>\r\n\r\n// Function to calculate the minimum cost\r\nint minCost(int **grid, int n, int m) {\r\n    int dp[n][m];  // Dynamic programming table\r\n\r\n    // Initialize the top-left cell\r\n    dp[0][0] = grid[0][0];\r\n\r\n    // Fill the first row\r\n    for (int i = 0; i < n; i++) {\r\n        dp[0][i] = dp[0][i - 1] + grid[0][i]; \r\n    }\r\n\r\n    // Fill the first column\r\n    for (int j = 1; j < m; j++) {\r\n        dp[j][0] = dp[j - 1][0] + grid[j][0];\r\n    }\r\n\r\n    // Fill the rest of the dp table \r\n    for (int i = 1; i < n; i++) {\r\n        for (int j = 1; j < m; j++) {\r\n            dp[i][j] = grid[i][j]; \r\n        }\r\n    }\r\n\r\n    return dp[n - 1][m - 1];\r\n}\r\n\r\nint main() {\r\n    int n, m;\r\n    scanf(\"%d %d\", &n, &m);\r\n\r\n    // Allocate memory for the grid\r\n    int **grid = (int **)malloc(n * sizeof(int *));\r\n    for (int i = 0; i < n; i++) {\r\n        grid[i] = (int *)malloc(m * sizeof(int));\r\n        for (int j = 0; j < m; j++) {\r\n            scanf(\"%d\", &grid[i][j]);\r\n        }\r\n    }\r\n\r\n    printf(\"Minimum Cost: %d\\n\", minCost(grid, n, m));\r\n\r\n    // Free allocated memory\r\n    for (int i = 0; i < n; i++) {\r\n        free(grid[i]);\r\n    }\r\n    free(grid);\r\n\r\n    return 0;\r\n}",
+            "level": null,
+            "points": 250,
+            "nextTask": null,
+            "openCode": null
+        }
+    },
+
+
+
+    {
+        "model": "tasks.task",
+        "pk": 53,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Cryptarithms",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 300,
+            "nextTask": null,
+            "openCode": "JQK584971"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 54,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Chess",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 250,
+            "nextTask": 53,
+            "openCode": "MFO248316"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 55,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Cypher",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 200,
+            "nextTask": 54,
+            "openCode": "GNB761594"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 56,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Alpha equation",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 150,
+            "nextTask": 55,
+            "openCode": "XTL483762"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 57,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Go game",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 140,
+            "nextTask": 56,
+            "openCode": "CRJ867249"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 58,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Math riddle",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 120,
+            "nextTask": 57,
+            "openCode": "PVQ695317"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 59,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Morse",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 100,
+            "nextTask": 58,
+            "openCode": "ZME125847"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 60,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Recursive code puzzle",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 50,
+            "nextTask": 59,
+            "openCode": "LKO947516"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 61,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Fibonacci sequence",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 30,
+            "nextTask": 60,
+            "openCode": "BTX194682"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 62,
+        "fields": {
+            "phase": 3,
+            "category": null,
+            "title": "Math riddle 2",
+            "context": "empty",
+            "initialCode": "empty",
+            "level": null,
+            "points": 20,
+            "nextTask": 61,
+            "openCode": null
+        }
+    },
+
+
+
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "0z9y8x7w",
+        "fields": {
+            "task": 55,
+            "hints_value": 80,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "1a2b3c4d",
+        "fields": {
+            "task": 54,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "1m2n3o4p",
+        "fields": {
+            "task": 62,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "4d3c2b1a",
+        "fields": {
+            "task": 54,
+            "hints_value": 100,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "4w5x6y7z",
+        "fields": {
+            "task": 53,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "5f6g7h8i",
+        "fields": {
+            "task": 55,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "5z6y7x8w",
+        "fields": {
+            "task": 62,
+            "hints_value": 10,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "7h6g5f4e",
+        "fields": {
+            "task": 60,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "7x8y9z1a",
+        "fields": {
+            "task": 57,
+            "hints_value": 45,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "8u7i6o5p",
+        "fields": {
+            "task": 62,
+            "hints_value": 10,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9d8c7b6a",
+        "fields": {
+            "task": 58,
+            "hints_value": 50,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9f8e7d6c",
+        "fields": {
+            "task": 54,
+            "hints_value": 100,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9m8n7o6p",
+        "fields": {
+            "task": 56,
+            "hints_value": 60,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "9r8s7t6u",
+        "fields": {
+            "task": 61,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "a1b2c3d4",
+        "fields": {
+            "task": 54,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "a5b6c7d8",
+        "fields": {
+            "task": 57,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "a9b8c7d6",
+        "fields": {
+            "task": 60,
+            "hints_value": 20,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "b3c4d5e6",
+        "fields": {
+            "task": 58,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "b4c5d6e7",
+        "fields": {
+            "task": 62,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "c1d2e3f4",
+        "fields": {
+            "task": 57,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "c8d7e9f2",
+        "fields": {
+            "task": 59,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "d1c2b3a4",
+        "fields": {
+            "task": 55,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "e5d6c7b8",
+        "fields": {
+            "task": 60,
+            "hints_value": 20,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "f5e4d3c2",
+        "fields": {
+            "task": 61,
+            "hints_value": 10,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "f6g7h8i9",
+        "fields": {
+            "task": 53,
+            "hints_value": 140,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "g1h2i3j4",
+        "fields": {
+            "task": 56,
+            "hints_value": 60,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "h3j4k5l6",
+        "fields": {
+            "task": 59,
+            "hints_value": 30,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "k7l8m9n1",
+        "fields": {
+            "task": 53,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "m9n8o7p6",
+        "fields": {
+            "task": 57,
+            "hints_value": 45,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "n7m8l9k1",
+        "fields": {
+            "task": 59,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "p0o9i8u7",
+        "fields": {
+            "task": 58,
+            "hints_value": 50,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "p2q3r4s5",
+        "fields": {
+            "task": 56,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "p5q6r7s8",
+        "fields": {
+            "task": 61,
+            "hints_value": 10,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "q1w2e3r4",
+        "fields": {
+            "task": 55,
+            "hints_value": 80,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "r1s2t3u4",
+        "fields": {
+            "task": 59,
+            "hints_value": 30,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "t5u6v7w8",
+        "fields": {
+            "task": 56,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "u1v2w3x4",
+        "fields": {
+            "task": 53,
+            "hints_value": 140,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "w3x2y1z4",
+        "fields": {
+            "task": 61,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "x7y8z9a1",
+        "fields": {
+            "task": 58,
+            "hints_value": 0,
+            "result": "win"
+        }
+    },
+    {
+        "model": "tasks.thirdphasecode",
+        "pk": "z1x2c3v4",
+        "fields": {
+            "task": 60,
+            "hints_value": 0,
+            "result": "lose"
+        }
+    }
+]
