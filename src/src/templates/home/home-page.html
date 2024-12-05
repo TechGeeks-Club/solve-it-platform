@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solve It - Programming Challenge Platform</title>
     <link rel="stylesheet" href="{% static 'css/home-page.css' %}" />
+
+    {% include "components/com_header.html"%}
   </head>
   <body>
     <section class="all-Page">
@@ -15,7 +17,9 @@
 
       <main>
         <section class="hero">
-          <h1>Solve It</h1>
+          {% include "components/error_message.html" %}
+          {% comment %} <h1>Solve It</h1> {% endcomment %}
+          <img src="{% static 'img/Logo.webp' %}" alt="Logo" style="height: 115px;margin-bottom: 25px;">
           <p>
             Join the Code Challenge and compete against others in a set of
             programming problems

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Challenge Details</title>
     <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
-
+    {% include "components/com_header.html"%}
 
     {% comment %} <link rel="stylesheet" href="{% static 'editor/css/codemirror.min.css' %}" /> {% endcomment %}
     {% comment %} <link rel="stylesheet" href="{% static 'editor/css/monokai.min.css' %}" /> {% endcomment %}
@@ -25,15 +25,19 @@
         <div class="challenge-header">
           <h1>{{task.title}}</h1>
           <div class="challenge-meta">
-            <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
+            {% if task.level %}
+              <span class="level-tag {{ task.level|lower }}">Level: {{task.level|capfirst}}</span>
+            {% endif %}
             <span>Score: {{task.points}} points</span>
             <span>Phase: {{task.phase.name}} </span>
           </div>
         </div>
         <div class="challenge-problematic">
-          <p>{{task.context}}</p>
+          <p>{{ task.context|linebreaksbr }}</p>
         </div>
         <div class="challenge-example">
+          
+        {% if task.task_tests.all%}  
           <h3>Example:</h3>
           <div>
             {% for test in task.task_tests.all %}
@@ -41,11 +45,14 @@
               <span>Output: {{test.output}}</span>
             {% endfor %}
           </div>
+          {% endif %}
         </div>
+        
        
         {% if not tasksolution%}
+        <h2>Code:</h2>
         <div class="challenge-code">
-          <h2>Code:</h2>
+          
           <textarea id="textInput">{{task.initialCode}}</textarea>
         </div>
         <div class="challenge-submit">

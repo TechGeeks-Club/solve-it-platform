@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Team</title>
     <link rel="stylesheet" href="{% static 'css/forms.css' %}" />
+    {% include "components/com_header.html"%}
+
 </head>
 <body>
   {% include "components/nav.html"%}
@@ -19,7 +21,7 @@
             Only one participant create a team, and the rest members should join it using name and passworc
           </p>
         </div>
-      
+        {% include "components/error_message.html" %}
         <form method="post" action="{% url 'createTeam' %}" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
             {% csrf_token %}
           <div>

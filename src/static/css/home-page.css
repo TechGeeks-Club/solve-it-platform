@@ -7,7 +7,7 @@
 
 body {
   /* width: 1422px; */
-  height: 100%;
+  height: 800px;
   gap: 0px;
   opacity: 0px;
   background-color: #e7ebee;
@@ -19,15 +19,16 @@ body {
 }
 .all-Page {
   /* width: 100%; */
-  height: 938px;
+  height: 100%;
   top: 21px;
   left: 24px;
   gap: 0px;
   opacity: 0px;
   border-radius: 20px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); */
   background-color: white;
   width: 100%;
+  overflow: hidden;
 }
 main {
   width: 100%;
@@ -43,7 +44,7 @@ main {
 }
 /* background: linear-gradient(to bottom, #ffffff, #f0f4ff);
  */
-/* .navbar {
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,10 +52,9 @@ main {
   background: white;
   border-bottom: 1px solid #eee;
   border-radius: 20px;
-  position: sticky;
+
   height: 63px;
   width: 100%;
-  top: 0;
 }
 
 .logo {
@@ -74,9 +74,9 @@ main {
   text-decoration: none;
   color: #666;
   font-weight: 500;
-} */
+}
 
-/* .sign-in {
+.sign-in {
   background: #1a73e8;
   color: white !important;
   padding: 0.5rem 1.25rem;
@@ -86,7 +86,7 @@ main {
 
 .sign-in:hover {
   background: #1557b0;
-} */
+}
 
 .hero {
   text-align: center;
@@ -185,7 +185,7 @@ main {
   border-bottom: none;
 }
 
-/* Hamburger button styling
+/* Hamburger button styling */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -197,12 +197,13 @@ main {
   height: 3px;
   width: 25px;
   margin: 3px 0;
-} */
+}
 
 @media (max-width: 768px) {
-  /* body {
-    padding-right: 17px;
-  } */
+  body {
+    min-height: 1000px;
+    max-height: 1100px;
+  }
   .nav-links {
     gap: 1rem;
   }
@@ -236,5 +237,3 @@ main {
     display: none;
   }
 }
-
-

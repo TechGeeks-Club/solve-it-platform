@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [".vercel.app","localhost","127.0.0.1" , "*"]
 
-LOGIN_URL = '/participant_login'
+LOGIN_URL = '/login'
 # Application definition
 
 INSTALLED_APPS = [
@@ -77,25 +77,25 @@ WSGI_APPLICATION = 'src.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "SolveItDB",
-        'USER': "SolveItDB_owner",
-        'PASSWORD': "v9g6CLEFscjk",
-        'HOST': "ep-plain-water-a25evwjr.eu-central-1.aws.neon.tech",
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "SolveItDB",
+#         'USER': "SolveItDB_owner",
+#         'PASSWORD': "v9g6CLEFscjk",
+#         'HOST': "ep-plain-water-a25evwjr.eu-central-1.aws.neon.tech",
+#         'PORT': 5432,
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -144,3 +144,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
