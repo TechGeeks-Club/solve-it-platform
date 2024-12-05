@@ -9,11 +9,10 @@ services:
         - /var/www/solve-it-platform/media:/app/media
         - ./volumes/log/gunicorn/:/log/gunicorn/
       env_file:
-        - .env
-  
+        - .env 
       ports:
         - ${GUNICORN_PORT}:${GUNICORN_PORT}
-      container_name: django_app
+      container_name: django_app3
       command: >
           sh -c "python manage.py makemigrations &&
                 python manage.py migrate &&
