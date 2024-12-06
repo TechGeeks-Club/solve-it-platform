@@ -85,17 +85,15 @@ def taskView(request:HttpRequest, task_id:int):
     if not checkParticipationExistance(task,participant) :
         if request.method == "POST" :
                 
-
-        
-            if "uploadedFile" in request.FILES :
-                file = request.FILES['uploadedFile']
+            if "textContent" in request.POST :
+                textContent = request.POST.get("textContent")
                 try :
                     with transaction.atomic():
                         TaskSolution(
                             task= task,
                             participant=participant,
                             team=participant.team,
-                            code= file
+                            code= textContent
                         ).save()  
                         context["tasksolution"] = True 
 
@@ -178,7 +176,7 @@ def thirdPhaseView(request:HttpRequest ):
 
 @login_required
 def tasksFileDownload(request:HttpRequest):
-    file_path = os.path.join(settings.MEDIA_ROOT, "tasks.rar")
-    if os.path.exists(file_path):
-        return FileResponse(open(file_path, 'rb'), as_attachment=True)
+    # file_path = os.path.join(settings.MEDIA_ROOT, "tasks.rar")
+    # if os.path.exists(file_path):
+    #     return FileResponse(open(file_path, 'rb'), as_attachment=True)
     raise Http404

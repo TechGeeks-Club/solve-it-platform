@@ -18,8 +18,9 @@ class TaskSolutionForm(forms.ModelForm):
     
     def get_code_src(self, obj):
         if obj.code:
-            with open(obj.code.path, 'r') as file:
-                return file.read()
+            # with open(obj.code.path, 'r') as file:
+            #     return file.read()
+            return obj.code
         return " "
      
     class Meta:
