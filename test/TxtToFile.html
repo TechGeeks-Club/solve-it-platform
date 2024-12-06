@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        textarea {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Convert Text to File</h1>
+    <textarea id="textInput" rows="10" placeholder="Write your text here..."></textarea>
+    <br>
+    <button id="downloadBtn">Download as .txt</button>
+
+    <script>
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+            // Get the text from the textarea
+            const text = document.getElementById("textInput").value;
+
+            // Create a blob with the text content
+            const blob = new Blob([text], { type: "text/plain" });
+
+            // Create a temporary anchor element
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "output.txt"; // Name of the file to download
+
+            // Append the anchor to the document and trigger the click
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up: remove the anchor element and revoke the blob URL
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+        });
+    </script>
+</body>
+</html>
