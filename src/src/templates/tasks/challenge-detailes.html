@@ -69,9 +69,9 @@
 </div>
 </main>
 <div style="display: none">
-  <form action="{{task.id}}" method="POST" id="hiddenForm"  enctype="multipart/form-data">
+  <form action="{{task.id}}" method="POST" id="hiddenForm">
     {% csrf_token %}
-    <input type="file" name="uploadedFile" id="uploadedFile" required />
+    <input type="hidden" name="textContent" id="textContentInput" />
   </form>
 </div>
 </section>
@@ -102,22 +102,9 @@
     const textArea = document.getElementById("textInput");
     const textContent = textArea.value;
 
-    // Create the file
-    const file = new Blob([textContent], { type: "text/plain" });
-
-    // Set the file as value for the hidden input
-    const inputElement = document.getElementById("uploadedFile");
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(new File([file], "code.txt"));
-    inputElement.files = dataTransfer.files;
-
-    // Trigger the download
-    const downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(file);
-    downloadLink.download = "code.txt";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    // Set the text content as the value of the hidden input
+    const hiddenInput = document.getElementById("textContentInput");
+    hiddenInput.value = textContent;
 
     // Submit the form
     document.getElementById("hiddenForm").submit();
