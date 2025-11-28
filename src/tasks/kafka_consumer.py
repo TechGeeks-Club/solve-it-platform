@@ -1,0 +1,137 @@
+"""
+Kafka Consumer Service for Django
+Receives results from judge microservice and saves to database
+"""
+import json
+import logging
+import asyncio
+from typing import Optional
+from datetime import datetime
+from aiokafka import AIOKafkaConsumer
+from aiokafka.errors import KafkaError
+from django.conf import settings
+import django
+from django.utils import timezone
+
+logger = logging.getLogger(__name__)
+
+
+class KafkaConsumerService:
+    """Async Kafka consumer for receiving judge results"""
+    
+    def __init__(self):
+        self.consumer: Optional[AIOKafkaConsumer] = None
+        self.running = False
+        
+    async def start(self):
+        """Initialize and start the Kafka consumer"""
+        try:
+            self.consumer = AIOKafkaConsumer(
+                settings.KAFKA_RESULT_TOPIC,
+                bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS,
+                group_id='django-result-consumer',
+                value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+                key_deserializer=lambda k: k.decode('utf-8') if k else None,
+                auto_offset_reset='earliest',
+                enable_auto_commit=True
+            )
+            await self.consumer.start()
+            logger.info("Kafka consumer started successfully")
+            self.running = True
+        except Exception as e:
+            logger.error(f"Failed to start Kafka consumer: {e}")
+            raise
+    
+    async def stop(self):
+        """Stop the Kafka consumer"""
+        self.running = False
+        if self.consumer:
+            await self.consumer.stop()
+            logger.info("Kafka consumer stopped")
+    
+    async def consume_results(self):
+        """
+        Main loop to consume and process results
+        """
+        from tasks.models import TaskSolution  # Import here to avoid circular imports
+        
+        logger.info("Starting to consume results from Kafka...")
+        
+        try:
+            async for message in self.consumer:
+                if not self.running:
+                    break
+                    
+                try:
+                    result = message.value
+                    submission_id = result.get('submission_id')
+                    
+                    logger.info(f"Received result for submission {submission_id}")
+                    
+                    # Get the submission from database
+                    try:
+                        submission = await asyncio.to_thread(
+                            TaskSolution.objects.get,
+                            id=submission_id
+                        )
+                    except TaskSolution.DoesNotExist:
+                        logger.error(f"Submission {submission_id} not found in database")
+                        continue
+                    
+                    # Update submission with results
+                    submission.status = result.get('status', 'completed')
+                    submission.passed_tests = result.get('passed_tests', 0)
+                    submission.total_tests = result.get('total_tests', 0)
+                    submission.score = result.get('score', 0)
+                    submission.execution_time = result.get('execution_time')
+                    submission.memory_used = result.get('memory_used')
+                    submission.test_results = result.get('test_results', [])
+                    submission.compiler_output = result.get('compiler_output', '')
+                    submission.error_message = result.get('error_message', '')
+                    submission.processing_completed_at = timezone.now()
+                    
+                    if submission.score and submission.score > 0:
+                        submission.is_corrected = True
+                    
+                    # Save to database
+                    await asyncio.to_thread(submission.save)
+                    
+                    logger.info(
+                        f"Submission {submission_id} updated: "
+                        f"{submission.passed_tests}/{submission.total_tests} tests passed, "
+                        f"score: {submission.score}"
+                    )
+                    
+                except Exception as e:
+                    logger.error(f"Error processing result message: {e}", exc_info=True)
+                    
+        except Exception as e:
+            logger.error(f"Error in consume_results loop: {e}", exc_info=True)
+        finally:
+            await self.stop()
+
+
+async def result_consumer_loop():
+    """
+    Standalone async function to run the result consumer
+    This should be run in a separate process or management command
+    """
+    consumer = KafkaConsumerService()
+    
+    try:
+        await consumer.start()
+        await consumer.consume_results()
+    except KeyboardInterrupt:
+        logger.info("Result consumer interrupted")
+    finally:
+        await consumer.stop()
+
+
+if __name__ == '__main__':
+    # Setup Django
+    import os
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'src.settings')
+    django.setup()
+    
+    # Run the consumer
+    asyncio.run(result_consumer_loop())

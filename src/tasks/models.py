@@ -50,12 +50,18 @@ class Task(models.Model):
 
 class TaskTest(models.Model):
     task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE, related_name="task_tests")
-    input = models.TextField(null=False)
+    input = models.TextField(null=False, blank=True)
     output = models.TextField(null=False)
     display = models.BooleanField(default=False)
+    weight = models.IntegerField(default=1)  # For weighted scoring
+    is_sample = models.BooleanField(default=False)  # Mark sample test cases
+    order = models.IntegerField(default=0)  # Test execution order
+    
+    class Meta:
+        ordering = ['order', 'id']
     
     def __str__(self):
-        return self.task.title + " tests"
+        return f"{self.task.title} - Test {self.id}"
 
 
 
@@ -66,23 +72,53 @@ def get_file_path(participant, filename):
     return f'upload/{participant.team.name}/{filename}_{participant.id}.c'
 
 class TaskSolution(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+    
     task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE, related_name="task_solutions")
     participant = models.ForeignKey(Participant, null=True, on_delete=models.SET_NULL)
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
-    code = models.FileField(upload_to=get_file_path, blank=True, max_length=100)
+    code = models.TextField(null=True, blank=True)  # Store code as text
+    code_file = models.FileField(upload_to=get_file_path, blank=True, null=True, max_length=100)  # Optional file upload
+    language_id = models.IntegerField(default=50)  # Judge0 language ID (50 = C)
+    
     is_corrected = models.BooleanField(default=False)
-    submitted_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)] )
-    # ? i change the default here to 1 bcz we create obj form this class in the first solution so first try 
-    tries = models.IntegerField(null=False, default=1, validators=[MaxValueValidator(3)] )
+    submitted_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)])
+    tries = models.IntegerField(null=False, default=1, validators=[MaxValueValidator(3)])
+    
+    # Judge0 Integration Fields
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    kafka_sent_at = models.DateTimeField(null=True, blank=True)  # When sent to Kafka
+    processing_started_at = models.DateTimeField(null=True, blank=True)  # When judge service started
+    processing_completed_at = models.DateTimeField(null=True, blank=True)  # When judge service completed
+    
+    execution_time = models.FloatField(null=True, blank=True)  # Average execution time in seconds
+    memory_used = models.FloatField(null=True, blank=True)  # Average memory in KB
+    compiler_output = models.TextField(null=True, blank=True)
+    error_message = models.TextField(null=True, blank=True)  # Runtime errors
+    
+    passed_tests = models.IntegerField(default=0)
+    total_tests = models.IntegerField(default=0)
+    test_results = models.JSONField(null=True, blank=True, default=list)  # Detailed results per test
             
-    def save(self):
-        if self.score > 0:
+    def save(self, *args, **kwargs):
+        if self.score and self.score > 0:
             self.is_corrected = True
-        super().save()
+        super().save(*args, **kwargs)
+    
+    def calculate_score(self):
+        """Calculate score based on passed tests"""
+        if self.total_tests > 0:
+            return int((self.passed_tests / self.total_tests) * 100)
+        return 0
 
     def __str__(self):
-        return self.task.title + " Solution n"+ str(self.tries) 
+        return f"{self.task.title} - Solution #{self.tries} by {self.participant}" 
 
 class TaskCorrecton(models.Model):
     user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)

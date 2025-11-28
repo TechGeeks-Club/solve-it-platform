@@ -3,9 +3,11 @@ from django.http import HttpRequest
 from django.db import transaction
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 
 
 from .models import Phase,Task,TaskSolution,TaskTest,ThirdPhaseCode
+from .kafka_producer import send_submission_sync
 
 from registration.models import Participant,Team
 
@@ -84,25 +86,65 @@ def taskView(request:HttpRequest, task_id:int):
     
     if not checkParticipationExistance(task,participant) :
         if request.method == "POST" :
-                
-
-        
+            # Handle both file upload and direct code submission
+            code_content = None
+            language_id = int(request.POST.get('language_id', 50))  # Default to C
+            
             if "uploadedFile" in request.FILES :
                 file = request.FILES['uploadedFile']
+                try:
+                    code_content = file.read().decode('utf-8')
+                except Exception as e:
+                    messages.error(request, f"Error reading file: {str(e)}")
+                    return render(request,"tasks/challenge-detailes.html",context)
+            elif "code" in request.POST:
+                code_content = request.POST.get('code')
+            
+            if code_content:
                 try :
                     with transaction.atomic():
-                        TaskSolution(
-                            task= task,
+                        # Create submission record
+                        submission = TaskSolution(
+                            task=task,
                             participant=participant,
                             team=participant.team,
-                            code= file
-                        ).save()  
+                            code=code_content,
+                            language_id=language_id,
+                            status='pending',
+                            kafka_sent_at=timezone.now()
+                        )
+                        submission.save()
+                        
+                        # Send to Kafka for async processing
+                        kafka_sent = send_submission_sync(
+                            submission_id=submission.id,
+                            task_id=task.id,
+                            user_id=participant.user.id,
+                            team_id=participant.team.id,
+                            code=code_content,
+                            language_id=language_id
+                        )
+                        
+                        if kafka_sent:
+                            submission.status = 'processing'
+                            submission.save()
+                            messages.success(
+                                request,
+                                "Submission received! Your code is being evaluated..."
+                            )
+                        else:
+                            messages.warning(
+                                request,
+                                "Submission saved but evaluation service is unavailable. "
+                                "It will be processed when the service is back online."
+                            )
+                        
                         context["tasksolution"] = True 
 
                 except Exception as exp :
-                    err = exp.__str__()
+                    messages.error(request, f"Error submitting code: {str(exp)}")
 
-                return render(request,"tasks/challenge-detailes.html",context)
+            return render(request,"tasks/challenge-detailes.html",context)
         else : #! GET
             return render(request,"tasks/challenge-detailes.html",context)
      
