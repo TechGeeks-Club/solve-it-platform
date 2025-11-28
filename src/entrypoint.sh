@@ -24,6 +24,10 @@ done
 
 echo "PostgreSQL is up - continuing..."
 
+# Make migrations for any model changes
+echo "Creating migrations..."
+python manage.py makemigrations --noinput
+
 # Run migrations
 echo "Running database migrations..."
 python manage.py migrate --noinput
