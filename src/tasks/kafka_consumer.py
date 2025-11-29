@@ -128,6 +128,17 @@ class KafkaConsumerService:
                     await asyncio.to_thread(submission.save)
                     # submission.save()
                     
+                    # Award coins for 100% completion
+                    if submission.score == 100 and submission.status == 'completed':
+                        from registration.models import Team
+                        team = await asyncio.to_thread(
+                            lambda: Team.objects.get(id=submission.team.id)
+                        )
+                        coins_awarded = submission.task.coins
+                        team.coins += coins_awarded
+                        await asyncio.to_thread(team.save)
+                        logger.info(f"💰 Awarded {coins_awarded} coins to team {team.name} for 100% completion")
+                    
                     logger.info(
                         f"✓ Submission {submission_id} updated: "
                         f"{submission.passed_tests}/{submission.total_tests} tests passed, "

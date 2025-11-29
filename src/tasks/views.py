@@ -139,6 +139,18 @@ def taskView(request:HttpRequest, task_id:int):
     # Check if submission is still processing
     is_processing = tasksolution and tasksolution.status == 'processing'
     
+    # Check if team has Time Machine power and can use it
+    from .power_handlers import get_power_handler
+    has_time_machine = False
+    time_machine_used = False
+    
+    if tasksolution and remaining_attempts <= 0:
+        TimeMachine = get_power_handler('time_machine')
+        if TimeMachine:
+            can_use, reason = TimeMachine.can_use(team=participant.team, task=task, tasksolution=tasksolution)
+            has_time_machine = can_use
+            time_machine_used = "already used" in reason.lower()
+    
     context = {
         "task": task,
         "tasksolution": tasksolution,
@@ -146,6 +158,8 @@ def taskView(request:HttpRequest, task_id:int):
         "max_attempts": max_attempts,
         "remaining_attempts": remaining_attempts,
         "can_submit": remaining_attempts > 0 and not is_processing,
+        "has_time_machine": has_time_machine,
+        "time_machine_used": time_machine_used,
     }
     
     if request.method == "POST":
@@ -359,3 +373,144 @@ def leaderboardView(request: HttpRequest):
     }
     
     return render(request, 'tasks/leaderboard.html', context)
+
+
+@login_required
+def shopView(request: HttpRequest):
+    """
+    Display shop with available powers and handle purchases.
+    Teams can buy powers using coins earned from completing tasks.
+    Cooldown period between purchases prevents spam.
+    """
+    from .models import ShopPower, TeamPurchase
+    from datetime import timedelta
+    
+    # Get current user's team
+    try:
+        participant = Participant.objects.get(user=request.user)
+        team = participant.team
+    except:
+        messages.error(request, "You must be part of a team to access the shop")
+        return redirect("tasksDisplay")
+    
+    # Get platform settings for cooldown
+    settings_obj = Settings.get_settings()
+    cooldown_minutes = settings_obj.shop_cooldown_minutes
+    
+    # Check last purchase for cooldown
+    last_purchase = TeamPurchase.objects.filter(team=team).order_by('-purchased_at').first()
+    can_purchase = True
+    cooldown_remaining = None
+    
+    if last_purchase:
+        time_since_purchase = timezone.now() - last_purchase.purchased_at
+        cooldown_period = timedelta(minutes=cooldown_minutes)
+        
+        if time_since_purchase < cooldown_period:
+            can_purchase = False
+            cooldown_remaining = cooldown_period - time_since_purchase
+    
+    # Get all active powers
+    powers = ShopPower.objects.filter(is_active=True).order_by('cost')
+    
+    # Get team's purchase history
+    purchases = TeamPurchase.objects.filter(team=team).select_related('power').order_by('-purchased_at')
+    
+    if request.method == "POST":
+        power_id = request.POST.get('power_id')
+        
+        if not can_purchase:
+            messages.error(request, f"You must wait {cooldown_remaining.total_seconds() // 60:.0f} more minutes before purchasing again")
+            return redirect("shop")
+        
+        try:
+            power = ShopPower.objects.get(id=power_id, is_active=True)
+            
+            # Check if team has enough coins
+            if team.coins < power.cost:
+                messages.error(request, f"Insufficient coins! You have {team.coins} coins but need {power.cost}")
+                return redirect("shop")
+            
+            with transaction.atomic():
+                # Deduct coins
+                team.coins -= power.cost
+                team.save()
+                
+                # Create purchase record
+                TeamPurchase.objects.create(
+                    team=team,
+                    power=power,
+                    coins_spent=power.cost
+                )
+                
+                logger.info(f"Team {team.name} purchased {power.name} for {power.cost} coins")
+                messages.success(request, f"Successfully purchased {power.name}! You now have {team.coins} coins remaining.")
+                
+        except ShopPower.DoesNotExist:
+            messages.error(request, "Power not found or no longer available")
+        except Exception as e:
+            logger.error(f"Error processing purchase: {str(e)}", exc_info=True)
+            messages.error(request, "Error processing purchase. Please try again.")
+        
+        return redirect("shop")
+    
+    context = {
+        'team': team,
+        'powers': powers,
+        'purchases': purchases,
+        'can_purchase': can_purchase,
+        'cooldown_remaining': cooldown_remaining,
+        'cooldown_minutes': cooldown_minutes,
+    }
+    
+    return render(request, 'tasks/shop.html', context)
+
+
+@login_required
+def useTimeMachineView(request: HttpRequest, task_id: int):
+    """
+    Use Time Machine power to get one extra attempt on a task.
+    Uses power handler system for flexible power logic.
+    """
+    from .power_handlers import get_power_handler
+    
+    if request.method != "POST":
+        return redirect("task", task_id=task_id)
+    
+    try:
+        participant = Participant.objects.get(user=request.user)
+        team = participant.team
+    except:
+        messages.error(request, "You must be part of a team")
+        return redirect("tasksDisplay")
+    
+    try:
+        task = Task.objects.get(id=task_id)
+        tasksolution = TaskSolution.objects.filter(task=task, team=team).first()
+        
+        if not tasksolution:
+            messages.error(request, "No submission found for this task")
+            return redirect("task", task_id=task_id)
+        
+        # Get Time Machine handler
+        TimeMachine = get_power_handler('time_machine')
+        if not TimeMachine:
+            messages.error(request, "Time Machine power not found")
+            return redirect("task", task_id=task_id)
+        
+        # Use the power
+        success, message = TimeMachine.use(team=team, task=task, tasksolution=tasksolution)
+        
+        if success:
+            messages.success(request, message)
+        else:
+            messages.error(request, message)
+        
+    except Task.DoesNotExist:
+        messages.error(request, "Task not found")
+        return redirect("tasksDisplay")
+    except Exception as e:
+        logger.error(f"Error using Time Machine: {str(e)}", exc_info=True)
+        messages.error(request, "Error activating Time Machine. Please try again.")
+    
+    return redirect("task", task_id=task_id)

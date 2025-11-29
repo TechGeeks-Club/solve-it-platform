@@ -484,6 +484,28 @@
           {% endif %}
         {% endif %}
       </button>
+      
+      <!-- Time Machine Button -->
+      {% if has_time_machine and not can_submit %}
+      <form method="POST" action="{% url 'use_time_machine' task.id %}" style="display: inline-block; margin-left: 12px;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; display: flex; align-items: center; gap: 8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Use Time Machine
+        </button>
+      </form>
+      {% elif time_machine_used %}
+      <button class="btn btn-secondary" disabled style="margin-left: 12px; opacity: 0.5; display: flex; align-items: center; gap: 8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        Time Machine Used
+      </button>
+      {% endif %}
     </div>
 
     <!-- Test Results Section -->

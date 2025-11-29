@@ -4,7 +4,7 @@ from django.contrib.admin import ModelAdmin
 from django import forms
 
 
-from .models import Phase, Task, TaskTest, TaskSolution, Settings
+from .models import Phase, Task, TaskTest, TaskSolution, Settings, ShopPower, TeamPurchase, TeamPowerUsage
 from .forms import TaskSolutionForm
 
 from django.contrib.admin import StackedInline,TabularInline
@@ -17,7 +17,7 @@ from django.utils.html import format_html
 @admin.register(Settings)
 class SettingsAdmin(ModelAdmin):
     model = Settings
-    list_display = ('id', 'max_attempts', 'pass_threshold', 'manual_correction', 'rush_hour', 'updated_at')
+    list_display = ('id', 'max_attempts', 'pass_threshold', 'manual_correction', 'rush_hour', 'shop_cooldown_minutes', 'updated_at')
     
     fieldsets = (
         ("Submission Settings", {
@@ -29,6 +29,10 @@ class SettingsAdmin(ModelAdmin):
         ("Event Settings", {
             "fields": ("rush_hour",),
             "description": "Freeze the leaderboard during rush hour to create suspense. Teams can still submit solutions."
+        }),
+        ("Shop Settings", {
+            "fields": ("shop_cooldown_minutes",),
+            "description": "Cooldown period in minutes before teams can make another shop purchase."
         }),
     )
     
@@ -70,7 +74,7 @@ class PhaseAdmin(ModelAdmin):
 class TaskAdmin(ModelAdmin):
     
     model = Task
-    list_display = ('id','_title','phase','level','category','points')
+    list_display = ('id','_title','phase','level','category','points','coins')
     list_display_links = list_display
     
     search_fields = ('_title',)
@@ -166,3 +170,53 @@ class TaskSolutionAdmin(ModelAdmin):
         if len(obj.task.title) <= 15:
             return obj.task.title
         return obj.task.title[:15] + "..."
+
+
+@admin.register(ShopPower)
+class ShopPowerAdmin(ModelAdmin):
+    model = ShopPower
+    list_display = ('id', 'name', 'power_type', 'cost', 'is_active')
+    list_display_links = ('id', 'name')
+    list_filter = ('is_active', 'power_type')
+    search_fields = ('name', 'description')
+    
+    fieldsets = (
+        ("Power Information", {
+            "fields": ("name", "power_type", "description", "icon")
+        }),
+        ("Cost & Availability", {
+            "fields": ("cost", "is_active")
+        }),
+    )
+
+
+@admin.register(TeamPurchase)
+class TeamPurchaseAdmin(ModelAdmin):
+    model = TeamPurchase
+    list_display = ('id', 'team', 'power', 'coins_spent', 'purchased_at')
+    list_display_links = ('id', 'team', 'power')
+    list_filter = ('purchased_at', 'power')
+    search_fields = ('team__name', 'power__name')
+    readonly_fields = ('team', 'power', 'purchased_at', 'coins_spent')
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+
+@admin.register(TeamPowerUsage)
+class TeamPowerUsageAdmin(ModelAdmin):
+    model = TeamPowerUsage
+    list_display = ('id', 'team', 'power', 'task', 'used_at')
+    list_display_links = ('id', 'team', 'power')
+    list_filter = ('used_at', 'power')
+    search_fields = ('team__name', 'power__name', 'task__title')
+    readonly_fields = ('team', 'power', 'task', 'used_at')
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser

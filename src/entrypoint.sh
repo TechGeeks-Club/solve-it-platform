@@ -36,6 +36,10 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Sync shop powers from code to database
+echo "Syncing shop powers..."
+python manage.py sync_powers
+
 # Load initial data if database is empty
 echo "Checking if initial data needs to be loaded..."
 python << END

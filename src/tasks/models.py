@@ -26,6 +26,10 @@ class Settings(models.Model):
         default=False,
         help_text="Freeze leaderboard during rush hour to build suspense (teams can still submit)"
     )
+    shop_cooldown_minutes = models.IntegerField(
+        default=60,
+        help_text="Cooldown period in minutes before a team can make another shop purchase"
+    )
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
@@ -95,6 +99,7 @@ class Task(models.Model):
     initialCode = models.TextField(null=True)
     level = models.CharField(max_length=8, choices=LEVELS, null=True,blank=True)
     points = models.IntegerField(null=False)
+    coins = models.IntegerField(default=1, help_text="Coins awarded for completing this task with 100% score")
 
     nextTask = models.OneToOneField("self", on_delete=models.SET_NULL, null=True, blank=True)
     openCode = models.CharField(max_length=255, null=True ,unique=True, blank=True)
@@ -198,3 +203,48 @@ class TaskSolution(models.Model):
 
     def __str__(self):
         return f"{self.task.title} - Solution #{self.tries} by {self.participant}" 
+
+
+class ShopPower(models.Model):
+    """Available powers in the shop"""
+    POWER_TYPES = [
+        ('time_machine', 'Time Machine'),
+    ]
+    
+    name = models.CharField(max_length=100)
+    power_type = models.CharField(max_length=50, choices=POWER_TYPES, unique=True)
+    description = models.TextField()
+    cost = models.IntegerField(help_text="Cost in coins")
+    is_active = models.BooleanField(default=True)
+    icon = models.TextField(default='⏰', help_text="SVG icon or emoji for display")
+    
+    def __str__(self):
+        return f"{self.name} ({self.cost} coins)"
+
+
+class TeamPurchase(models.Model):
+    """Track team purchases and cooldowns"""
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='purchases')
+    power = models.ForeignKey(ShopPower, on_delete=models.CASCADE)
+    purchased_at = models.DateTimeField(auto_now_add=True)
+    coins_spent = models.IntegerField()
+    
+    class Meta:
+        ordering = ['-purchased_at']
+    
+    def __str__(self):
+        return f"{self.team.name} - {self.power.name} at {self.purchased_at}"
+
+
+class TeamPowerUsage(models.Model):
+    """Track when teams use their purchased powers"""
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='power_usages')
+    power = models.ForeignKey(ShopPower, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True, blank=True)
+    used_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-used_at']
+    
+    def __str__(self):
+        return f"{self.team.name} used {self.power.name} on {self.task.title if self.task else 'N/A'}" 
