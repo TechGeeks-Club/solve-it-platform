@@ -1,118 +1,237 @@
+{% extends "components/base.html" %}
 {% load static %}
-<!--
-  Heads up! 👋
 
-  Plugins:
-    - @tailwindcss/forms
--->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Participant</title>
-    <link rel="stylesheet" href="{% static 'css/forms.css' %}" />
-    {% include "components/com_header.html"%}
+{% block title %}Join Team - Solve It{% endblock %}
 
-</head>
-<body>
+{% block extra_css %}
+<style>
+  .auth-container {
+    min-height: calc(100vh - 50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    margin-top: 50px;
+  }
 
-  {% include "components/nav.html"%}
+  .auth-card {
+    width: 100%;
+    max-width: 500px;
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 8px;
+    padding: 48px 40px;
+  }
 
-    <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-        <div class="mx-auto max-w-lg text-center">
-          <h1 class="text-2xl font-bold sm:text-3xl">Create Participant</h1>
-          
-          <p class="mt-4 text-gray-500">
-            Enter here you personal and team information
-            </p>
-        </div>
-        {% include "components/error_message.html" %}
-        <form method="post" action="{% url 'createParticipant' %}" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
-            {% csrf_token %}
-            <!-- ! Field -->
-            <h2 class="text-base font-medium sm:text-sm">Team Section</h2>
-            <div>
-                <label for="team name" class="sr-only">Team Name</label>
-                
-                <div class="relative">
-                {{ teamForm.teamName}}
-            </div>
-        </div>
-        <div>
-            <label for="team password" class="sr-only">Team Password</label>
-      
-            <div class="relative">
-                {{ teamForm.teamPassword}}
-            </div>
-          </div>
+  .auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
 
-          <h2 class="text-base font-medium sm:text-sm">Participant Section</h2>
-          
-          <div>
-            <label for="Username" class="sr-only">Username</label>
-      
-            <div class="relative">
-                {{ userForm.username}}
-            </div>
-          </div>
+  .auth-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
 
-          <div>
-            <label for="First Name" class="sr-only">First Name</label>
-      
-            <div class="relative">
-                {{ userForm.first_name}}
-            </div>
-          </div>
-          
-          <div>
-            <label for="Last name" class="sr-only">Last name</label>
-      
-            <div class="relative">
-                {{ userForm.last_name}}
-            </div>
-          </div>
+  .auth-subtitle {
+    font-size: 14px;
+    color: #858585;
+  }
 
-          
-          <div>
-            <p class="text-gray-500" style="font-size: 16px;">Password must meet the following requirements:</p>
-            <ul>
-              <li class="text-gray-500" style="font-size: 12px;">At least 8 characters long</li>
-              <li class="text-gray-500" style="font-size: 12px;">At least one lowercase letter</li>
-              <li class="text-gray-500" style="font-size: 12px;">At least one uppercase letter</li>
-              <li class="text-gray-500" style="font-size: 12px;">At least one digit</li>
-              <li class="text-gray-500" style="font-size: 12px;">At least one special character (e.g., !@#$%^&*)</li>
-            </ul>
-          </div>
-          
-          <div>
-            <label for="password" class="sr-only">Password</label>
-            
-            <div class="relative">
-            {{ userForm.password1}}
-            </div>
-          </div>
-          
-          <div>
-            <label for="confirm password" class="sr-only">Confirm password</label>
-            
-            <div class="relative">
-            {{ userForm.password2}}
-            </div>
-          </div>
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin: 24px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3e3e42;
+  }
 
-          <div class="flex items-center justify-between">
-            <p class="text-sm text-gray-500">
-                No Team?
-                <a class="underline" href="{% url 'createTeam' %}">Create a Team</a>
-              </p>
-                
-                <button
-                  type="submit"
-                  class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
-                >Create</button>
-          </div>
-        </form>
+  .section-title:first-of-type {
+    margin-top: 0;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #cccccc;
+    margin-bottom: 8px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #1e1e1e;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    color: #d4d4d4;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    outline: none;
+    border-color: #0e639c;
+    background: #2d2d30;
+  }
+
+  .form-input::placeholder {
+    color: #858585;
+  }
+
+  .password-requirements {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: #1e1e1e;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+  }
+
+  .password-requirements p {
+    font-size: 13px;
+    color: #cccccc;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .password-requirements ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+
+  .password-requirements li {
+    font-size: 12px;
+    color: #858585;
+    margin-bottom: 4px;
+  }
+
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+  }
+
+  .form-link {
+    font-size: 14px;
+    color: #858585;
+  }
+
+  .form-link a {
+    color: #58a6ff;
+    text-decoration: none;
+  }
+
+  .form-link a:hover {
+    text-decoration: underline;
+  }
+
+  .submit-btn {
+    padding: 12px 24px;
+    background: #0e639c;
+    color: #fff;
+    border: 1px solid #1177bb;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover {
+    background: #1177bb;
+  }
+
+  .messages {
+    max-width: 500px;
+    margin: 0 auto 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include "components/navbar.html" %}
+
+<div class="auth-container">
+  <div>
+    <div class="messages">
+      {% include "components/error_message.html" %}
+    </div>
+    
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">Join a Team</h1>
+        <p class="auth-subtitle">Enter your personal and team information</p>
       </div>
-</body>
-</html>
+
+      <form method="post" action="{% url 'createParticipant' %}">
+        {% csrf_token %}
+        
+        <h2 class="section-title">Team Information</h2>
+        
+        <div class="form-group">
+          <label for="id_teamName" class="form-label">Team Name</label>
+          {{ teamForm.teamName }}
+        </div>
+
+        <div class="form-group">
+          <label for="id_teamPassword" class="form-label">Team Password</label>
+          {{ teamForm.teamPassword }}
+        </div>
+
+        <h2 class="section-title">Your Information</h2>
+        
+        <div class="form-group">
+          <label for="id_username" class="form-label">Username</label>
+          {{ userForm.username }}
+        </div>
+
+        <div class="form-group">
+          <label for="id_first_name" class="form-label">First Name</label>
+          {{ userForm.first_name }}
+        </div>
+
+        <div class="form-group">
+          <label for="id_last_name" class="form-label">Last Name</label>
+          {{ userForm.last_name }}
+        </div>
+
+        <div class="password-requirements">
+          <p>Password Requirements:</p>
+          <ul>
+            <li>At least 8 characters long</li>
+            <li>At least one lowercase letter</li>
+            <li>At least one uppercase letter</li>
+            <li>At least one digit</li>
+            <li>At least one special character (!@#$%^&*)</li>
+          </ul>
+        </div>
+
+        <div class="form-group">
+          <label for="id_password1" class="form-label">Password</label>
+          {{ userForm.password1 }}
+        </div>
+
+        <div class="form-group">
+          <label for="id_password2" class="form-label">Confirm Password</label>
+          {{ userForm.password2 }}
+        </div>
+
+        <div class="form-footer">
+          <p class="form-link">
+            No team? <a href="{% url 'createTeam' %}">Create one</a>
+          </p>
+          <button type="submit" class="submit-btn">Join Team</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

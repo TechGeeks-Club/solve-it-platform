@@ -1,15 +1,404 @@
+{% extends "components/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{task.title}} - Challenge</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+{% block title %}{{task.title}} - Challenge{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+
+{% include "components/common-styles.html" %}
+
+<style>
+  /* Challenge Page Specific Styles */
+  .challenge-container {
+    display: flex;
+    height: calc(100vh - 50px);
+    margin-top: 50px;
+  }
+
+  /* Problem Panel */
+  .problem-panel {
+    width: 50%;
+    background: #252526;
+    overflow-y: auto;
+    border-right: 1px solid #3e3e42;
+  }
+
+  .problem-header {
+    padding: 24px 32px;
+    border-bottom: 1px solid #3e3e42;
+    background: #2d2d30;
+  }
+
+  .problem-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .problem-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .problem-content {
+    padding: 32px;
+  }
+
+  .example-box {
+    background: #1e1e1e;
+    border: 1px solid #3e3e42;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .example-label {
+    color: #858585;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .example-value {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    color: #4ec9b0;
+    font-size: 14px;
+  }
+
+  /* Editor Panel */
+  .editor-panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+  }
+
+  .editor-header {
+    padding: 16px 24px;
+    background: #2d2d30;
+    border-bottom: 1px solid #3e3e42;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .editor-tabs {
+    display: flex;
+    gap: 8px;
+  }
+
+  .editor-tab {
+    padding: 8px 16px;
+    background: #1e1e1e;
+    border: 1px solid #3e3e42;
+    border-radius: 4px 4px 0 0;
+    color: #cccccc;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .editor-tab.active {
+    background: #1e1e1e;
+    color: #fff;
+    border-bottom: 2px solid #0e639c;
+  }
+
+  .editor-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .editor-body {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .CodeMirror {
+    height: 100% !important;
+    font-size: 14px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  }
+
+  .editor-footer {
+    padding: 12px 24px;
+    background: #2d2d30;
+    border-top: 1px solid #3e3e42;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .status-info {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: #858585;
+  }
+
+  .status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Loading Spinner */
+  .spinner {
+    border: 2px solid #3e3e42;
+    border-top: 2px solid #58a6ff;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .challenge-container {
+      flex-direction: column;
+    }
+    .problem-panel, .editor-panel {
+      width: 100%;
+      height: 50vh;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include "components/navbar.html" %}
+
+<div class="challenge-container">
+  <!-- Left Panel: Problem Description -->
+  <div class="problem-panel">
+    <div class="problem-header">
+      <h1 class="problem-title">{{task.title}}</h1>
+      <div class="problem-meta">
+        {% if task.level %}
+          <span class="meta-tag level-{{ task.level|lower }}">{{ task.level|capfirst }}</span>
+        {% endif %}
+        <span class="meta-tag meta-points">{{ task.points }} points</span>
+        <span class="meta-tag meta-attempts">{{ current_attempts }}/{{ max_attempts }} attempts</span>
+        {% if tasksolution %}
+          <span class="meta-tag meta-score">Score: {{ tasksolution.score }}%</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="problem-content">
+      <div class="section">
+        <h2 class="section-title">Problem Statement</h2>
+        <div class="section-text">{{ task.context|linebreaksbr }}</div>
+      </div>
+
+      {% if task.task_tests.all %}
+      <div class="section">
+        <h2 class="section-title">Sample Test Cases</h2>
+        {% for test in task.task_tests.all %}
+          {% if test.is_sample or test.display %}
+          <div class="example-box">
+            <div class="example-label">Sample Input {{ forloop.counter }}</div>
+            <div class="example-value">{{ test.input|default:"(empty)" }}</div>
+          </div>
+          <div class="example-box">
+            <div class="example-label">Sample Output {{ forloop.counter }}</div>
+            <div class="example-value">{{ test.output }}</div>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Right Panel: Code Editor -->
+  <div class="editor-panel">
+    <div class="editor-header">
+      <div class="editor-tabs">
+        <div class="editor-tab active">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M4.708 5.578L2.061 8.224l2.647 2.646-.708.708-3-3V7.87l3-3 .708.708zm7-.708L11 5.578l2.647 2.646L11 10.87l.708.708 3-3V7.87l-3-3zM4.908 13l.894.448 5-10L9.908 3l-5 10z"/>
+          </svg>
+          solution.c
+        </div>
+      </div>
+      <div class="editor-actions">
+        <button id="resetBtn" class="btn" {% if not can_submit %}disabled{% endif %} title="Reset to initial code">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+            <path d="M21 3v5h-5"/>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+            <path d="M3 21v-5h5"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+    </div>
+
+    <div class="editor-body">
+      <textarea id="codeEditor">{% if tasksolution %}{{ tasksolution.code }}{% else %}{{ task.initialCode }}{% endif %}</textarea>
+    </div>
+
+    <div class="editor-footer">
+      <div class="status-info">
+        <div class="status-item">
+          <span class="status-icon {% if can_submit %}ready{% elif tasksolution.status == 'processing' %}processing{% elif tasksolution.status == 'completed' %}ready{% else %}blocked{% endif %}"></span>
+          <span>
+            {% if can_submit and not tasksolution %}
+              Ready to submit
+            {% elif tasksolution.status == 'processing' %}
+              Processing...
+            {% elif tasksolution.status == 'completed' %}
+              Passed ({{ tasksolution.score }}%)
+            {% elif tasksolution.status == 'failed' %}
+              Failed ({{ tasksolution.score }}%)
+            {% elif not can_submit %}
+              Max attempts reached
+            {% else %}
+              Ready to submit
+            {% endif %}
+          </span>
+        </div>
+        {% if tasksolution and tasksolution.is_corrected %}
+        <div class="status-item">
+          <span>Result: 
+            <span style="color: {% if tasksolution.status == 'completed' %}#3fb950{% elif tasksolution.status == 'failed' %}#f85149{% else %}#f0b341{% endif %}; font-weight: 600;">
+              {{ tasksolution.status|capfirst }}
+            </span>
+          </span>
+        </div>
+        {% endif %}
+      </div>
+      <button id="submitBtn" 
+              class="btn {% if tasksolution.status == 'processing' %}btn-warning{% elif can_submit %}btn-success{% else %}btn-danger{% endif %}"
+              {% if not can_submit or tasksolution.status == 'processing' %}disabled{% endif %}>
+        {% if tasksolution.status == 'processing' %}
+          <div class="spinner"></div>
+          Processing...
+        {% else %}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          {% if can_submit %}
+            Submit Code ({{ remaining_attempts }} left)
+          {% else %}
+            Max Attempts Reached
+          {% endif %}
+        {% endif %}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Form -->
+<div style="display: none">
+  <form action="{{task.id}}" method="POST" id="hiddenForm" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="uploadedFile" id="uploadedFile" required />
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+
+<script>
+  // Initialize CodeMirror
+  let editor;
+  const initialCode = `{{task.initialCode|escapejs}}`;
+  const canSubmit = {{ can_submit|yesno:"true,false" }};
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+      lineNumbers: true,
+      mode: "text/x-csrc",
+      theme: "monokai",
+      indentUnit: 4,
+      tabSize: 4,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      readOnly: !canSubmit,
+      lineWrapping: false,
+      extraKeys: {
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("    ", "end");
+          }
+        }
+      }
+    });
+
+    editor.setSize(null, "100%");
+  });
+
+  // Reset button
+  document.getElementById("resetBtn")?.addEventListener("click", function () {
+    if (!this.disabled && editor) {
+      editor.setValue(initialCode);
+    }
+  });
+
+  // Submit button
+  document.getElementById("submitBtn")?.addEventListener("click", function () {
+    if (this.disabled) return;
+    
+    const code = editor ? editor.getValue() : document.getElementById("codeEditor").value;
+
+    if (!code.trim()) {
+      alert("Please write some code before submitting!");
+      return;
+    }
+
+    // Check if there's a previous submission
+    const hasPreviousSubmission = {{ tasksolution|yesno:"true,false" }};
+    const currentAttempts = {{ current_attempts|default:0 }};
+    
+    if (hasPreviousSubmission && currentAttempts > 0) {
+      const confirmed = confirm(
+        "⚠️ Warning: This submission will overwrite your previous attempt.\n\n" +
+        "Your current score: {{ tasksolution.score|default:0 }}%\n" +
+        "Attempts used: " + currentAttempts + "/{{ max_attempts }}\n\n" +
+        "Are you sure you want to continue?"
+      );
+      
+      if (!confirmed) {
+        return; // User cancelled, don't submit
+      }
+    }
+
+    // Disable button immediately and show loading state
+    this.disabled = true;
+    this.innerHTML = '<div class="spinner"></div> Submitting...';
+    this.className = 'btn btn-warning';
+
+    const file = new Blob([code], { type: "text/plain" });
+    const inputElement = document.getElementById("uploadedFile");
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(new File([file], "code.c"));
+    inputElement.files = dataTransfer.files;
+
+    document.getElementById("hiddenForm").submit();
+  });
+</script>
+{% endblock %}
     
     <style>
       * {

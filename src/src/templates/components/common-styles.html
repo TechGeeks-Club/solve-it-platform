@@ -1,0 +1,155 @@
+<style>
+  /* Meta Tags - Reusable Badge Styles */
+  .meta-tag {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .level-tag {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .level-easy, .level-tag.easy { 
+    background: #2ea04326; 
+    color: #3fb950; 
+    border: 1px solid #3fb950; 
+  }
+  
+  .level-medium, .level-tag.medium { 
+    background: #d2910033; 
+    color: #f0b341; 
+    border: 1px solid #f0b341; 
+  }
+  
+  .level-hard, .level-tag.hard { 
+    background: #da363733; 
+    color: #f85149; 
+    border: 1px solid #f85149; 
+  }
+
+  .meta-points {
+    background: #1f6feb26;
+    color: #58a6ff;
+    border: 1px solid #58a6ff;
+  }
+
+  .meta-attempts {
+    background: #8957e526;
+    color: #bc8cff;
+    border: 1px solid #bc8cff;
+  }
+
+  .meta-score {
+    background: #3fb95026;
+    color: #56d364;
+    border: 1px solid #56d364;
+  }
+
+  /* Button Styles - Reusable */
+  .btn {
+    padding: 8px 16px;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    background: #2d2d30;
+    color: #cccccc;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: #3e3e42;
+    color: #fff;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: #0e639c;
+    color: #fff;
+    border-color: #1177bb;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #1177bb;
+  }
+
+  .btn-success {
+    background: #238636;
+    color: #fff;
+    border-color: #2ea043;
+  }
+
+  .btn-success:hover:not(:disabled) {
+    background: #2ea043;
+  }
+
+  .btn-danger {
+    background: #da3633;
+    color: #fff;
+    border-color: #f85149;
+  }
+
+  .btn-warning {
+    background: #d29100;
+    color: #fff;
+    border-color: #f0b341;
+  }
+
+  /* Status Icons */
+  .status-icon {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .status-icon.ready { background: #3fb950; }
+  .status-icon.processing { background: #f0b341; }
+  .status-icon.blocked { background: #f85149; }
+
+  /* Card Styles */
+  .card {
+    background: #252526;
+    border: 1px solid #3e3e42;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .card:hover {
+    border-color: #0e639c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Section Styles */
+  .section {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3e3e42;
+  }
+
+  .section-text {
+    line-height: 1.8;
+    color: #cccccc;
+    white-space: pre-wrap;
+  }
+</style>

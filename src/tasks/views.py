@@ -52,14 +52,32 @@ def tasksDisplayView(request:HttpRequest):
     tasks_with_status = []
     for task in tasks:
         task_solution = task.task_solutions.filter(team=user_team).first()
+        
+        # Determine status based on database status field and threshold
+        status_text = None
+        status_class = None
+        if task_solution:
+            if task_solution.status == 'completed':
+                status_text = "Success"
+                status_class = "success"
+            elif task_solution.status == 'failed':
+                status_text = "Failed"
+                status_class = "failed"
+            elif task_solution.status == 'processing':
+                status_text = "In Progress"
+                status_class = "in-progress"
+            elif not task_solution.is_corrected:
+                status_text = "In Progress"
+                status_class = "in-progress"
+        
         tasks_with_status.append({
             'task': task,
             'solution': task_solution,
             'attempts': task_solution.attempts if task_solution else 0,
             'max_attempts': settings_obj.max_attempts,
             'can_access': task_solution is None or task_solution.attempts < settings_obj.max_attempts,
-            'status_text': task_solution.get_status_display_text() if task_solution else None,
-            'status_class': task_solution.get_status_class() if task_solution else None,
+            'status_text': status_text,
+            'status_class': status_class,
             'score': task_solution.score if task_solution else 0,
             'is_corrected': task_solution.is_corrected if task_solution else False,
         })
@@ -118,16 +136,24 @@ def taskView(request:HttpRequest, task_id:int):
     current_attempts = tasksolution.attempts if tasksolution else 0
     remaining_attempts = max_attempts - current_attempts
     
+    # Check if submission is still processing
+    is_processing = tasksolution and tasksolution.status == 'processing'
+    
     context = {
         "task": task,
         "tasksolution": tasksolution,
         "current_attempts": current_attempts,
         "max_attempts": max_attempts,
         "remaining_attempts": remaining_attempts,
-        "can_submit": remaining_attempts > 0,
+        "can_submit": remaining_attempts > 0 and not is_processing,
     }
     
     if request.method == "POST":
+        # Check if submission is still processing
+        if is_processing:
+            messages.warning(request, "Your previous submission is still being evaluated. Please wait.")
+            return render(request, "tasks/challenge-detailes.html", context)
+        
         # Check if attempts limit reached
         if tasksolution and tasksolution.attempts >= max_attempts:
             messages.error(request, f"Maximum submission attempts ({max_attempts}) reached for this task.")
@@ -207,7 +233,7 @@ def taskView(request:HttpRequest, task_id:int):
                         context["tasksolution"] = submission
                         context["current_attempts"] = submission.attempts
                         context["remaining_attempts"] = max_attempts - submission.attempts
-                        context["can_submit"] = context["remaining_attempts"] > 0
+                        context["can_submit"] = context["remaining_attempts"] > 0 and submission.status != 'processing'
                         
                         messages.success(
                             request,

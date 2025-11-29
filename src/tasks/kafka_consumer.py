@@ -83,7 +83,6 @@ class KafkaConsumerService:
                         continue
                     
                     # Update submission with results
-                    submission.status = result.get('status', 'completed')
                     submission.passed_tests = result.get('passed_tests', 0)
                     submission.total_tests = result.get('total_tests', 0)
                     submission.score = result.get('score', 0)
@@ -91,6 +90,14 @@ class KafkaConsumerService:
                     submission.compiler_output = result.get('compiler_output', '')
                     submission.error_message = result.get('error_message', '')
                     submission.processing_completed_at = timezone.now()
+                    
+                    # Determine status based on score and threshold
+                    from tasks.models import Settings
+                    settings = await asyncio.to_thread(Settings.get_settings)
+                    if submission.score >= settings.pass_threshold:
+                        submission.status = 'completed'
+                    else:
+                        submission.status = 'failed'
                     
                     # Generate correction ID
                     submission.correction_id = f"{submission_id}_{int(timezone.now().timestamp())}"

@@ -14,12 +14,12 @@ class TeamCreationForm(forms.ModelForm):
         fields = ['name','password']
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm',
+                'class': 'form-input',
                 'placeholder': 'Enter team name',
             }),
             'password': forms.PasswordInput(attrs={
                 'type':"password",
-                'class': 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm',
+                'class': 'form-input',
                 'placeholder': 'Enter password',
             }),
         }
@@ -33,12 +33,12 @@ class TeamForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         self.fields['teamName'].widget.attrs.update({
-            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+            'class': 'form-input',
             'placeholder': 'Enter team name',
         })
         self.fields['teamPassword'].widget.attrs.update({
             'type' : 'password',
-            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+            'class': 'form-input',
             'placeholder': 'Enter team password',
         })
 
@@ -49,15 +49,15 @@ class CreateUserForm(UserCreationForm):
         fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
         widgets = {
             'username': forms.TextInput(attrs={
-                'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+                'class': 'form-input',
                 'placeholder': 'Enter username',
             }),
             'first_name': forms.TextInput(attrs={
-                'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+                'class': 'form-input',
                 'placeholder': 'Enter first name',
             }),
             'last_name': forms.TextInput(attrs={
-                'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+                'class': 'form-input',
                 'placeholder': 'Enter last name',
             }),
         }
@@ -66,11 +66,11 @@ class CreateUserForm(UserCreationForm):
         super().__init__(*args, **kwargs)
 
         self.fields['password1'].widget.attrs.update({
-            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm focus:ring-2 focus:ring-blue-500',
+            'class': 'form-input',
             'placeholder': 'Enter password',
         })
         self.fields['password2'].widget.attrs.update({
-            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm focus:ring-2 focus:ring-blue-500',
+            'class': 'form-input',
             'placeholder': 'Confirm password',
         })
         self.fields['password1'].widget.attrs.pop('autocomplete', None)
@@ -82,11 +82,11 @@ class CustomAuthenticationForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         # Add or override classes for the username field
         self.fields['username'].widget.attrs.update({
-            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+            'class': 'form-input',
             'placeholder': 'Enter your username',
         })
         # Add or override classes for the password field
         self.fields['password'].widget.attrs.update({
-            'class': 'w-full rounded-lg border-gray-200 p-4 text-sm shadow-sm',
+            'class': 'form-input',
             'placeholder': 'Enter your password',
         })
