@@ -261,3 +261,85 @@ def tasksFileDownload(request:HttpRequest):
     if os.path.exists(file_path):
         return FileResponse(open(file_path, 'rb'), as_attachment=True)
     raise Http404
+
+
+@login_required
+def leaderboardView(request: HttpRequest):
+    """
+    Display team leaderboard based on completed tasks.
+    Score calculation: (task_score% * task_points)
+    Only completed tasks count toward the total.
+    """
+    from django.db.models import Q, Sum, Count, FloatField
+    from django.db.models.functions import Cast
+    
+    # Get all teams with their completed submissions
+    teams = Team.objects.all()
+    
+    leaderboard_data = []
+    
+    for team in teams:
+        # Get all completed submissions for this team
+        completed_submissions = TaskSolution.objects.filter(
+            team=team,
+            status='completed',
+            is_corrected=True
+        ).select_related('task')
+        
+        total_score = 0
+        completed_tasks = 0
+        task_details = []
+        
+        # Calculate score for each completed task
+        # Group by task to get the best submission per task
+        tasks_with_submissions = {}
+        
+        for submission in completed_submissions:
+            task_id = submission.task.id
+            if task_id not in tasks_with_submissions:
+                tasks_with_submissions[task_id] = submission
+            else:
+                # Keep the submission with the higher score
+                if submission.score > tasks_with_submissions[task_id].score:
+                    tasks_with_submissions[task_id] = submission
+        
+        # Calculate total score
+        for task_id, submission in tasks_with_submissions.items():
+            task_points = submission.task.points
+            score_percentage = submission.score / 100.0
+            earned_points = score_percentage * task_points
+            total_score += earned_points
+            completed_tasks += 1
+            
+            task_details.append({
+                'task_title': submission.task.title,
+                'task_points': task_points,
+                'score_percentage': submission.score,
+                'earned_points': earned_points
+            })
+        
+        leaderboard_data.append({
+            'team': team,
+            'total_score': round(total_score, 2),
+            'completed_tasks': completed_tasks,
+            'task_details': task_details
+        })
+    
+    # Sort by total score descending
+    leaderboard_data.sort(key=lambda x: x['total_score'], reverse=True)
+    
+    # Add rank to each team
+    for idx, team_data in enumerate(leaderboard_data, start=1):
+        team_data['rank'] = idx
+    
+    # Separate top 3 and rest
+    top_three = leaderboard_data[:3] if len(leaderboard_data) >= 3 else leaderboard_data
+    rest = leaderboard_data[3:] if len(leaderboard_data) > 3 else []
+    
+    context = {
+        'top_three': top_three,
+        'rest': rest,
+        'total_teams': len(leaderboard_data),
+    }
+    
+    return render(request, 'tasks/leaderboard.html', context)
