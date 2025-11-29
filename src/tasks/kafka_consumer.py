@@ -74,7 +74,7 @@ class KafkaConsumerService:
                     # Get the submission from database
                     try:
                         submission = await asyncio.to_thread(
-                            TaskSolution.objects.get,
+                            TaskSolution.objects.select_related('task').get,
                             id=submission_id
                         )
                         logger.debug(f"Found submission {submission_id} in database")
@@ -82,11 +82,30 @@ class KafkaConsumerService:
                         logger.error(f"❌ Submission {submission_id} not found in database")
                         continue
                     
+                    # Get task tests with display flags
+                    from tasks.models import TaskTest
+                    task_tests = await asyncio.to_thread(
+                        lambda: list(TaskTest.objects.filter(task=submission.task).order_by('order', 'id').values('id', 'display', 'input', 'output'))
+                    )
+                    
+                    # Enrich test results with display flag and test data
+                    test_results = result.get('test_results', [])
+                    enriched_results = []
+                    for idx, test_result in enumerate(test_results):
+                        enriched_test = test_result.copy()
+                        if idx < len(task_tests):
+                            enriched_test['display'] = task_tests[idx]['display']
+                            enriched_test['input'] = task_tests[idx]['input']
+                            enriched_test['expected_output'] = task_tests[idx]['output']
+                        else:
+                            enriched_test['display'] = False
+                        enriched_results.append(enriched_test)
+                    
                     # Update submission with results
                     submission.passed_tests = result.get('passed_tests', 0)
                     submission.total_tests = result.get('total_tests', 0)
                     submission.score = result.get('score', 0)
-                    submission.test_results = result.get('test_results', [])
+                    submission.test_results = enriched_results
                     submission.compiler_output = result.get('compiler_output', '')
                     submission.error_message = result.get('error_message', '')
                     submission.processing_completed_at = timezone.now()
