@@ -6,56 +6,348 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Solve It - Programming Challenge Platform</title>
-    <link rel="stylesheet" href="{% static 'css/home-page.css' %}" />
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    {% include "components/com_header.html"%}
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        min-height: 100vh;
+      }
+
+      /* Top Navigation */
+      .top-nav {
+        height: 50px;
+        background: #2d2d30;
+        border-bottom: 1px solid #3e3e42;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 24px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .nav-logo img {
+        height: 30px;
+      }
+
+      .nav-center {
+        color: #858585;
+        font-size: 14px;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: #cccccc;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+
+      .nav-link:hover {
+        background: #3e3e42;
+        color: #fff;
+      }
+
+      .nav-link.logout {
+        background: #da3633;
+        color: #fff;
+      }
+
+      .nav-link.logout:hover {
+        background: #f85149;
+      }
+
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 120px 24px 80px;
+        background: linear-gradient(135deg, #1e1e1e 0%, #2d2d30 100%);
+      }
+
+      .hero img {
+        height: 120px;
+        margin-bottom: 32px;
+        filter: drop-shadow(0 0 20px rgba(88, 166, 255, 0.3));
+      }
+
+      .hero h1 {
+        font-size: 48px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 16px;
+      }
+
+      .hero p {
+        font-size: 20px;
+        color: #858585;
+        max-width: 600px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .button {
+        padding: 14px 32px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+        display: inline-block;
+      }
+
+      .primary-button {
+        background: #0e639c;
+        color: #fff;
+        border: 1px solid #1177bb;
+      }
+
+      .primary-button:hover {
+        background: #1177bb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(14, 99, 156, 0.4);
+      }
+
+      .secondary-button {
+        background: transparent;
+        color: #58a6ff;
+        border: 1px solid #58a6ff;
+      }
+
+      .secondary-button:hover {
+        background: #58a6ff;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+      }
+
+      /* Content Section */
+      .content-section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 24px;
+        background: #252526;
+        border-radius: 8px;
+        margin-top: -40px;
+        margin-bottom: 60px;
+        border: 1px solid #3e3e42;
+      }
+
+      .content-section h2 {
+        font-size: 32px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .content-section p {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #cccccc;
+        text-align: center;
+      }
+
+      /* Features Grid */
+      .features {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 0 24px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+      }
+
+      .feature-card {
+        background: #252526;
+        border: 1px solid #3e3e42;
+        border-radius: 8px;
+        padding: 32px;
+        text-align: center;
+        transition: all 0.2s;
+      }
+
+      .feature-card:hover {
+        border-color: #0e639c;
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .feature-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+
+      .feature-card h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+
+      .feature-card p {
+        font-size: 14px;
+        color: #858585;
+        line-height: 1.6;
+      }
+
+      /* Messages */
+      .messages {
+        max-width: 600px;
+        margin: 0 auto 20px;
+        padding: 0 24px;
+      }
+
+      .message {
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        border-left: 4px solid;
+      }
+
+      .message.error {
+        background: #da363726;
+        border-color: #f85149;
+        color: #f85149;
+      }
+
+      .message.success {
+        background: #2ea04326;
+        border-color: #3fb950;
+        color: #3fb950;
+      }
+
+      .message.info {
+        background: #1f6feb26;
+        border-color: #58a6ff;
+        color: #58a6ff;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #1e1e1e;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #424242;
+        border-radius: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #4e4e4e;
+      }
+    </style>
   </head>
   <body>
-    <section class="all-Page">
-      
-      {% include "components/nav.html"%}
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <a class="nav-logo" href="{% url 'home' %}">
+        <img src="{% static 'img/favicon.webp' %}" alt="Logo">
+        <span>Solve It</span>
+      </a>
+      <div class="nav-center">
+        {% if request.user.is_authenticated %}
+          <span>{{ request.user.participant.team.name }} | {{ request.user.username }}</span>
+        {% endif %}
+      </div>
+      <div class="nav-right">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'tasksDisplay' %}" class="nav-link">Challenges</a>
+          <a href="{% url 'logout' %}" class="nav-link logout">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link">Sign in</a>
+        {% endif %}
+      </div>
+    </nav>
 
-      <main>
-        <section class="hero">
+    <main>
+      <section class="hero">
+        <div class="messages">
           {% include "components/error_message.html" %}
-          {% comment %} <h1>Solve It</h1> {% endcomment %}
-          <img src="{% static 'img/Logo.webp' %}" alt="Logo" style="height: 115px;margin-bottom: 25px;">
-          <p>
-            Join the Code Challenge and compete against others in a set of
-            programming problems
-          </p>
-          <div class="button-group">
-            <a href="{% url 'createParticipant' %}" class="button primary-button">Join A Team</a>
-            <a href="{% url 'createTeam' %}" class="button secondary-button">Create Team</a>
-          </div>
-        </section>
+        </div>
+        <img src="{% static 'img/Logo.webp' %}" alt="Solve It Logo">
+        <h1>Solve It</h1>
+        <p>
+          Join the Code Challenge and compete against others in a set of
+          programming problems
+        </p>
+        <div class="button-group">
+          <a href="{% url 'createParticipant' %}" class="button primary-button">Join A Team</a>
+          <a href="{% url 'createTeam' %}" class="button secondary-button">Create Team</a>
+        </div>
+      </section>
 
-        <section class="content-section">
-          <div><h2>What's Solve It?</h2></div>
-          <p>
-            The C Code Challenge is a programming competition that focuses on
-            the C language. It's a great opportunity to showcase your coding
-            skills, learn new programming techniques, and connect with other
-            developers. We'll provide a set of problems for you to solve, and
-            you'll have a limited time to complete as many as you can. The top
-            participants will receive prizes and recognition for their
-            achievements. Whether you're a seasoned developer or just getting
-            started, the C Code Challenge is a fun and rewarding way to test
-            your skills and build your portfolio.
-          </p>
-        </section>
-      </main>
-    </section>
+      <section class="content-section">
+        <h2>What's Solve It?</h2>
+        <p>
+          The C Code Challenge is a programming competition that focuses on
+          the C language. It's a great opportunity to showcase your coding
+          skills, learn new programming techniques, and connect with other
+          developers. We'll provide a set of problems for you to solve, and
+          you'll have a limited time to complete as many as you can. The top
+          participants will receive prizes and recognition for their
+          achievements. Whether you're a seasoned developer or just getting
+          started, the C Code Challenge is a fun and rewarding way to test
+          your skills and build your portfolio.
+        </p>
+      </section>
 
-    <script>
-      function toggleMenu() {
-        const menu = document.getElementById("dropdownMenu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-      }
-      function closeDropDown() {
-        const menu = document.getElementById("dropdownMenu");
-        if (menu.style.display === "flex") menu.style.display = "none";
-      }
-    </script>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">💻</div>
+          <h3>Code Editor</h3>
+          <p>Professional IDE-like code editor with syntax highlighting and real-time feedback</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <h3>Compete & Win</h3>
+          <p>Compete with other teams, solve challenges, and climb the leaderboard</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Feedback</h3>
+          <p>Get immediate results with automated testing and detailed scoring</p>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

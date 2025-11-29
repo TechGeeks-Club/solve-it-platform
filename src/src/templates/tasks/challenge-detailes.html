@@ -5,14 +5,1060 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Challenge Details</title>
-    <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
-    {% include "components/com_header.html"%}
+    <title>{{task.title}} - Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    {% comment %} <link rel="stylesheet" href="{% static 'editor/css/codemirror.min.css' %}" /> {% endcomment %}
-    {% comment %} <link rel="stylesheet" href="{% static 'editor/css/monokai.min.css' %}" /> {% endcomment %}
-    {% comment %} <script src="{% static 'editor/js/codemirror.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'editor/js/clike.min.js' %}"></script> {% endcomment %}
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        overflow: hidden;
+      }
+
+      /* Top Navigation */
+      .top-nav {
+        height: 50px;
+        background: #2d2d30;
+        border-bottom: 1px solid #3e3e42;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 24px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .nav-logo img {
+        height: 30px;
+      }
+
+      .nav-center {
+        color: #858585;
+        font-size: 14px;
+      }
+
+      .nav-right {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+
+      .nav-link {
+        color: #cccccc;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+
+      .nav-link:hover {
+        background: #3e3e42;
+        color: #fff;
+      }
+
+      .nav-link.logout {
+        background: #da3633;
+        color: #fff;
+      }
+
+      .nav-link.logout:hover {
+        background: #f85149;
+      }
+
+      /* Main Container */
+      .challenge-container {
+        display: flex;
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+      }
+
+      /* Left Panel - Problem Description */
+      .problem-panel {
+        width: 50%;
+        background: #252526;
+        overflow-y: auto;
+        border-right: 1px solid #3e3e42;
+      }
+
+      .problem-header {
+        padding: 24px 32px;
+        border-bottom: 1px solid #3e3e42;
+        background: #2d2d30;
+      }
+
+      .problem-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+
+      .problem-meta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .meta-tag {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .level-easy { background: #2ea04326; color: #3fb950; border: 1px solid #3fb950; }
+      .level-medium { background: #d2910033; color: #f0b341; border: 1px solid #f0b341; }
+      .level-hard { background: #da363733; color: #f85149; border: 1px solid #f85149; }
+
+      .meta-points {
+        background: #1f6feb26;
+        color: #58a6ff;
+        border: 1px solid #58a6ff;
+      }
+
+      .meta-attempts {
+        background: #8957e526;
+        color: #bc8cff;
+        border: 1px solid #bc8cff;
+      }
+
+      .meta-score {
+        background: #3fb95026;
+        color: #56d364;
+        border: 1px solid #56d364;
+      }
+
+      .problem-content {
+        padding: 32px;
+      }
+
+      .section {
+        margin-bottom: 32px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #3e3e42;
+      }
+
+      .section-text {
+        line-height: 1.8;
+        color: #cccccc;
+        white-space: pre-wrap;
+      }
+
+      .example-box {
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 6px;
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .example-label {
+        color: #858585;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .example-value {
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        color: #4ec9b0;
+        font-size: 14px;
+      }
+
+      /* Right Panel - Code Editor */
+      .editor-panel {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        background: #1e1e1e;
+      }
+
+      .editor-header {
+        padding: 16px 24px;
+        background: #2d2d30;
+        border-bottom: 1px solid #3e3e42;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .editor-tabs {
+        display: flex;
+        gap: 8px;
+      }
+
+      .editor-tab {
+        padding: 8px 16px;
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 4px 4px 0 0;
+        color: #cccccc;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .editor-tab.active {
+        background: #1e1e1e;
+        color: #fff;
+        border-bottom: 2px solid #0e639c;
+      }
+
+      .editor-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border: 1px solid #3e3e42;
+        border-radius: 4px;
+        background: #2d2d30;
+        color: #cccccc;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+      }
+
+      .btn:hover:not(:disabled) {
+        background: #3e3e42;
+        color: #fff;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: #0e639c;
+        color: #fff;
+        border-color: #1177bb;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: #1177bb;
+      }
+
+      .btn-success {
+        background: #238636;
+        color: #fff;
+        border-color: #2ea043;
+      }
+
+      .btn-success:hover:not(:disabled) {
+        background: #2ea043;
+      }
+
+      .btn-danger {
+        background: #da3633;
+        color: #fff;
+        border-color: #f85149;
+      }
+
+      .editor-body {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .CodeMirror {
+        height: 100% !important;
+        font-size: 14px;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      }
+
+      .editor-footer {
+        padding: 12px 24px;
+        background: #2d2d30;
+        border-top: 1px solid #3e3e42;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .status-info {
+        display: flex;
+        gap: 16px;
+        font-size: 13px;
+        color: #858585;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-icon {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      .status-icon.ready { background: #3fb950; }
+      .status-icon.processing { background: #f0b341; }
+      .status-icon.blocked { background: #f85149; }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #1e1e1e;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #424242;
+        border-radius: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #4e4e4e;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .challenge-container {
+          flex-direction: column;
+        }
+        .problem-panel, .editor-panel {
+          width: 100%;
+          height: 50vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+      <a class="nav-logo" href="{% url 'home' %}">
+        <img src="{% static 'img/favicon.webp' %}" alt="Logo">
+        <span>Solve It</span>
+      </a>
+      <div class="nav-center">
+        {% if request.user.is_authenticated %}
+          <span>{{ request.user.participant.team.name }} | {{ request.user.username }}</span>
+        {% endif %}
+      </div>
+      <div class="nav-right">
+        <a href="{% url 'home' %}" class="nav-link">Home</a>
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'tasksDisplay' %}" class="nav-link">Challenges</a>
+          <a href="{% url 'logout' %}" class="nav-link logout">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link">Sign in</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class="challenge-container">
+      <!-- Left Panel: Problem Description -->
+      <div class="problem-panel">
+        <div class="problem-header">
+          <h1 class="problem-title">{{task.title}}</h1>
+          <div class="problem-meta">
+            {% if task.level %}
+              <span class="meta-tag level-{{ task.level|lower }}">{{ task.level|capfirst }}</span>
+            {% endif %}
+            <span class="meta-tag meta-points">{{ task.points }} points</span>
+            <span class="meta-tag meta-attempts">{{ current_attempts }}/{{ max_attempts }} attempts</span>
+            {% if tasksolution %}
+              <span class="meta-tag meta-score">Score: {{ tasksolution.score }}%</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="problem-content">
+          <div class="section">
+            <h2 class="section-title">Problem Statement</h2>
+            <div class="section-text">{{ task.context|linebreaksbr }}</div>
+          </div>
+
+          {% if task.task_tests.all %}
+          <div class="section">
+            <h2 class="section-title">Sample Test Cases</h2>
+            {% for test in task.task_tests.all %}
+              {% if test.is_sample or test.display %}
+              <div class="example-box">
+                <div class="example-label">Sample Input {{ forloop.counter }}</div>
+                <div class="example-value">{{ test.input|default:"(empty)" }}</div>
+              </div>
+              <div class="example-box">
+                <div class="example-label">Sample Output {{ forloop.counter }}</div>
+                <div class="example-value">{{ test.output }}</div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Panel: Code Editor -->
+      <div class="editor-panel">
+        <div class="editor-header">
+          <div class="editor-tabs">
+            <div class="editor-tab active">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M4.708 5.578L2.061 8.224l2.647 2.646-.708.708-3-3V7.87l3-3 .708.708zm7-.708L11 5.578l2.647 2.646L11 10.87l.708.708 3-3V7.87l-3-3zM4.908 13l.894.448 5-10L9.908 3l-5 10z"/>
+              </svg>
+              solution.c
+            </div>
+          </div>
+          <div class="editor-actions">
+            <button id="resetBtn" class="btn" {% if not can_submit %}disabled{% endif %} title="Reset to initial code">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                <path d="M3 21v-5h5"/>
+              </svg>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-body">
+          <textarea id="codeEditor">{% if tasksolution %}{{ tasksolution.code }}{% else %}{{ task.initialCode }}{% endif %}</textarea>
+        </div>
+
+        <div class="editor-footer">
+          <div class="status-info">
+            <div class="status-item">
+              <span class="status-icon {% if can_submit %}ready{% elif tasksolution.status == 'processing' %}processing{% else %}blocked{% endif %}"></span>
+              <span>
+                {% if can_submit %}
+                  Ready to submit
+                {% elif tasksolution.status == 'processing' %}
+                  Processing...
+                {% else %}
+                  Max attempts reached
+                {% endif %}
+              </span>
+            </div>
+            {% if tasksolution %}
+            <div class="status-item">
+              <span>Status: {{ tasksolution.status|capfirst }}</span>
+            </div>
+            {% endif %}
+          </div>
+          <button id="submitBtn" 
+                  class="btn {% if can_submit %}btn-success{% else %}btn-danger{% endif %}"
+                  {% if not can_submit %}disabled{% endif %}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            {% if can_submit %}
+              Submit Code ({{ remaining_attempts }} left)
+            {% else %}
+              Max Attempts Reached
+            {% endif %}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Form -->
+    <div style="display: none">
+      <form action="{{task.id}}" method="POST" id="hiddenForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="uploadedFile" id="uploadedFile" required />
+      </form>
+    </div>
+
+    <script>
+      // Initialize CodeMirror
+      let editor;
+      const initialCode = `{{task.initialCode|escapejs}}`;
+      const canSubmit = {{ can_submit|yesno:"true,false" }};
+      
+      document.addEventListener("DOMContentLoaded", function () {
+        editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+          lineNumbers: true,
+          mode: "text/x-csrc",
+          theme: "monokai",
+          indentUnit: 4,
+          tabSize: 4,
+          matchBrackets: true,
+          autoCloseBrackets: true,
+          readOnly: !canSubmit,
+          lineWrapping: false,
+          extraKeys: {
+            "Tab": function(cm) {
+              if (cm.somethingSelected()) {
+                cm.indentSelection("add");
+              } else {
+                cm.replaceSelection("    ", "end");
+              }
+            }
+          }
+        });
+
+        // Set editor height
+        editor.setSize(null, "100%");
+      });
+
+      // Reset button
+      document.getElementById("resetBtn")?.addEventListener("click", function () {
+        if (!this.disabled && editor) {
+          editor.setValue(initialCode);
+        }
+      });
+
+      // Submit button
+      document.getElementById("submitBtn")?.addEventListener("click", function () {
+        if (this.disabled) return;
+        
+        const code = editor ? editor.getValue() : document.getElementById("codeEditor").value;
+
+        if (!code.trim()) {
+          alert("Please write some code before submitting!");
+          return;
+        }
+
+        // Create file and submit
+        const file = new Blob([code], { type: "text/plain" });
+        const inputElement = document.getElementById("uploadedFile");
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(new File([file], "code.c"));
+        inputElement.files = dataTransfer.files;
+
+        // Submit form
+        document.getElementById("hiddenForm").submit();
+      });
+    </script>
+  </body>
+</html>
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        overflow: hidden;
+      }
+
+      .challenge-container {
+        display: flex;
+        height: calc(100vh - 60px);
+        margin-top: 60px;
+      }
+
+      /* Left Panel - Problem Description */
+      .problem-panel {
+        width: 50%;
+        background: #252526;
+        overflow-y: auto;
+        border-right: 1px solid #3e3e42;
+      }
+
+      .problem-header {
+        padding: 24px 32px;
+        border-bottom: 1px solid #3e3e42;
+        background: #2d2d30;
+      }
+
+      .problem-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+
+      .problem-meta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .meta-tag {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+      }
+
+      .level-easy { background: #2ea04326; color: #3fb950; border: 1px solid #3fb950; }
+      .level-medium { background: #d2910033; color: #f0b341; border: 1px solid #f0b341; }
+      .level-hard { background: #da363733; color: #f85149; border: 1px solid #f85149; }
+
+      .meta-points {
+        background: #1f6feb26;
+        color: #58a6ff;
+        border: 1px solid #58a6ff;
+      }
+
+      .meta-attempts {
+        background: #8957e526;
+        color: #bc8cff;
+        border: 1px solid #bc8cff;
+      }
+
+      .meta-score {
+        background: #3fb95026;
+        color: #56d364;
+        border: 1px solid #56d364;
+      }
+
+      .problem-content {
+        padding: 32px;
+      }
+
+      .section {
+        margin-bottom: 32px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #3e3e42;
+      }
+
+      .section-text {
+        line-height: 1.8;
+        color: #cccccc;
+        white-space: pre-wrap;
+      }
+
+      .example-box {
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 6px;
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .example-label {
+        color: #858585;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .example-value {
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        color: #4ec9b0;
+        font-size: 14px;
+      }
+
+      /* Right Panel - Code Editor */
+      .editor-panel {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        background: #1e1e1e;
+      }
+
+      .editor-header {
+        padding: 16px 24px;
+        background: #2d2d30;
+        border-bottom: 1px solid #3e3e42;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .editor-tabs {
+        display: flex;
+        gap: 8px;
+      }
+
+      .editor-tab {
+        padding: 8px 16px;
+        background: #1e1e1e;
+        border: 1px solid #3e3e42;
+        border-radius: 4px 4px 0 0;
+        color: #cccccc;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .editor-tab.active {
+        background: #1e1e1e;
+        color: #fff;
+        border-bottom: 2px solid #0e639c;
+      }
+
+      .editor-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border: 1px solid #3e3e42;
+        border-radius: 4px;
+        background: #2d2d30;
+        color: #cccccc;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+      }
+
+      .btn:hover:not(:disabled) {
+        background: #3e3e42;
+        color: #fff;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: #0e639c;
+        color: #fff;
+        border-color: #1177bb;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: #1177bb;
+      }
+
+      .btn-success {
+        background: #238636;
+        color: #fff;
+        border-color: #2ea043;
+      }
+
+      .btn-success:hover:not(:disabled) {
+        background: #2ea043;
+      }
+
+      .btn-danger {
+        background: #da3633;
+        color: #fff;
+        border-color: #f85149;
+      }
+
+      .editor-body {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .CodeMirror {
+        height: 100% !important;
+        font-size: 14px;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      }
+
+      .editor-footer {
+        padding: 12px 24px;
+        background: #2d2d30;
+        border-top: 1px solid #3e3e42;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .status-info {
+        display: flex;
+        gap: 16px;
+        font-size: 13px;
+        color: #858585;
+      }
+
+      .status-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-icon {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      .status-icon.ready { background: #3fb950; }
+      .status-icon.processing { background: #f0b341; }
+      .status-icon.blocked { background: #f85149; }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #1e1e1e;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #424242;
+        border-radius: 6px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #4e4e4e;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .challenge-container {
+          flex-direction: column;
+        }
+        .problem-panel, .editor-panel {
+          width: 100%;
+          height: 50vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% include "components/nav.html"%}
+
+    <div class="challenge-container">
+      <!-- Left Panel: Problem Description -->
+      <div class="problem-panel">
+        <div class="problem-header">
+          <h1 class="problem-title">{{task.title}}</h1>
+          <div class="problem-meta">
+            {% if task.level %}
+              <span class="meta-tag level-{{ task.level|lower }}">{{ task.level|capfirst }}</span>
+            {% endif %}
+            <span class="meta-tag meta-points">{{ task.points }} points</span>
+            <span class="meta-tag meta-attempts">{{ current_attempts }}/{{ max_attempts }} attempts</span>
+            {% if tasksolution %}
+              <span class="meta-tag meta-score">Score: {{ tasksolution.score }}%</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="problem-content">
+          <div class="section">
+            <h2 class="section-title">Problem Statement</h2>
+            <div class="section-text">{{ task.context|linebreaksbr }}</div>
+          </div>
+
+          {% if task.task_tests.all %}
+          <div class="section">
+            <h2 class="section-title">Sample Test Cases</h2>
+            {% for test in task.task_tests.all %}
+              {% if test.is_sample or test.display %}
+              <div class="example-box">
+                <div class="example-label">Sample Input {{ forloop.counter }}</div>
+                <div class="example-value">{{ test.input|default:"(empty)" }}</div>
+              </div>
+              <div class="example-box">
+                <div class="example-label">Sample Output {{ forloop.counter }}</div>
+                <div class="example-value">{{ test.output }}</div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Panel: Code Editor -->
+      <div class="editor-panel">
+        <div class="editor-header">
+          <div class="editor-tabs">
+            <div class="editor-tab active">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M4 4l3 3-3 3v-2h-4v-2h4v-2zm8 0v2h4v2h-4v2l-3-3 3-3z"/>
+              </svg>
+              solution.c
+            </div>
+          </div>
+          <div class="editor-actions">
+            <button id="resetBtn" class="btn" {% if not can_submit %}disabled{% endif %} title="Reset to initial code">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                <path d="M21 3v5h-5"/>
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                <path d="M3 21v-5h5"/>
+              </svg>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <div class="editor-body">
+          <textarea id="codeEditor">{% if tasksolution %}{{ tasksolution.code }}{% else %}{{ task.initialCode }}{% endif %}</textarea>
+        </div>
+
+        <div class="editor-footer">
+          <div class="status-info">
+            <div class="status-item">
+              <span class="status-icon {% if can_submit %}ready{% elif tasksolution.status == 'processing' %}processing{% else %}blocked{% endif %}"></span>
+              <span>
+                {% if can_submit %}
+                  Ready to submit
+                {% elif tasksolution.status == 'processing' %}
+                  Processing...
+                {% else %}
+                  Max attempts reached
+                {% endif %}
+              </span>
+            </div>
+            {% if tasksolution %}
+            <div class="status-item">
+              <span>Status: {{ tasksolution.status|capfirst }}</span>
+            </div>
+            {% endif %}
+          </div>
+          <button id="submitBtn" 
+                  class="btn {% if can_submit %}btn-success{% else %}btn-danger{% endif %}"
+                  {% if not can_submit %}disabled{% endif %}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            {% if can_submit %}
+              Submit Code ({{ remaining_attempts }} left)
+            {% else %}
+              Max Attempts Reached
+            {% endif %}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden Form -->
+    <div style="display: none">
+      <form action="{{task.id}}" method="POST" id="hiddenForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="uploadedFile" id="uploadedFile" required />
+      </form>
+    </div>
+
+    <script>
+      // Initialize CodeMirror
+      let editor;
+      const initialCode = `{{task.initialCode|escapejs}}`;
+      const canSubmit = {{ can_submit|yesno:"true,false" }};
+      
+      document.addEventListener("DOMContentLoaded", function () {
+        editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+          lineNumbers: true,
+          mode: "text/x-csrc",
+          theme: "monokai",
+          indentUnit: 4,
+          tabSize: 4,
+          matchBrackets: true,
+          autoCloseBrackets: true,
+          readOnly: !canSubmit,
+          lineWrapping: false,
+          extraKeys: {
+            "Ctrl-Space": "autocomplete",
+            "Tab": function(cm) {
+              if (cm.somethingSelected()) {
+                cm.indentSelection("add");
+              } else {
+                cm.replaceSelection("    ", "end");
+              }
+            }
+          }
+        });
+
+        // Set editor height
+        editor.setSize(null, "100%");
+      });
+
+      // Reset button
+      document.getElementById("resetBtn")?.addEventListener("click", function () {
+        if (!this.disabled && editor) {
+          editor.setValue(initialCode);
+        }
+      });
+
+      // Submit button
+      document.getElementById("submitBtn")?.addEventListener("click", function () {
+        if (this.disabled) return;
+        
+        const code = editor ? editor.getValue() : document.getElementById("codeEditor").value;
+
+        if (!code.trim()) {
+          alert("Please write some code before submitting!");
+          return;
+        }
+
+        // Create file and submit
+        const file = new Blob([code], { type: "text/plain" });
+        const inputElement = document.getElementById("uploadedFile");
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(new File([file], "code.c"));
+        inputElement.files = dataTransfer.files;
+
+        // Submit form
+        document.getElementById("hiddenForm").submit();
+      });
+
+      // Navigation menu functions
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu) menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      }
+
+      function closeDropDown() {
+        const menu = document.getElementById("dropdownMenu");
+        if (menu && menu.style.display === "flex") menu.style.display = "none";
+      }
+    </script>
+  </body>
+</html>
    
 
   </head>
