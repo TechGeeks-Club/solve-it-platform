@@ -13,6 +13,13 @@ from .filters import TaskSolutionListFilter
 
 from django.utils.html import format_html
 
+class TaskTestInline(TabularInline):
+    model = TaskTest
+    fields = ['input', 'output', 'display', 'weight', 'is_sample', 'order']
+    extra = 1
+    ordering = ['order', 'id']
+    
+
 class TaskSolutionStackedInline(TabularInline):
     model = TaskSolution 
     fields = ['pk','team',"participant",'score','tries']
@@ -41,7 +48,7 @@ class TaskAdmin(ModelAdmin):
     search_fields = ('_title',)
     list_filter = ('phase', 'level', 'category')
     
-    inlines =  [TaskSolutionStackedInline]
+    inlines = [TaskTestInline]
     
     
     def _title(self, obj):
@@ -116,6 +123,3 @@ class TaskSolutionAdmin(ModelAdmin):
         if len(obj.task.title) <= 15:
             return obj.task.title
         return obj.task.title[:15] + "..."
-
-
-admin.site.register(TaskTest)
