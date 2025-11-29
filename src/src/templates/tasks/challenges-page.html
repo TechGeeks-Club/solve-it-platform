@@ -45,10 +45,9 @@
         </div>
 
         <div class="challenge-list">
-          {% if tasks %} 
-            {% comment %} {% for phase in phases.all %}  {% endcomment %}
-              {% comment %} {% if not phase.is_locked %}  {% endcomment %}
-                {% for task in tasks.all %}
+          {% if tasks_with_status %} 
+            {% for item in tasks_with_status %}
+              {% with task=item.task solution=item.solution %}
           <div
             class="challenge-card"
             data-phase="{{ phase.name }}"
@@ -63,27 +62,44 @@
                     <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
                   {% endif %}
 
-                    <span>Score: {{ task.points }} points</span>
+                  <span>Score: {{ task.points }} points</span>
                   {% if task.category %}
                     <span>Category: {{ task.category }}</span>
                   {% endif %}
-                  <span>Phase: {{ phase.name }}</span>
+                  
+                  {% if solution %}
+                    <span>Attempts: {{ item.attempts }}/{{ item.max_attempts }}</span>
+                    <span>Your Score: {{ item.score }}%</span>
+                  {% endif %}
                 </div>
               </div>
             </div>
 
-            {% if task.task_solutions.all %}
-              <div class="solve-btn" style="background-color: #46e34c69 ;">Done</div>
-              
+            {% if solution %}
+              {% if not item.is_corrected %}
+                <!-- Still processing or not corrected yet -->
+                <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #ffa50080; color: #fff; cursor: pointer;">In Progress ({{ item.attempts }}/{{ item.max_attempts }})</button>
+              {% elif item.can_access %}
+                <!-- Corrected but can still submit (attempts < max) -->
+                {% if item.score >= pass_threshold %}
+                  <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #46e34c; color: #fff; cursor: pointer;">Success ({{ item.attempts }}/{{ item.max_attempts }})</button>
+                {% else %}
+                  <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #ff4444; color: #fff; cursor: pointer;">Failed ({{ item.attempts }}/{{ item.max_attempts }})</button>
+                {% endif %}
+              {% else %}
+                <!-- Max attempts reached - show pass/fail status -->
+                {% if item.status_text == "Success" %}
+                  <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #46e34c; color: #fff; cursor: pointer;">Success ✓</button>
+                {% else %}
+                  <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #ff4444; color: #fff; cursor: pointer;">Failed ✗</button>
+                {% endif %}
+              {% endif %}
             {% else %}
               <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
             {% endif %}
           </div>
-
-
-              {% endfor %}
-            {% comment %} {% endif %} {% endcomment %}
-           {% comment %} {% endfor %}  {% endcomment %}
+              {% endwith %}
+            {% endfor %}
           {% endif %}
         </div>
       </main>

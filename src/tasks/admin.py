@@ -4,7 +4,7 @@ from django.contrib.admin import ModelAdmin
 from django import forms
 
 
-from .models import Phase, Task, TaskTest, TaskSolution
+from .models import Phase, Task, TaskTest, TaskSolution, Settings
 from .forms import TaskSolutionForm
 
 from django.contrib.admin import StackedInline,TabularInline
@@ -12,6 +12,30 @@ from django.contrib.admin import StackedInline,TabularInline
 from .filters import TaskSolutionListFilter
 
 from django.utils.html import format_html
+
+
+@admin.register(Settings)
+class SettingsAdmin(ModelAdmin):
+    model = Settings
+    list_display = ('id', 'max_attempts', 'pass_threshold', 'manual_correction', 'updated_at')
+    
+    fieldsets = (
+        ("Submission Settings", {
+            "fields": ("max_attempts", "pass_threshold")
+        }),
+        ("Correction Settings", {
+            "fields": ("manual_correction",)
+        }),
+    )
+    
+    def has_add_permission(self, request):
+        # Only allow one Settings instance
+        return not Settings.objects.exists()
+    
+    def has_delete_permission(self, request, obj=None):
+        # Prevent deletion of Settings
+        return False
+
 
 class TaskTestInline(TabularInline):
     model = TaskTest
@@ -65,24 +89,34 @@ class TaskSolutionAdmin(ModelAdmin):
     
     list_display = (
         'id', 'task__phase', 'team__name', '_title', 'task__level', 'task__category',
-        '_score', 'status', '_passed_tests', 'is_corrected'
+        '_score', '_attempts', 'status', '_passed_tests', 'is_corrected'
     )
     list_display_links = ('id', 'task__phase', 'team__name', '_title')
     
     search_fields = ('task__title', 'team__name', "participant__user__username")
     list_filter = ('task__phase', 'status', TaskSolutionListFilter, 'is_corrected', 'task__level', 'task__category')
     
-    readonly_fields = (
-        'task', 'team', 'submitted_at', 'participant',
-        'status', 'kafka_sent_at', 'processing_started_at', 'processing_completed_at',
-        'passed_tests', 'total_tests', 'score',
-        'compiler_output', 'error_message', 'test_results',
-        'correction_id'
-    )
+    def get_readonly_fields(self, request, obj=None):
+        """Make score and is_corrected editable when manual_correction is enabled"""
+        settings = Settings.get_settings()
+        
+        base_readonly = [
+            'task', 'team', 'submitted_at', 'participant', 'attempts',
+            'status', 'kafka_sent_at', 'processing_started_at', 'processing_completed_at',
+            'passed_tests', 'total_tests',
+            'compiler_output', 'error_message', 'test_results',
+            'correction_id'
+        ]
+        
+        if not settings.manual_correction:
+            # If manual correction is disabled, make score and is_corrected readonly
+            base_readonly.extend(['score', 'is_corrected'])
+        
+        return base_readonly
     
     fieldsets = (
         ("Submission Information", {
-            "fields": (("task", "submitted_at"), ("team", "participant"), "correction_id")
+            "fields": (("task", "submitted_at"), ("team", "participant"), ("attempts", "correction_id"))
         }),
         ("Code Submission", {
             "fields": ("code_src", ("score", "is_corrected")),
@@ -112,6 +146,11 @@ class TaskSolutionAdmin(ModelAdmin):
     
     def _score(self, obj):
         return f"{obj.score}%"
+    
+    def _attempts(self, obj):
+        settings = Settings.get_settings()
+        return f"{obj.attempts}/{settings.max_attempts}"
+    _attempts.short_description = "Attempts"
     
     def _passed_tests(self, obj):
         if obj.total_tests > 0:

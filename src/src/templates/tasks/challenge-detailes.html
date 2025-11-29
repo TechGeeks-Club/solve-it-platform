@@ -52,12 +52,12 @@
         <h2>Code:</h2>
         <div class="challenge-code" style="position: relative;">
           <button id="resetBtn" 
-                  {% if tasksolution %}disabled{% endif %}
+                  {% if not can_submit %}disabled{% endif %}
                   style="position: absolute; top: 10px; right: 10px; z-index: 1000; 
                          background: #2d2d2d; border: 1px solid #444; color: #fff; 
                          padding: 8px 12px; border-radius: 4px; cursor: pointer;
                          font-size: 14px; display: flex; align-items: center; gap: 6px;
-                         {% if tasksolution %}opacity: 0.5; cursor: not-allowed;{% endif %}"
+                         {% if not can_submit %}opacity: 0.5; cursor: not-allowed;{% endif %}"
                   title="Reset to initial code">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
@@ -67,15 +67,25 @@
             </svg>
             Reset
           </button>
-          <textarea id="textInput" {% if tasksolution %}disabled{% endif %}>{{task.initialCode}}</textarea>
+          <textarea id="textInput" {% if not can_submit %}disabled{% endif %}>{% if tasksolution %}{{ tasksolution.code }}{% else %}{{ task.initialCode }}{% endif %}</textarea>
         </div>
         <div class="challenge-submit">
           <div class="challenge-meta">
-            {% comment %} <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
-            <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span> {% endcomment %}
+            <span>Attempts: {{ current_attempts }}/{{ max_attempts }}</span>
+            {% if tasksolution %}
+              <span>Your Score: {{ tasksolution.score }}%</span>
+              <span>Status: {{ tasksolution.status|capfirst }}</span>
+            {% endif %}
           </div>
-          <button id="downloadBtn" {% if tasksolution %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>Submit</button>
-</div>
+          <button id="downloadBtn" 
+                  {% if not can_submit %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>
+            {% if can_submit %}
+              Submit ({{ remaining_attempts }} left)
+            {% else %}
+              Max Attempts Reached
+            {% endif %}
+          </button>
+        </div>
 </main>
 <div style="display: none">
   <form action="{{task.id}}" method="POST" id="hiddenForm"  enctype="multipart/form-data">
@@ -101,13 +111,15 @@
   const initialCode = `{{task.initialCode|escapejs}}`;
   
   document.addEventListener("DOMContentLoaded", function () {
+    const canSubmit = {{ can_submit|yesno:"true,false" }};
+    
     editor = CodeMirror.fromTextArea(document.getElementById("textInput"), {
       lineNumbers: true,
       mode: "text/x-csrc",
       theme: "monokai",
       indentUnit: 4,
       matchBrackets: true,
-      readOnly: {{ tasksolution|yesno:"true,false" }}
+      readOnly: !canSubmit
     });
   });
 

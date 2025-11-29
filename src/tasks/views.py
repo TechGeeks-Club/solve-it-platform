@@ -7,7 +7,7 @@ from django.utils import timezone
 import logging
 
 
-from .models import Phase,Task,TaskSolution,TaskTest
+from .models import Phase,Task,TaskSolution,TaskTest,Settings
 from .kafka_producer import send_submission_sync
 
 from registration.models import Participant,Team
@@ -32,18 +32,43 @@ def tasksDisplayView(request:HttpRequest):
     if phase.name == "phase 3" :
         return redirect("task-display")
     
+    # Get current user's team
+    try:
+        participant = Participant.objects.get(user=request.user)
+        user_team = participant.team
+    except:
+        messages.error(request, "You must be part of a team to view challenges")
+        return redirect("home")
     
-    tasks = Task.objects.filter(phase=phase).prefetch_related('task_solutions')
-    # print(tasks.all()[3].task_solutions)
+    # Get tasks with solutions for the user's team
+    tasks = Task.objects.filter(phase=phase).prefetch_related(
+        'task_solutions'
+    )
     
+    # Get settings for pass/fail logic
+    settings_obj = Settings.get_settings()
     
-    # tasks = phase.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
-    # task = Task.objects.filter(phase=phase)
+    # Add solution info for each task
+    tasks_with_status = []
+    for task in tasks:
+        task_solution = task.task_solutions.filter(team=user_team).first()
+        tasks_with_status.append({
+            'task': task,
+            'solution': task_solution,
+            'attempts': task_solution.attempts if task_solution else 0,
+            'max_attempts': settings_obj.max_attempts,
+            'can_access': task_solution is None or task_solution.attempts < settings_obj.max_attempts,
+            'status_text': task_solution.get_status_display_text() if task_solution else None,
+            'status_class': task_solution.get_status_class() if task_solution else None,
+            'score': task_solution.score if task_solution else 0,
+            'is_corrected': task_solution.is_corrected if task_solution else False,
+        })
     
-    # phases = Phase.objects.prefetch_related("phase_tasks","phase_tasks__category","phase_tasks__task_solutions")
     context = {
-        "tasks" : tasks,
-        "phase" : phase
+        "tasks_with_status": tasks_with_status,
+        "phase": phase,
+        "max_attempts": settings_obj.max_attempts,
+        "pass_threshold": settings_obj.pass_threshold,
     }
     
     return render(request,"tasks/challenges-page.html",context)
@@ -81,86 +106,128 @@ def taskView(request:HttpRequest, task_id:int):
     
     
     participant = Participant.objects.get(user = request.user)
-    tasksolution = TaskSolution.objects.filter(task=task,team=participant.team)
-
-
-    context = {"task" : task,}
-    context["tasksolution"] = True if tasksolution else False
     
-    if not checkParticipationExistance(task,participant) :
-        if request.method == "POST" :
-            # Handle both file upload and direct code submission
-            code_content = None
-            
-            if "uploadedFile" in request.FILES :
-                file = request.FILES['uploadedFile']
-                try:
-                    code_content = file.read().decode('utf-8')
-                except Exception as e:
-                    messages.error(request, f"Error reading file: {str(e)}")
-                    return render(request,"tasks/challenge-detailes.html",context)
-            elif "code" in request.POST:
-                code_content = request.POST.get('code')
-            
-            if code_content:
-                try :
-                    logger.info(f"Received code submission for task {task.id} from user {participant.user.id}")
-                    logger.info(f"Code length: {len(code_content)} chars")
-                    
-                    with transaction.atomic():
-                        # Create submission record
+    # Get or create TaskSolution for this team/task (only one per team/task)
+    tasksolution = TaskSolution.objects.filter(task=task, team=participant.team).first()
+    
+    # Get platform settings for max attempts
+    settings_obj = Settings.get_settings()
+    max_attempts = settings_obj.max_attempts
+    
+    # Calculate remaining attempts
+    current_attempts = tasksolution.attempts if tasksolution else 0
+    remaining_attempts = max_attempts - current_attempts
+    
+    context = {
+        "task": task,
+        "tasksolution": tasksolution,
+        "current_attempts": current_attempts,
+        "max_attempts": max_attempts,
+        "remaining_attempts": remaining_attempts,
+        "can_submit": remaining_attempts > 0,
+    }
+    
+    if request.method == "POST":
+        # Check if attempts limit reached
+        if tasksolution and tasksolution.attempts >= max_attempts:
+            messages.error(request, f"Maximum submission attempts ({max_attempts}) reached for this task.")
+            return render(request, "tasks/challenge-detailes.html", context)
+        
+        # Handle both file upload and direct code submission
+        code_content = None
+        
+        if "uploadedFile" in request.FILES:
+            file = request.FILES['uploadedFile']
+            try:
+                code_content = file.read().decode('utf-8')
+            except Exception as e:
+                messages.error(request, f"Error reading file: {str(e)}")
+                return render(request, "tasks/challenge-detailes.html", context)
+        elif "code" in request.POST:
+            code_content = request.POST.get('code')
+        
+        if code_content:
+            try:
+                logger.info(f"Received code submission for task {task.id} from user {participant.user.id}")
+                logger.info(f"Code length: {len(code_content)} chars")
+                
+                with transaction.atomic():
+                    if tasksolution:
+                        # Update existing submission (overwrite)
+                        tasksolution.code = code_content
+                        tasksolution.attempts += 1
+                        tasksolution.status = 'pending'
+                        tasksolution.kafka_sent_at = timezone.now()
+                        tasksolution.submitted_at = timezone.now()
+                        # Reset results
+                        tasksolution.score = 0
+                        tasksolution.is_corrected = False
+                        tasksolution.passed_tests = 0
+                        tasksolution.total_tests = 0
+                        tasksolution.test_results = []
+                        tasksolution.error_message = None
+                        tasksolution.compiler_output = None
+                        submission = tasksolution
+                        logger.info(f"Updated existing TaskSolution (ID: {submission.id}, attempts: {submission.attempts}/{max_attempts})")
+                    else:
+                        # Create new submission record
                         submission = TaskSolution(
                             task=task,
                             participant=participant,
                             team=participant.team,
                             code=code_content,
+                            attempts=1,
                             status='pending',
                             kafka_sent_at=timezone.now()
                         )
+                        logger.info(f"Creating new TaskSolution (attempt 1/{max_attempts})")
+                    
+                    submission.save()
+                    logger.info(f"Saved TaskSolution with ID: {submission.id}")
+                    
+                    # Send to Kafka for async processing (hardcoded language_id=50 for C)
+                    logger.info(f"Sending submission {submission.id} to Kafka...")
+                    kafka_sent = send_submission_sync(
+                        submission_id=submission.id,
+                        task_id=task.id,
+                        user_id=participant.user.id,
+                        team_id=participant.team.id,
+                        code=code_content,
+                        language_id=50  # Always use C
+                    )
+                    
+                    logger.info(f"Kafka send result: {kafka_sent}")
+                    
+                    if kafka_sent:
+                        submission.status = 'processing'
                         submission.save()
-                        logger.info(f"Created TaskSolution record with ID: {submission.id}")
+                        logger.info(f"✓ Submission {submission.id} sent to Kafka and status updated to 'processing'")
                         
-                        # Send to Kafka for async processing (hardcoded language_id=50 for C)
-                        logger.info(f"Sending submission {submission.id} to Kafka...")
-                        kafka_sent = send_submission_sync(
-                            submission_id=submission.id,
-                            task_id=task.id,
-                            user_id=participant.user.id,
-                            team_id=participant.team.id,
-                            code=code_content,
-                            language_id=50  # Always use C
+                        # Update context with new attempts
+                        context["tasksolution"] = submission
+                        context["current_attempts"] = submission.attempts
+                        context["remaining_attempts"] = max_attempts - submission.attempts
+                        context["can_submit"] = context["remaining_attempts"] > 0
+                        
+                        messages.success(
+                            request,
+                            f"Submission received! (Attempt {submission.attempts}/{max_attempts}) Your code is being evaluated..."
                         )
-                        
-                        logger.info(f"Kafka send result: {kafka_sent}")
-                        
-                        if kafka_sent:
-                            submission.status = 'processing'
-                            submission.save()
-                            logger.info(f"✓ Submission {submission.id} sent to Kafka and status updated to 'processing'")
-                            messages.success(
-                                request,
-                                "Submission received! Your code is being evaluated..."
-                            )
-                        else:
-                            logger.warning(f"✗ Failed to send submission {submission.id} to Kafka")
-                            messages.warning(
-                                request,
-                                "Submission saved but evaluation service is unavailable. "
-                                "It will be processed when the service is back online."
-                            )
-                        
-                        context["tasksolution"] = True 
+                    else:
+                        logger.warning(f"✗ Failed to send submission {submission.id} to Kafka")
+                        messages.warning(
+                            request,
+                            "Submission saved but evaluation service is unavailable. "
+                            "It will be processed when the service is back online."
+                        )
 
-                except Exception as exp :
-                    logger.error(f"Error submitting code: {str(exp)}", exc_info=True)
-                    messages.error(request, f"Error submitting code: {str(exp)}")
+            except Exception as exp:
+                logger.error(f"Error submitting code: {str(exp)}", exc_info=True)
+                messages.error(request, f"Error submitting code: {str(exp)}")
 
-            return render(request,"tasks/challenge-detailes.html",context)
-        else : #! GET
-            return render(request,"tasks/challenge-detailes.html",context)
-     
-    else:
-        return redirect("tasksDisplay")
+        return render(request, "tasks/challenge-detailes.html", context)
+    else:  # GET
+        return render(request, "tasks/challenge-detailes.html", context)
 
 @login_required
 def tasksFileDownload(request:HttpRequest):

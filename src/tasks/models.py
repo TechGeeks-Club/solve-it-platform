@@ -1,9 +1,53 @@
 from django.db import models
-
+from django.core.cache import cache
 from registration.models import Participant, Team
 from django.core.validators import MaxValueValidator
 
 from django.contrib.auth.models import User
+
+
+class Settings(models.Model):
+    """Global platform settings with Redis caching"""
+    
+    max_attempts = models.IntegerField(
+        default=3,
+        help_text="Maximum number of submission attempts allowed per task"
+    )
+    pass_threshold = models.IntegerField(
+        default=50,
+        validators=[MaxValueValidator(100)],
+        help_text="Minimum score percentage to consider a task as passed (e.g., 50 means 50%)"
+    )
+    manual_correction = models.BooleanField(
+        default=False,
+        help_text="Enable manual correction by admins (allows editing score and is_correct)"
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Settings"
+        verbose_name_plural = "Settings"
+    
+    def save(self, *args, **kwargs):
+        # Ensure only one Settings instance exists
+        if not self.pk and Settings.objects.exists():
+            raise ValueError("Settings instance already exists. Update the existing one.")
+        super().save(*args, **kwargs)
+        # Clear cache when settings are updated
+        cache.delete('platform_settings')
+    
+    @classmethod
+    def get_settings(cls):
+        """Get settings from cache or database"""
+        settings = cache.get('platform_settings')
+        if settings is None:
+            settings, _ = cls.objects.get_or_create(pk=1)
+            cache.set('platform_settings', settings, timeout=300)  # Cache for 5 minutes
+        return settings
+    
+    def __str__(self):
+        return f"Platform Settings (max_attempts: {self.max_attempts}, pass_threshold: {self.pass_threshold}%, manual_correction: {self.manual_correction})"
+
 
 class Phase(models.Model):
     name = models.CharField(max_length=128)
@@ -93,6 +137,7 @@ class TaskSolution(models.Model):
     code = models.TextField(null=True, blank=True)  # Store code as text
     code_file = models.FileField(upload_to=get_file_path, blank=True, null=True, max_length=100)  # Optional file upload
     
+    attempts = models.IntegerField(default=1)  # Number of attempts made
     is_corrected = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)])
@@ -124,6 +169,28 @@ class TaskSolution(models.Model):
         if self.total_tests > 0:
             return int((self.passed_tests / self.total_tests) * 100)
         return 0
+    
+    def is_passed(self):
+        """Check if task is passed based on threshold and max attempts"""
+        settings = Settings.get_settings()
+        # Only consider passed if max attempts reached and score >= threshold
+        if self.attempts >= settings.max_attempts:
+            return self.score >= settings.pass_threshold
+        return None  # Still in progress
+    
+    def get_status_display_text(self):
+        """Get status text for display (Success/Failed/In Progress)"""
+        settings = Settings.get_settings()
+        if self.attempts >= settings.max_attempts:
+            return "Success" if self.score >= settings.pass_threshold else "Failed"
+        return "In Progress"
+    
+    def get_status_class(self):
+        """Get CSS class for status styling"""
+        settings = Settings.get_settings()
+        if self.attempts >= settings.max_attempts:
+            return "success" if self.score >= settings.pass_threshold else "failed"
+        return "in-progress"
 
     def __str__(self):
         return f"{self.task.title} - Solution #{self.tries} by {self.participant}" 
