@@ -68,7 +68,7 @@ class Judge0Client:
             
             results = judge0.run(
                 source_code=source_code,
-                language=judge0.C,
+                language=judge0.C_GCC,
                 test_cases=formatted_test_cases,
                 base_url=self.base_url
             )

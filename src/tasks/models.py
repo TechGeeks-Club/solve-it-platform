@@ -18,13 +18,7 @@ class Phase(models.Model):
     
     def __str__(self):
         return self.name
-    
-class Category(models.Model):
-    name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
-    
 
 class Task(models.Model):
     LEVELS = [
@@ -32,8 +26,22 @@ class Task(models.Model):
         ("medium","Medium"),
         ("hard","Hard"),
     ]
+    
+    CATEGORIES = [
+        ("algorithms", "Algorithms"),
+        ("data_structures", "Data Structures"),
+        ("dynamic_programming", "Dynamic Programming"),
+        ("graph_theory", "Graph Theory"),
+        ("string_manipulation", "String Manipulation"),
+        ("mathematics", "Mathematics"),
+        ("greedy", "Greedy"),
+        ("sorting", "Sorting"),
+        ("searching", "Searching"),
+        ("other", "Other"),
+    ]
+    
     phase = models.ForeignKey(Phase, null=True, on_delete=models.SET_NULL, related_name="phase_tasks")
-    category = models.ForeignKey(Category, null=True,blank=True, on_delete=models.SET_NULL)
+    category = models.CharField(max_length=50, choices=CATEGORIES, null=True, blank=True)
     title = models.CharField(max_length=128,null=False)
     context = models.TextField(null=False)
     initialCode = models.TextField(null=True)
@@ -84,7 +92,6 @@ class TaskSolution(models.Model):
     team = models.ForeignKey(Team, null=False, on_delete=models.CASCADE)
     code = models.TextField(null=True, blank=True)  # Store code as text
     code_file = models.FileField(upload_to=get_file_path, blank=True, null=True, max_length=100)  # Optional file upload
-    language_id = models.IntegerField(default=50)  # Judge0 language ID (50 = C)
     
     is_corrected = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -104,7 +111,8 @@ class TaskSolution(models.Model):
     
     passed_tests = models.IntegerField(default=0)
     total_tests = models.IntegerField(default=0)
-    test_results = models.JSONField(null=True, blank=True, default=list)  # Detailed results per test
+    test_results = models.JSONField(null=True, blank=True, default=list)  # Detailed results per test (includes execution_time and memory_usage per test)
+    correction_id = models.CharField(max_length=255, null=True, blank=True)  # Unique identifier for this correction
             
     def save(self, *args, **kwargs):
         if self.score and self.score > 0:
@@ -119,30 +127,3 @@ class TaskSolution(models.Model):
 
     def __str__(self):
         return f"{self.task.title} - Solution #{self.tries} by {self.participant}" 
-
-class TaskCorrecton(models.Model):
-    user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
-    task_solution = models.ForeignKey(TaskSolution, null=False, on_delete=models.CASCADE)
-    corrected_at = models.DateTimeField(auto_now_add=True,blank=True,null=True)
-    
-    def __str__(self):
-        return self.task_solution.task.title
-    
-    class meta:
-        unique_together = ('user', 'task_solution')
-
-
-
-class ThirdPhaseCode(models.Model):
-    RESULT = [
-        ("win","Win"),
-        ("lose","Lose"),
-    ]
-    # ? Which it's the code
-    id = models.CharField( max_length=255, primary_key=True, unique=True,)
-    task = models.ForeignKey(Task, null=False, on_delete=models.CASCADE)
-    hints_value = models.IntegerField(null=False, default=1)
-    result = models.CharField(max_length=8, choices=RESULT, null=False)
-
-    def __str__(self):
-        return "task: " + self.task.title + " result: " + self.result + " code: " + self.id 

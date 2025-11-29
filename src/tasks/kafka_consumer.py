@@ -87,12 +87,13 @@ class KafkaConsumerService:
                     submission.passed_tests = result.get('passed_tests', 0)
                     submission.total_tests = result.get('total_tests', 0)
                     submission.score = result.get('score', 0)
-                    submission.execution_time = result.get('execution_time')
-                    submission.memory_used = result.get('memory_used')
                     submission.test_results = result.get('test_results', [])
                     submission.compiler_output = result.get('compiler_output', '')
                     submission.error_message = result.get('error_message', '')
                     submission.processing_completed_at = timezone.now()
+                    
+                    # Generate correction ID
+                    submission.correction_id = f"{submission_id}_{int(timezone.now().timestamp())}"
                     
                     # if submission.score and submission.score > 0:
                     submission.is_corrected = True

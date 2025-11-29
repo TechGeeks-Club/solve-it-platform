@@ -4,13 +4,12 @@ from django.contrib.admin import ModelAdmin
 from django import forms
 
 
-from .models import Phase, Category, Task, TaskTest, TaskSolution,TaskCorrecton,ThirdPhaseCode
+from .models import Phase, Task, TaskTest, TaskSolution
 from .forms import TaskSolutionForm
 
 from django.contrib.admin import StackedInline,TabularInline
 
 from .filters import TaskSolutionListFilter
-from .action import Get_task,Exclude_task
 
 from django.utils.html import format_html
 
@@ -24,25 +23,11 @@ class TaskSolutionStackedInline(TabularInline):
     tab = True
     
 
-
-@admin.register(ThirdPhaseCode)
-class ThirdPhaseCodeAdmin(ModelAdmin):
-    
-    model = ThirdPhaseCode
-
 @admin.register(Phase)
 class PhaseAdmin(ModelAdmin):
     
     model = Phase
     list_display = ('id','name','is_locked')
-    list_display_links = list_display
-
-
-@admin.register(Category)
-class CategoryAdmin(ModelAdmin):
-    
-    model = Category
-    list_display = ('id','name')
     list_display_links = list_display
 
 
@@ -71,36 +56,45 @@ class TaskSolutionAdmin(ModelAdmin):
     form = TaskSolutionForm
     model = TaskSolution
     
-    list_display = ('id','task__phase','team__name','_title','task__level',"task__category",'_score',"is_corrected","is_taken")
-    list_display_links = list_display
+    list_display = (
+        'id', 'task__phase', 'team__name', '_title', 'task__level', 'task__category',
+        '_score', 'status', '_passed_tests', 'is_corrected'
+    )
+    list_display_links = ('id', 'task__phase', 'team__name', '_title')
     
+    search_fields = ('task__title', 'team__name', "participant__user__username")
+    list_filter = ('task__phase', 'status', TaskSolutionListFilter, 'is_corrected', 'task__level', 'task__category')
     
-    search_fields = ('_title',"team__name")
-    list_filter = ('task__phase',TaskSolutionListFilter,'is_corrected','task__level','task__category')
-    
-    actions = [Get_task,Exclude_task]
-    
-    readonly_fields = ('task','team','submitted_at',"participant")
-    
-    fieldsets = (
-    ("Submition Information", {"fields": (("task", "submitted_at"),("team","participant"))}),
-    (
-        ("Submition"),
-        {
-            "fields": (("score","is_corrected"),"code_src"),
-            "classes": ["tab"],
-        },
-    ),
+    readonly_fields = (
+        'task', 'team', 'submitted_at', 'participant',
+        'status', 'kafka_sent_at', 'processing_started_at', 'processing_completed_at',
+        'passed_tests', 'total_tests', 'score',
+        'compiler_output', 'error_message', 'test_results',
+        'correction_id'
     )
     
-
-    def is_taken(self, obj):
-        if TaskCorrecton.objects.filter(task_solution=obj).exists():
-            
-            return format_html('<img src="/static/admin/img/icon-yes.svg" alt="True">')
-        else:
-            return format_html('<img src="/static/admin/img/icon-no.svg" alt="False">')
-        
+    fieldsets = (
+        ("Submission Information", {
+            "fields": (("task", "submitted_at"), ("team", "participant"), "correction_id")
+        }),
+        ("Code Submission", {
+            "fields": ("code_src", ("score", "is_corrected")),
+            "classes": ["tab"],
+        }),
+        ("Judge0 Processing", {
+            "fields": (
+                "status",
+                ("kafka_sent_at", "processing_started_at", "processing_completed_at"),
+                ("passed_tests", "total_tests"),
+            ),
+            "classes": ["collapse"],
+        }),
+        ("Judge0 Results", {
+            "fields": ("compiler_output", "error_message", "test_results"),
+            "classes": ["collapse"],
+        }),
+    )
+    
 
     def has_add_permission(self, request):
         return False
@@ -112,66 +106,16 @@ class TaskSolutionAdmin(ModelAdmin):
     def _score(self, obj):
         return f"{obj.score}%"
     
+    def _passed_tests(self, obj):
+        if obj.total_tests > 0:
+            return f"{obj.passed_tests}/{obj.total_tests}"
+        return "-"
+    _passed_tests.short_description = "Tests"
+    
     def _title(self, obj):
         if len(obj.task.title) <= 15:
             return obj.task.title
         return obj.task.title[:15] + "..."
-    
-    
-@admin.register(TaskCorrecton)
-class TaskCorrectonAdmin(ModelAdmin):
-    model = TaskCorrecton
-    
-    list_display =  ('id','user','task_title','task_phase','team_name','participant','score')
-    list_display_links =  ('id','task_title','task_phase','team_name','participant','score')
-    
-    list_filter = ('user',)
-    
-    list_editable = ('user',)
-        
-    # Permission ============================
-    def has_permission(self, request, obj=None):
-        if request.user.is_superuser == True:
-            return True
-        return False
 
-    def has_add_permission(self, request):
-        return self.has_permission(request)
-
-    def has_delete_permission(self, request, obj=None):
-        return self.has_permission(request, obj)
-
-    def has_change_permission(self, request, obj=None):
-        return self.has_permission(request, obj)
-
-    def has_view_permission(self, request, obj=None):
-        return self.has_permission(request, obj)
-    # ========================================
-    
-    
-    def get_queryset(self, request):
-        if request.user.is_superuser == True:
-            return super().get_queryset(request)
-        return TaskCorrecton.objects.filter(user=request.user)
-        
-        
-    # attr =============================
-    def taken_by(self, obj):
-        return obj.user.username
-        
-    def task_title(self, obj):
-        title = obj.task_solution.task.title
-        if len(title) >= 15:
-            return title[:15] + "..."
-        return title
-    def task_phase(self, obj):
-        return obj.task_solution.task.phase
-    def team_name(self, obj):
-        return obj.task_solution.team.name
-    def participant(self, obj):
-        return obj.task_solution.participant.user.username
-    def score(self, obj):
-        return obj.task_solution.score
-    # =================================
 
 admin.site.register(TaskTest)

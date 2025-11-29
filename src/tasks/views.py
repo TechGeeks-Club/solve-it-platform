@@ -7,7 +7,7 @@ from django.utils import timezone
 import logging
 
 
-from .models import Phase,Task,TaskSolution,TaskTest,ThirdPhaseCode
+from .models import Phase,Task,TaskSolution,TaskTest
 from .kafka_producer import send_submission_sync
 
 from registration.models import Participant,Team
@@ -30,7 +30,7 @@ def tasksDisplayView(request:HttpRequest):
         messages.error(request, "wait please")
         return redirect("home")
     if phase.name == "phase 3" :
-        return redirect("thirdPhase")
+        return redirect("task-display")
     
     
     tasks = Task.objects.filter(phase=phase).prefetch_related('task_solutions')
@@ -91,7 +91,6 @@ def taskView(request:HttpRequest, task_id:int):
         if request.method == "POST" :
             # Handle both file upload and direct code submission
             code_content = None
-            language_id = int(request.POST.get('language_id', 50))  # Default to C
             
             if "uploadedFile" in request.FILES :
                 file = request.FILES['uploadedFile']
@@ -106,7 +105,7 @@ def taskView(request:HttpRequest, task_id:int):
             if code_content:
                 try :
                     logger.info(f"Received code submission for task {task.id} from user {participant.user.id}")
-                    logger.info(f"Code length: {len(code_content)} chars, language_id: {language_id}")
+                    logger.info(f"Code length: {len(code_content)} chars")
                     
                     with transaction.atomic():
                         # Create submission record
@@ -115,14 +114,13 @@ def taskView(request:HttpRequest, task_id:int):
                             participant=participant,
                             team=participant.team,
                             code=code_content,
-                            language_id=language_id,
                             status='pending',
                             kafka_sent_at=timezone.now()
                         )
                         submission.save()
                         logger.info(f"Created TaskSolution record with ID: {submission.id}")
                         
-                        # Send to Kafka for async processing
+                        # Send to Kafka for async processing (hardcoded language_id=50 for C)
                         logger.info(f"Sending submission {submission.id} to Kafka...")
                         kafka_sent = send_submission_sync(
                             submission_id=submission.id,
@@ -130,7 +128,7 @@ def taskView(request:HttpRequest, task_id:int):
                             user_id=participant.user.id,
                             team_id=participant.team.id,
                             code=code_content,
-                            language_id=language_id
+                            language_id=50  # Always use C
                         )
                         
                         logger.info(f"Kafka send result: {kafka_sent}")
@@ -163,73 +161,6 @@ def taskView(request:HttpRequest, task_id:int):
      
     else:
         return redirect("tasksDisplay")
-
-
-
-@login_required
-def thirdPhaseView(request:HttpRequest ):
-    
-    # ? get the phase and see if it's locked
-    try :
-        # ! I CAN'T USE THE ID TO GET PHASE 3, SO IF THEY CHANGE THE NAME YOU SHOULD CHANGE IT HERE ALSO 
-        phaseObj = Phase.objects.get(name = "phase 3") 
-        if phaseObj.is_locked :
-            return redirect("tasksDisplay")
-    except Exception as exp :
-        return redirect("tasksDisplay")
-
-    
-    if request.method == "POST" :
-        inputCode = request.POST.get('code')
-        try :
-            
-            codeObj = ThirdPhaseCode.objects.get(id=inputCode)
-            participantObj = Participant.objects.get(user = request.user)
-
-            if not checkParticipationExistance(codeObj.task,participantObj) :
-                if codeObj.result.lower() == "win" :
-                    TaskSolution(
-                        task = codeObj.task,
-                        participant = participantObj,
-                        team = participantObj.team,
-                        is_corrected = True,
-                        score = 100 - (codeObj.hints_value*100)/codeObj.task.points
-                    ).save()
-                else :
-                    # ? If he lose he i'll get mines
-                    
-                    
-                    loseScore = (((55*codeObj.task.points)/100 + codeObj.hints_value) *100)/codeObj.task.points
-                    
-                    
-                    TaskSolution(
-                        task = codeObj.task,
-                        participant = participantObj,
-                        team = participantObj.team,
-                        is_corrected = True,
-                        score = -1 * loseScore
-                    ).save()              
-                    
-                    # TaskSolution(
-                    #     task = codeObj.task,
-                    #     participant = participantObj,
-                    #     team = participantObj.team,
-                    #     is_corrected = True,
-                    #     score = -1 * (codeObj.hints_value*100)/codeObj.task.points
-                    # ).save()
-            
-            else :
-                messages.error(request, "You already sent the code of this task")
-            
-            # ? Here i return the next task infrmations anyway becouse they may forget it and they use the old code only to get it
-            context = {
-                "nextTask" : codeObj.task.nextTask
-            }
-            return render(request,"tasks/thiredPhase.html",context)
-        except Exception as exp :
-            messages.error(request, "Code didn't exist")
-
-    return render(request,"tasks/thiredPhase.html")
 
 @login_required
 def tasksFileDownload(request:HttpRequest):
