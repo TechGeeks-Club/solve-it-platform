@@ -4,6 +4,7 @@ from django.db import transaction
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+import logging
 
 
 from .models import Phase,Task,TaskSolution,TaskTest,ThirdPhaseCode
@@ -13,6 +14,8 @@ from registration.models import Participant,Team
 
 import os
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 from django.http import FileResponse, Http404
 from django.contrib import messages
 
@@ -102,6 +105,9 @@ def taskView(request:HttpRequest, task_id:int):
             
             if code_content:
                 try :
+                    logger.info(f"Received code submission for task {task.id} from user {participant.user.id}")
+                    logger.info(f"Code length: {len(code_content)} chars, language_id: {language_id}")
+                    
                     with transaction.atomic():
                         # Create submission record
                         submission = TaskSolution(
@@ -114,8 +120,10 @@ def taskView(request:HttpRequest, task_id:int):
                             kafka_sent_at=timezone.now()
                         )
                         submission.save()
+                        logger.info(f"Created TaskSolution record with ID: {submission.id}")
                         
                         # Send to Kafka for async processing
+                        logger.info(f"Sending submission {submission.id} to Kafka...")
                         kafka_sent = send_submission_sync(
                             submission_id=submission.id,
                             task_id=task.id,
@@ -125,14 +133,18 @@ def taskView(request:HttpRequest, task_id:int):
                             language_id=language_id
                         )
                         
+                        logger.info(f"Kafka send result: {kafka_sent}")
+                        
                         if kafka_sent:
                             submission.status = 'processing'
                             submission.save()
+                            logger.info(f"✓ Submission {submission.id} sent to Kafka and status updated to 'processing'")
                             messages.success(
                                 request,
                                 "Submission received! Your code is being evaluated..."
                             )
                         else:
+                            logger.warning(f"✗ Failed to send submission {submission.id} to Kafka")
                             messages.warning(
                                 request,
                                 "Submission saved but evaluation service is unavailable. "
@@ -142,6 +154,7 @@ def taskView(request:HttpRequest, task_id:int):
                         context["tasksolution"] = True 
 
                 except Exception as exp :
+                    logger.error(f"Error submitting code: {str(exp)}", exc_info=True)
                     messages.error(request, f"Error submitting code: {str(exp)}")
 
             return render(request,"tasks/challenge-detailes.html",context)

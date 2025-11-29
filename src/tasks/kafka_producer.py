@@ -5,6 +5,7 @@ Sends code submissions to the judge microservice
 import json
 import logging
 import asyncio
+import threading
 from datetime import datetime
 from typing import Optional
 from aiokafka import AIOKafkaProducer
@@ -68,6 +69,10 @@ class KafkaProducerService:
         Returns:
             bool: True if sent successfully, False otherwise
         """
+        logger.debug(f"Attempting to send submission {submission_id} to Kafka")
+        logger.debug(f"Submission details: task_id={task_id}, user_id={user_id}, team_id={team_id}, language_id={language_id}")
+        logger.debug(f"Code length: {len(code)} characters")
+        
         if not self.producer:
             logger.error("Kafka producer not initialized")
             return False
@@ -82,19 +87,22 @@ class KafkaProducerService:
             'timestamp': datetime.utcnow().isoformat()
         }
         
+        logger.debug(f"Kafka message payload: {json.dumps({k: v if k != 'code' else f'<{len(v)} chars>' for k, v in message.items()})}")
+        
         try:
+            logger.debug(f"Sending to topic: {settings.KAFKA_SUBMISSION_TOPIC}")
             await self.producer.send_and_wait(
                 settings.KAFKA_SUBMISSION_TOPIC,
                 value=message,
                 key=submission_id
             )
-            logger.info(f"Submission {submission_id} sent to Kafka successfully")
+            logger.info(f"✓ Submission {submission_id} sent to Kafka successfully")
             return True
         except KafkaError as e:
-            logger.error(f"Kafka error sending submission {submission_id}: {e}")
+            logger.error(f"✗ Kafka error sending submission {submission_id}: {e}", exc_info=True)
             return False
         except Exception as e:
-            logger.error(f"Unexpected error sending submission {submission_id}: {e}")
+            logger.error(f"✗ Unexpected error sending submission {submission_id}: {e}", exc_info=True)
             return False
 
 
@@ -119,31 +127,47 @@ def send_submission_sync(
     language_id: int = 50
 ) -> bool:
     """
-    Synchronous wrapper for sending submissions from Django views
+    Non-blocking wrapper for sending submissions from Django views
     
-    This function can be called from synchronous Django views
+    Sends the message to Kafka in a background thread to avoid blocking the request
     """
-    producer = get_producer()
-    
-    try:
-        # Create new event loop for this thread if needed
+    def _send_in_thread():
+        """Background thread function to send to Kafka"""
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
+            # Create new event loop for this thread
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-        
-        # Start producer if not started
-        if not producer.producer:
-            loop.run_until_complete(producer.start())
-        
-        # Send submission
-        result = loop.run_until_complete(
-            producer.send_submission(
-                submission_id, task_id, user_id, team_id, code, language_id
-            )
-        )
-        return result
-    except Exception as e:
-        logger.error(f"Error in send_submission_sync: {e}")
-        return False
+            
+            try:
+                # Create a fresh producer instance for this thread
+                producer = KafkaProducerService()
+                
+                # Start producer
+                loop.run_until_complete(producer.start())
+                
+                # Send submission
+                result = loop.run_until_complete(
+                    producer.send_submission(
+                        submission_id, task_id, user_id, team_id, code, language_id
+                    )
+                )
+                
+                # Stop producer
+                loop.run_until_complete(producer.stop())
+                
+                if result:
+                    logger.debug(f"Background thread: Successfully sent submission {submission_id}")
+                else:
+                    logger.error(f"Background thread: Failed to send submission {submission_id}")
+            finally:
+                loop.close()
+        except Exception as e:
+            logger.error(f"Background thread error for submission {submission_id}: {e}", exc_info=True)
+    
+    # Start background thread to send message
+    thread = threading.Thread(target=_send_in_thread, daemon=True)
+    thread.start()
+    
+    # Return True immediately (optimistic response)
+    logger.debug(f"Submission {submission_id} queued for sending in background thread")
+    return True

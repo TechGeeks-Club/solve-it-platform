@@ -56,17 +56,20 @@ class KafkaConsumerService:
         from tasks.models import TaskSolution  # Import here to avoid circular imports
         
         logger.info("Starting to consume results from Kafka...")
+        logger.debug(f"Listening on topic: {settings.KAFKA_RESULT_TOPIC}")
         
         try:
             async for message in self.consumer:
                 if not self.running:
+                    logger.info("Consumer stopping, breaking loop")
                     break
                     
                 try:
                     result = message.value
                     submission_id = result.get('submission_id')
                     
-                    logger.info(f"Received result for submission {submission_id}")
+                    logger.info(f"📨 Received result for submission {submission_id}")
+                    logger.debug(f"Result data: status={result.get('status')}, score={result.get('score')}, passed={result.get('passed_tests')}/{result.get('total_tests')}")
                     
                     # Get the submission from database
                     try:
@@ -74,8 +77,9 @@ class KafkaConsumerService:
                             TaskSolution.objects.get,
                             id=submission_id
                         )
+                        logger.debug(f"Found submission {submission_id} in database")
                     except TaskSolution.DoesNotExist:
-                        logger.error(f"Submission {submission_id} not found in database")
+                        logger.error(f"❌ Submission {submission_id} not found in database")
                         continue
                     
                     # Update submission with results
@@ -90,23 +94,24 @@ class KafkaConsumerService:
                     submission.error_message = result.get('error_message', '')
                     submission.processing_completed_at = timezone.now()
                     
-                    if submission.score and submission.score > 0:
-                        submission.is_corrected = True
+                    # if submission.score and submission.score > 0:
+                    submission.is_corrected = True
                     
                     # Save to database
                     await asyncio.to_thread(submission.save)
+                    # submission.save()
                     
                     logger.info(
-                        f"Submission {submission_id} updated: "
+                        f"✓ Submission {submission_id} updated: "
                         f"{submission.passed_tests}/{submission.total_tests} tests passed, "
-                        f"score: {submission.score}"
+                        f"score: {submission.score}%"
                     )
                     
                 except Exception as e:
-                    logger.error(f"Error processing result message: {e}", exc_info=True)
+                    logger.error(f"❌ Error processing result message: {e}", exc_info=True)
                     
         except Exception as e:
-            logger.error(f"Error in consume_results loop: {e}", exc_info=True)
+            logger.error(f"❌ Error in consume_results loop: {e}", exc_info=True)
         finally:
             await self.stop()
 

@@ -1,6 +1,7 @@
 """
 Kafka Producers and Consumers for Judge Microservice
 """
+import asyncio
 import json
 import logging
 from typing import Optional
@@ -62,51 +63,44 @@ class KafkaProducer:
             logger.error(f"Error sending result for submission {submission_id}: {e}")
             return False
 
-
 class KafkaConsumer:
-    """Async Kafka consumer for receiving submissions"""
-    
     def __init__(self, topic: str, group_id: str):
         self.topic = topic
         self.group_id = group_id
-        self.consumer: Optional[AIOKafkaConsumer] = None
-        
+        self.consumer = None
+
     async def start(self):
-        """Initialize and start the consumer"""
-        try:
-            self.consumer = AIOKafkaConsumer(
-                self.topic,
-                bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS,
-                group_id=self.group_id,
-                value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-                key_deserializer=lambda k: k.decode('utf-8') if k else None,
-                auto_offset_reset='earliest',
-                enable_auto_commit=True
-            )
-            await self.consumer.start()
-            logger.info(f"Kafka consumer started for topic: {self.topic}")
-        except Exception as e:
-            logger.error(f"Failed to start Kafka consumer: {e}")
-            raise
-    
+        self.consumer = AIOKafkaConsumer(
+            self.topic,
+            bootstrap_servers=settings.KAFKA_BOOTSTRAP_SERVERS,
+            group_id=self.group_id,
+            value_deserializer=lambda m: json.loads(m.decode("utf-8")),
+            key_deserializer=lambda k: k.decode("utf-8") if k else None,
+            auto_offset_reset="earliest",
+            enable_auto_commit=True,
+            session_timeout_ms=30000,        # prevent consumer from being kicked
+            heartbeat_interval_ms=3000,
+        )
+        await self.consumer.start()
+
     async def stop(self):
-        """Stop the consumer"""
         if self.consumer:
             await self.consumer.stop()
-            logger.info(f"Kafka consumer stopped for topic: {self.topic}")
-    
+
     async def __aiter__(self):
-        """Make the consumer async iterable with Pydantic validation"""
-        async for message in self.consumer:
+        # yield messages forever unless stopped
+        while True:
             try:
-                # Validate message with Pydantic model
-                validated_message = SubmissionMessage(**message.value)
-                yield message._replace(value=validated_message)
-            except ValidationError as e:
-                logger.error(f"Invalid message format: {e}")
-                logger.error(f"Raw message: {message.value}")
-                # Skip invalid messages
-                continue
+                msg = await self.consumer.getone()  # robust: never ends the loop
+                try:
+                    validated = SubmissionMessage(**msg.value)
+                    yield validated
+                except ValidationError as e:
+                    logger.error(f"Invalid message format: {e}")
+            except KafkaError as e:
+                logger.error(f"Kafka error: {e}")
+                await asyncio.sleep(1)
             except Exception as e:
-                logger.error(f"Error processing message: {e}")
-                continue
+                logger.error(f"Unexpected error: {e}")
+                await asyncio.sleep(1)
+

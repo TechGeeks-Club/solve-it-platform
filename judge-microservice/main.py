@@ -21,6 +21,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Suppress verbose logs from third-party libraries
+logging.getLogger('aiokafka').setLevel(logging.WARNING)
+logging.getLogger('kafka').setLevel(logging.WARNING)
+logging.getLogger('asyncio').setLevel(logging.WARNING)
+logging.getLogger('urllib3').setLevel(logging.WARNING)
+
 
 class JudgeService:
     """Main service orchestrator"""
@@ -70,9 +76,12 @@ class JudgeService:
             f"Processing submission {message.submission_id} for task {message.task_id} "
             f"by user {message.user_id} (team {message.team_id})"
         )
+        logger.debug(f"Submission details: language_id={message.language_id}, code_length={len(message.code)} chars")
+        logger.debug(f"Code preview: {message.code[:200]}..." if len(message.code) > 200 else f"Code: {message.code}")
         
         try:
             # Fetch test cases from database (with caching)
+            logger.debug(f"Fetching test cases for task {message.task_id}")
             test_cases = await self.db_client.get_test_cases(message.task_id)
             
             if not test_cases:
@@ -142,19 +151,29 @@ async def submission_consumer_loop(service: JudgeService):
     Consumer loop for processing code submissions
     """
     logger.info("Submission consumer loop started")
+    logger.info(f"Listening on topic: {settings.KAFKA_SUBMISSION_TOPIC}")
+    logger.info(f"Kafka servers: {settings.KAFKA_BOOTSTRAP_SERVERS}")
     
     try:
         async for message in service.submission_consumer:
             if not service.running:
+                logger.info("Service stopping, breaking consumer loop")
                 break
             
+            logger.debug(f"Received message for submission {message.submission_id}")
+            
             try:
-                await service.process_submission(message.value)
+                await service.process_submission(message)
             except Exception as e:
-                logger.error(f"Error in submission consumer loop: {e}", exc_info=True)
+                logger.error(f"Error processing submission {message.submission_id}: {e}", exc_info=True)
+                # Continue processing next message instead of stopping
+                continue
                 
+    except asyncio.CancelledError:
+        logger.info("Consumer loop cancelled")
     except Exception as e:
         logger.error(f"Fatal error in submission consumer loop: {e}", exc_info=True)
+        # Don't raise - let the service continue
     
     logger.info("Submission consumer loop stopped")
 
@@ -176,15 +195,25 @@ async def main():
         # Start the service
         await service.start()
         
-        # Create consumer tasks
-        tasks: List[asyncio.Task] = [
-            asyncio.create_task(submission_consumer_loop(service)),
-        ]
+        logger.info("Starting consumer loop")
         
-        logger.info(f"Running {len(tasks)} consumer task(s)")
-        
-        # Wait for tasks to complete
-        await asyncio.gather(*tasks, return_exceptions=True)
+        # Keep running until explicitly stopped
+        while service.running:
+            try:
+                # Run consumer loop
+                await submission_consumer_loop(service)
+                
+                # If we get here and service is still running, the loop exited unexpectedly
+                if service.running:
+                    logger.warning("Consumer loop exited unexpectedly, restarting in 5 seconds...")
+                    await asyncio.sleep(5)
+                    
+            except asyncio.CancelledError:
+                logger.info("Consumer loop cancelled")
+                break
+            except Exception as e:
+                logger.error(f"Error in consumer loop, restarting in 5 seconds: {e}", exc_info=True)
+                await asyncio.sleep(5)
         
     except KeyboardInterrupt:
         logger.info("Keyboard interrupt received")
