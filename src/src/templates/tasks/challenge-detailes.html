@@ -13,8 +13,9 @@
   /* Challenge Page Specific Styles */
   .challenge-container {
     display: flex;
-    height: calc(100vh - 50px);
-    margin-top: 50px;
+    height: 100vh;
+    padding-top: 50px;
+    overflow: hidden;
   }
 
   /* Problem Panel */
@@ -23,6 +24,7 @@
     background: #252526;
     overflow-y: auto;
     border-right: 1px solid #3e3e42;
+    height: calc(100vh - 50px);
   }
 
   .problem-header {
@@ -77,6 +79,8 @@
     display: flex;
     flex-direction: column;
     background: #1e1e1e;
+    overflow: hidden;
+    height: calc(100vh - 50px);
   }
 
   .editor-header {
@@ -86,6 +90,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
   }
 
   .editor-tabs {
@@ -120,6 +125,7 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+    min-height: 0;
   }
 
   .CodeMirror {
@@ -135,6 +141,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
   }
 
   .status-info {
@@ -156,6 +163,7 @@
     border-top: 1px solid #3e3e42;
     max-height: 200px;
     overflow-y: auto;
+    flex-shrink: 0;
   }
 
   .test-results-header {
