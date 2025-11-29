@@ -61,13 +61,19 @@ class Judge0Client:
         
         try:
             # Execute code using judge0.run()
+            logger.info(f"🔧 Executing with language_id: {language_id} (50=C, 71=Python)")
             logger.debug(f"Running code with {len(formatted_test_cases)} test cases")
+            logger.debug(f"Base URL: {self.base_url}")
+            logger.debug(f"Source code preview: {source_code[:100]}...")
+            
             results = judge0.run(
                 source_code=source_code,
-                language_id=language_id,
+                language=judge0.C,
                 test_cases=formatted_test_cases,
                 base_url=self.base_url
             )
+            
+            logger.debug(f"Judge0 returned {len(results)} results")
             
             # Process results
             test_results = []
@@ -78,18 +84,33 @@ class Judge0Client:
             for i, result in enumerate(results):
                 test_case = test_cases[i]
                 
+                # Debug raw result from judge0
+                logger.debug(f"\n{'='*60}")
+                logger.debug(f"Test Case #{i+1} (ID: {test_case.get('id')})")
+                logger.debug(f"Input: {test_case.get('input', '')[:100]}")
+                logger.debug(f"Expected: {test_case.get('expected_output', '')[:100]}")
+                logger.debug(f"Raw result status: {result.status}")
+                logger.debug(f"Raw result stdout: {result.stdout}")
+                logger.debug(f"Raw result stderr: {result.stderr}")
+                logger.debug(f"Raw result time: {result.time}")
+                logger.debug(f"Raw result memory: {result.memory}")
+                
                 # Get status - judge0 library's Status object can be compared directly
                 # Status has __int__ method that returns the status ID
                 # 3 = Accepted, 4 = Wrong Answer, etc.
                 try:
                     status_id = int(result.status)
                     status_name = result.status.name if hasattr(result.status, 'name') else str(result.status)
-                except (ValueError, AttributeError):
+                    logger.debug(f"Parsed status_id: {status_id}, status_name: {status_name}")
+                except (ValueError, AttributeError) as e:
                     status_id = 0
                     status_name = 'Unknown'
+                    logger.error(f"Error parsing status: {e}")
                 
                 # Check if passed (status ID 3 = Accepted)
                 passed = status_id == STATUS_ACCEPTED
+                logger.debug(f"STATUS_ACCEPTED constant: {STATUS_ACCEPTED}")
+                logger.debug(f"Comparison: {status_id} == {STATUS_ACCEPTED} = {passed}")
                 
                 test_result = {
                     'test_id': test_case.get('id'),
@@ -100,10 +121,16 @@ class Judge0Client:
                     'error_message': result.stderr or result.compile_output or None
                 }
                 
+                logger.debug(f"Test result: {test_result}")
+                logger.debug(f"{'='*60}\n")
+                
                 test_results.append(test_result)
                 
                 if passed:
                     passed_count += 1
+                    logger.info(f"✓ Test #{i+1} PASSED")
+                else:
+                    logger.warning(f"✗ Test #{i+1} FAILED (status: {status_name})")
                 
                 # Capture errors
                 if result.compile_output:
@@ -114,6 +141,12 @@ class Judge0Client:
             # Calculate score
             total_tests = len(test_cases)
             score = int((passed_count / total_tests) * 100) if total_tests > 0 else 0
+            
+            logger.info(f"\n📊 SCORE CALCULATION:")
+            logger.info(f"   Passed tests: {passed_count}")
+            logger.info(f"   Total tests: {total_tests}")
+            logger.info(f"   Calculation: ({passed_count} / {total_tests}) * 100 = {score}")
+            logger.info(f"   Final score: {score}\n")
             
             return {
                 'passed_tests': passed_count,

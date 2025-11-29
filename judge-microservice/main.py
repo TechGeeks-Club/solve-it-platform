@@ -14,10 +14,42 @@ from kafka_client import KafkaConsumer, KafkaProducer
 from models import SubmissionMessage, ResultMessage, ExecutionResult
 from config import settings
 
-# Configure logging
+# ANSI color codes
+class Colors:
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    MAGENTA = '\033[95m'
+    CYAN = '\033[96m'
+    WHITE = '\033[97m'
+
+# Custom formatter with colors
+class ColoredFormatter(logging.Formatter):
+    LEVEL_COLORS = {
+        logging.DEBUG: Colors.CYAN,
+        logging.INFO: Colors.GREEN,
+        logging.WARNING: Colors.YELLOW,
+        logging.ERROR: Colors.RED,
+        logging.CRITICAL: Colors.RED + Colors.BOLD,
+    }
+    
+    def format(self, record):
+        color = self.LEVEL_COLORS.get(record.levelno, Colors.RESET)
+        record.levelname = f"{color}{record.levelname}{Colors.RESET}"
+        record.name = f"{Colors.MAGENTA}{record.name}{Colors.RESET}"
+        return super().format(record)
+
+# Configure logging with colors
+handler = logging.StreamHandler()
+handler.setFormatter(ColoredFormatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+))
 logging.basicConfig(
     level=getattr(logging, settings.LOG_LEVEL),
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    handlers=[handler]
 )
 logger = logging.getLogger(__name__)
 
@@ -103,11 +135,16 @@ class JudgeService:
             logger.info(f"Found {len(test_cases)} test cases for task {message.task_id}")
             
             # Execute code against test cases
+            logger.debug(f"{Colors.BLUE}🔧 Executing code via Judge0...{Colors.RESET}")
             execution_result = await self.judge_client.execute_code(
                 message.code,
                 message.language_id,
                 test_cases
             )
+            
+            # Debug the execution result
+            logger.debug(f"{Colors.CYAN}📊 Execution result: {execution_result}{Colors.RESET}")
+            logger.debug(f"{Colors.CYAN}📊 Score from judge: {execution_result.get('score')}, Passed: {execution_result.get('passed_tests')}/{execution_result.get('total_tests')}{Colors.RESET}")
             
             # Create result message using Pydantic model
             result = ResultMessage(
@@ -119,13 +156,17 @@ class JudgeService:
                 processed_at=datetime.utcnow()
             )
             
+            # Debug the final result message
+            logger.debug(f"{Colors.CYAN}📤 Result message: score={result.score}, passed={result.passed_tests}/{result.total_tests}, status={result.status}{Colors.RESET}")
+            
             # Send result to Kafka
             await self.producer.send_result(message.submission_id, result)
             
+            score_color = Colors.GREEN if result.score > 0 else Colors.RED
             logger.info(
-                f"Submission {message.submission_id} completed: "
+                f"{score_color}✓ Submission {message.submission_id} completed: "
                 f"{result.passed_tests}/{result.total_tests} tests passed, "
-                f"score: {result.score}"
+                f"score: {result.score}{Colors.RESET}"
             )
             
         except Exception as e:

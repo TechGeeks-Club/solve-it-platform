@@ -153,6 +153,10 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
+        'colored': {
+            'format': '\033[%(color)sm[%(levelname)s]\033[0m %(asctime)s \033[95m%(name)s\033[0m %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
         'verbose': {
             'format': '[{levelname}] {asctime} {name} {message}',
             'style': '{',
@@ -162,10 +166,23 @@ LOGGING = {
             'style': '{',
         },
     },
+    'filters': {
+        'add_color': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: setattr(record, 'color', {
+                'DEBUG': '96',    # Cyan
+                'INFO': '92',     # Green
+                'WARNING': '93',  # Yellow
+                'ERROR': '91',    # Red
+                'CRITICAL': '91;1' # Bold Red
+            }.get(record.levelname, '0')) or True
+        }
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+            'formatter': 'colored',
+            'filters': ['add_color'],
         },
     },
     'root': {
