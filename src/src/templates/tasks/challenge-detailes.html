@@ -49,23 +49,32 @@
         </div>
         
        
-        {% if not tasksolution%}
         <h2>Code:</h2>
-        <div class="challenge-code">
-          
-          <textarea id="textInput">{{task.initialCode}}</textarea>
+        <div class="challenge-code" style="position: relative;">
+          <button id="resetBtn" 
+                  {% if tasksolution %}disabled{% endif %}
+                  style="position: absolute; top: 10px; right: 10px; z-index: 1000; 
+                         background: #2d2d2d; border: 1px solid #444; color: #fff; 
+                         padding: 8px 12px; border-radius: 4px; cursor: pointer;
+                         font-size: 14px; display: flex; align-items: center; gap: 6px;
+                         {% if tasksolution %}opacity: 0.5; cursor: not-allowed;{% endif %}"
+                  title="Reset to initial code">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M3 21v-5h5"/>
+            </svg>
+            Reset
+          </button>
+          <textarea id="textInput" {% if tasksolution %}disabled{% endif %}>{{task.initialCode}}</textarea>
         </div>
         <div class="challenge-submit">
           <div class="challenge-meta">
             {% comment %} <span>Your Score: {% if solution %} solution.score {% else %} 0 {% endif %} points</span>
             <span>Tried: {% if solution %} solution.tries {% else %} 0 {% endif %}/3</span> {% endcomment %}
           </div>
-          <button id="downloadBtn">Submit</button>
-          {% else %}
-          <div style='display:flex;justify-content: center;align-items:center' class="challenge-code">
-          <h2 style = "color:#1a73e8;justify-content: center;align-items: center;display: flex;">Your or your team alredy do this task</h2>
-
-        {% endif %}
+          <button id="downloadBtn" {% if tasksolution %}disabled style="opacity: 0.5; cursor: not-allowed;"{% endif %}>Submit</button>
 </div>
 </main>
 <div style="display: none">
@@ -88,19 +97,42 @@
   }
 
   // Initialize CodeMirror
+  let editor;
+  const initialCode = `{{task.initialCode|escapejs}}`;
+  
   document.addEventListener("DOMContentLoaded", function () {
-    CodeMirror.fromTextArea(document.getElementById("textInput"), {
+    editor = CodeMirror.fromTextArea(document.getElementById("textInput"), {
       lineNumbers: true,
       mode: "text/x-csrc",
       theme: "monokai",
       indentUnit: 4,
       matchBrackets: true,
+      readOnly: {{ tasksolution|yesno:"true,false" }}
     });
   });
 
+  // Reset button functionality
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    // Check if button is disabled
+    if (this.disabled) {
+      return;
+    }
+    
+    // Reset the code to initial value
+    if (editor) {
+      editor.setValue(initialCode);
+    } else {
+      document.getElementById("textInput").value = initialCode;
+    }
+  });
+
   document.getElementById("downloadBtn").addEventListener("click", function () {
-    const textArea = document.getElementById("textInput");
-    const textContent = textArea.value;
+    // Check if button is disabled
+    if (this.disabled) {
+      return;
+    }
+    
+    const textContent = editor ? editor.getValue() : document.getElementById("textInput").value;
 
     // Create the file
     const file = new Blob([textContent], { type: "text/plain" });
@@ -111,15 +143,7 @@
     dataTransfer.items.add(new File([file], "code.txt"));
     inputElement.files = dataTransfer.files;
 
-    // Trigger the download
-    const downloadLink = document.createElement("a");
-    downloadLink.href = URL.createObjectURL(file);
-    downloadLink.download = "code.txt";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-
-    // Submit the form
+    // Submit the form directly without downloading
     document.getElementById("hiddenForm").submit();
   });
 </script>
