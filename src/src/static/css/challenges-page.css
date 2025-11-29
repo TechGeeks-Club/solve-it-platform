@@ -30,9 +30,9 @@
 }
 
 .level-select {
-  background: #2d2d30;
-  color: #cccccc;
-  border: 1px solid #3e3e42;
+  background: #1A2332;
+  color: #E8EDF2;
+  border: 1px solid #2C3E50;
   padding: 10px 16px;
   border-radius: 6px;
   font-size: 14px;
@@ -42,12 +42,12 @@
 }
 
 .level-select:hover {
-  border-color: #0e639c;
+  border-color: #FF6B35;
 }
 
 .level-select:focus {
-  border-color: #0e639c;
-  box-shadow: 0 0 0 3px rgba(14, 99, 156, 0.1);
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 /* Challenge Cards */
@@ -57,8 +57,8 @@
 }
 
 .challenge-card {
-  background: #252526;
-  border: 1px solid #3e3e42;
+  background: #1A2332;
+  border: 1px solid #2C3E50;
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -69,9 +69,9 @@
 }
 
 .challenge-card:hover {
-  border-color: #0e639c;
+  border-color: #FF6B35;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
 }
 
 .challenge-info {
@@ -119,25 +119,25 @@
 
 /* Button Colors */
 button[style*="background-color: #ffa50080"] {
-  background-color: #d29100 !important;
+  background-color: #D4A574 !important;
 }
 
 button[style*="background-color: #46e34c"] {
-  background-color: #238636 !important;
+  background-color: #48BB78 !important;
 }
 
 button[style*="background-color: #ff4444"] {
-  background-color: #da3633 !important;
+  background-color: #E53E3E !important;
 }
 
 .solve-btn:not([style]) {
-  background: #2d2d30;
-  color: #cccccc;
-  border: 1px solid #3e3e42;
+  background: #1A2332;
+  color: #E8EDF2;
+  border: 1px solid #2C3E50;
 }
 
 .solve-btn:not([style]):hover {
-  background: #3e3e42;
+  background: #2C3E50;
   color: #fff;
-  border-color: #0e639c;
+  border-color: #FF6B35;
 }

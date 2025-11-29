@@ -7,12 +7,12 @@
 }
 
 .coin-balance {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8555 100%);
     padding: 2rem;
     border-radius: 12px;
     text-align: center;
     margin-bottom: 2rem;
-    box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 8px 16px rgba(255, 107, 53, 0.3);
 }
 
 .coin-amount {
@@ -29,8 +29,8 @@
 }
 
 .cooldown-notice {
-    background: #3e3e42;
-    border-left: 4px solid #f59e0b;
+    background: #1A2332;
+    border-left: 4px solid #FF6B35;
     padding: 1rem 1.5rem;
     border-radius: 8px;
     margin-bottom: 2rem;
@@ -44,8 +44,8 @@
 }
 
 .power-card {
-    background: #252526;
-    border: 1px solid #3e3e42;
+    background: #1A2332;
+    border: 1px solid #2C3E50;
     border-radius: 12px;
     padding: 1.5rem;
     transition: all 0.3s ease;
@@ -60,13 +60,13 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #0066cc, #0099ff);
+    background: linear-gradient(90deg, #FF6B35, #FF8555);
 }
 
 .power-card:hover {
     transform: translateY(-4px);
-    border-color: #0066cc;
-    box-shadow: 0 12px 24px rgba(0, 102, 204, 0.2);
+    border-color: #FF6B35;
+    box-shadow: 0 12px 24px rgba(255, 107, 53, 0.2);
 }
 
 .power-icon {
@@ -76,7 +76,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8555 100%);
     border-radius: 12px;
     padding: 10px;
 }
@@ -107,17 +107,17 @@
     align-items: center;
     justify-content: space-between;
     padding-top: 1rem;
-    border-top: 1px solid #3e3e42;
+    border-top: 1px solid #2C3E50;
 }
 
 .cost-amount {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #f59e0b;
+    color: #FF6B35;
 }
 
 .buy-button {
-    background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8555 100%);
     color: white;
     border: none;
     padding: 0.625rem 1.5rem;
@@ -129,11 +129,11 @@
 
 .buy-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.4);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
 }
 
 .buy-button:disabled {
-    background: #3e3e42;
+    background: #2C3E50;
     cursor: not-allowed;
     opacity: 0.5;
 }
@@ -148,12 +148,12 @@
     color: white;
     margin-bottom: 1.5rem;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #3e3e42;
+    border-bottom: 2px solid #2C3E50;
 }
 
 .purchase-item {
-    background: #252526;
-    border: 1px solid #3e3e42;
+    background: #1A2332;
+    border: 1px solid #2C3E50;
     border-radius: 8px;
     padding: 1rem 1.5rem;
     margin-bottom: 0.75rem;
@@ -178,7 +178,7 @@
 }
 
 .purchase-cost {
-    color: #f59e0b;
+    color: #FF6B35;
     font-weight: 600;
 }
 
