@@ -269,9 +269,24 @@ def leaderboardView(request: HttpRequest):
     Display team leaderboard based on completed tasks.
     Score calculation: (task_score% * task_points)
     Only completed tasks count toward the total.
+    Frozen during rush_hour for suspense (no data rendered for security).
     """
     from django.db.models import Q, Sum, Count, FloatField
     from django.db.models.functions import Cast
+    
+    # Check if rush hour is active
+    settings = Settings.get_settings()
+    rush_hour_active = settings.rush_hour
+    
+    # If rush hour is active, skip all database queries and render empty page
+    if rush_hour_active:
+        context = {
+            'rush_hour_active': True,
+            'top_three': [],
+            'rest': [],
+            'total_teams': 0,
+        }
+        return render(request, 'tasks/leaderboard.html', context)
     
     # Get all teams with their completed submissions
     teams = Team.objects.all()
@@ -340,6 +355,7 @@ def leaderboardView(request: HttpRequest):
         'top_three': top_three,
         'rest': rest,
         'total_teams': len(leaderboard_data),
+        'rush_hour_active': False,
     }
     
     return render(request, 'tasks/leaderboard.html', context)

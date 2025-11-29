@@ -22,6 +22,10 @@ class Settings(models.Model):
         default=False,
         help_text="Enable manual correction by admins (allows editing score and is_correct)"
     )
+    rush_hour = models.BooleanField(
+        default=False,
+        help_text="Freeze leaderboard during rush hour to build suspense (teams can still submit)"
+    )
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
@@ -46,7 +50,7 @@ class Settings(models.Model):
         return settings
     
     def __str__(self):
-        return f"Platform Settings (max_attempts: {self.max_attempts}, pass_threshold: {self.pass_threshold}%, manual_correction: {self.manual_correction})"
+        return f"Platform Settings (max_attempts: {self.max_attempts}, pass_threshold: {self.pass_threshold}%, manual_correction: {self.manual_correction}, rush_hour: {self.rush_hour})"
 
 
 class Phase(models.Model):

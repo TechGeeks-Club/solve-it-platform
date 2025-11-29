@@ -17,7 +17,7 @@ from django.utils.html import format_html
 @admin.register(Settings)
 class SettingsAdmin(ModelAdmin):
     model = Settings
-    list_display = ('id', 'max_attempts', 'pass_threshold', 'manual_correction', 'updated_at')
+    list_display = ('id', 'max_attempts', 'pass_threshold', 'manual_correction', 'rush_hour', 'updated_at')
     
     fieldsets = (
         ("Submission Settings", {
@@ -25,6 +25,10 @@ class SettingsAdmin(ModelAdmin):
         }),
         ("Correction Settings", {
             "fields": ("manual_correction",)
+        }),
+        ("Event Settings", {
+            "fields": ("rush_hour",),
+            "description": "Freeze the leaderboard during rush hour to create suspense. Teams can still submit solutions."
         }),
     )
     
