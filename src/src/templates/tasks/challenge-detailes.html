@@ -150,6 +150,93 @@
     gap: 6px;
   }
 
+  /* Test Results Section */
+  .test-results-section {
+    background: #1e1e1e;
+    border-top: 1px solid #3e3e42;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .test-results-header {
+    padding: 12px 24px;
+    background: #252526;
+    border-bottom: 1px solid #3e3e42;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .test-results-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #cccccc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .test-results-summary {
+    font-size: 12px;
+    color: #858585;
+  }
+
+  .test-results-list {
+    padding: 8px;
+  }
+
+  .test-case-item {
+    padding: 10px 16px;
+    margin-bottom: 4px;
+    background: #252526;
+    border-left: 3px solid;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+
+  .test-case-item:hover {
+    background: #2d2d30;
+  }
+
+  .test-case-item.passed {
+    border-left-color: #3fb950;
+  }
+
+  .test-case-item.failed {
+    border-left-color: #f85149;
+  }
+
+  .test-case-name {
+    font-size: 13px;
+    color: #d4d4d4;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .test-case-status {
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .test-case-status.passed {
+    color: #3fb950;
+  }
+
+  .test-case-status.failed {
+    color: #f85149;
+  }
+
+  .test-status-icon {
+    font-size: 16px;
+  }
+
   /* Loading Spinner */
   .spinner {
     border: 2px solid #3e3e42;
@@ -302,6 +389,43 @@
         {% endif %}
       </button>
     </div>
+
+    <!-- Test Results Section -->
+    {% if tasksolution and tasksolution.test_results %}
+    <div class="test-results-section">
+      <div class="test-results-header">
+        <div class="test-results-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Test Cases
+        </div>
+        <div class="test-results-summary">
+          {{ tasksolution.passed_tests }}/{{ tasksolution.total_tests }} passed
+        </div>
+      </div>
+      <div class="test-results-list">
+        {% for test in tasksolution.test_results %}
+        <div class="test-case-item {% if test.passed %}passed{% else %}failed{% endif %}">
+          <div class="test-case-name">
+            <span class="test-status-icon">
+              {% if test.passed %}✓{% else %}✗{% endif %}
+            </span>
+            Test Case {{ forloop.counter }}
+          </div>
+          <div class="test-case-status {% if test.passed %}passed{% else %}failed{% endif %}">
+            {% if test.passed %}
+              Passed
+            {% else %}
+              Failed
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 
