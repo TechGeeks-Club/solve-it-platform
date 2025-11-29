@@ -129,6 +129,10 @@ class TimeMachinePower(PowerHandler):
             return False, "Error activating Time Machine. Please try again."
 
 
+# TODO: x2 Points for the next submission (if the submission is successful)
+# TODO: x1.5 Score for the next submission it can help to improve the submission score
+
+
 # Registry of all available powers
 POWER_HANDLERS = {
     'time_machine': TimeMachinePower,
