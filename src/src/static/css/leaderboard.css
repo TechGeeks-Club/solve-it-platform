@@ -302,13 +302,12 @@
 /* Rush Hour Freeze Overlay */
 .rush-hour-overlay {
   position: fixed;
-  top: 0;
+  top: 50px;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(10, 14, 39, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 9999;
+  z-index: 999;
   display: flex;
   align-items: center;
   justify-content: center;
