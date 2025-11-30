@@ -1,0 +1,78 @@
+/* Messages/Alerts Component Styles */
+
+.messages {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  padding: 0 24px;
+}
+
+.message {
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border-left: 4px solid;
+  font-size: 14px;
+  animation: slideIn 0.3s ease-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.error,
+.warn {
+  background: rgba(229, 62, 62, 0.15);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.message.success {
+  background: rgba(72, 187, 120, 0.15);
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+.message.info {
+  background: rgba(255, 107, 53, 0.15);
+  border-color: var(--primary-orange);
+  color: var(--primary-orange);
+}
+
+.message.warning {
+  background: rgba(212, 165, 116, 0.15);
+  border-color: var(--brown-light);
+  color: var(--brown-light);
+}
+
+/* Legacy error_message.html support */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0px;
+}
+
+.warn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  background-color: rgba(229, 62, 62, 0.2);
+  font-family: 'Source Sans Pro', sans-serif;
+  border-radius: 0.5em;
+  border: 1px solid var(--accent-red);
+  margin: 10px 0px;
+  padding: 12px;
+  width: 400px;
+  max-width: 90%;
+}

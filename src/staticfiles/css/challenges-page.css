@@ -17,7 +17,7 @@
 }
 
 .page-header p {
-  color: #858585;
+  color: var(--text-secondary);
   font-size: 16px;
 }
 
@@ -30,9 +30,9 @@
 }
 
 .level-select {
-  background: #1A2332;
-  color: #E8EDF2;
-  border: 1px solid #2C3E50;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   padding: 10px 16px;
   border-radius: 6px;
   font-size: 14px;
@@ -42,11 +42,11 @@
 }
 
 .level-select:hover {
-  border-color: #FF6B35;
+  border-color: var(--primary-orange);
 }
 
 .level-select:focus {
-  border-color: #FF6B35;
+  border-color: var(--primary-orange);
   box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
@@ -57,8 +57,8 @@
 }
 
 .challenge-card {
-  background: #1A2332;
-  border: 1px solid #2C3E50;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -69,9 +69,9 @@
 }
 
 .challenge-card:hover {
-  border-color: #FF6B35;
+  border-color: var(--primary-orange);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+  box-shadow: var(--shadow-orange-lg);
 }
 
 .challenge-info {
@@ -97,7 +97,7 @@
 }
 
 .challenge-meta span {
-  color: #858585;
+  color: var(--text-secondary);
 }
 
 /* Action Buttons */
@@ -114,30 +114,30 @@
 
 .solve-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
 /* Button Colors */
 button[style*="background-color: #ffa50080"] {
-  background-color: #D4A574 !important;
+  background-color: var(--brown-light) !important;
 }
 
 button[style*="background-color: #46e34c"] {
-  background-color: #48BB78 !important;
+  background-color: var(--accent-green) !important;
 }
 
 button[style*="background-color: #ff4444"] {
-  background-color: #E53E3E !important;
+  background-color: var(--accent-red) !important;
 }
 
 .solve-btn:not([style]) {
-  background: #1A2332;
-  color: #E8EDF2;
-  border: 1px solid #2C3E50;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .solve-btn:not([style]):hover {
-  background: #2C3E50;
+  background: var(--bg-tertiary);
   color: #fff;
-  border-color: #FF6B35;
+  border-color: var(--primary-orange);
 }
