@@ -109,3 +109,108 @@ function toggleTestCase(index) {
 
 // Make function globally available for onclick handlers
 window.toggleTestCase = toggleTestCase;
+
+// Resizable panels functionality
+document.addEventListener("DOMContentLoaded", function () {
+  // Vertical resize (between problem and editor panels)
+  const resizeHandle1 = document.getElementById("resizeHandle1");
+  const problemPanel = document.getElementById("problemPanel");
+  const editorPanel = document.getElementById("editorPanel");
+  
+  if (resizeHandle1 && problemPanel && editorPanel) {
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+    
+    resizeHandle1.addEventListener("mousedown", function(e) {
+      isResizing = true;
+      startX = e.clientX;
+      startWidth = problemPanel.offsetWidth;
+      resizeHandle1.classList.add("resizing");
+      document.body.classList.add("resizing");
+      e.preventDefault();
+    });
+    
+    document.addEventListener("mousemove", function(e) {
+      if (!isResizing) return;
+      
+      const delta = e.clientX - startX;
+      const newWidth = startWidth + delta;
+      const containerWidth = problemPanel.parentElement.offsetWidth;
+      const minWidth = 300; // Minimum width in pixels
+      const handleWidth = 5; // Width of resize handle
+      const maxWidth = containerWidth - 300 - handleWidth; // Leave space for editor and handle
+      
+      if (newWidth >= minWidth && newWidth <= maxWidth) {
+        problemPanel.style.width = newWidth + "px";
+        // Trigger CodeMirror refresh during resize for smooth rendering
+        if (editor) {
+          editor.refresh();
+        }
+      }
+    });
+    
+    document.addEventListener("mouseup", function() {
+      if (isResizing) {
+        isResizing = false;
+        resizeHandle1.classList.remove("resizing");
+        document.body.classList.remove("resizing");
+        
+        // Refresh CodeMirror after resize
+        if (editor) {
+          setTimeout(() => editor.refresh(), 10);
+        }
+      }
+    });
+  }
+  
+  // Horizontal resize (between editor and test results)
+  const resizeHandle2 = document.getElementById("resizeHandle2");
+  const editorBody = document.getElementById("editorBody");
+  const testResultsSection = document.getElementById("testResultsSection");
+  
+  if (resizeHandle2 && editorBody && testResultsSection) {
+    let isResizingH = false;
+    let startY = 0;
+    let startHeight = 0;
+    
+    resizeHandle2.addEventListener("mousedown", function(e) {
+      isResizingH = true;
+      startY = e.clientY;
+      startHeight = testResultsSection.offsetHeight;
+      resizeHandle2.classList.add("resizing");
+      document.body.classList.add("resizing-horizontal");
+      e.preventDefault();
+    });
+    
+    document.addEventListener("mousemove", function(e) {
+      if (!isResizingH) return;
+      
+      const delta = startY - e.clientY; // Inverted because we're resizing from bottom
+      const newHeight = startHeight + delta;
+      const minHeight = 100; // Minimum height for test results
+      const maxHeight = 600; // Maximum height for test results
+      
+      if (newHeight >= minHeight && newHeight <= maxHeight) {
+        testResultsSection.style.height = newHeight + "px";
+        // Trigger CodeMirror refresh during resize for smooth rendering
+        if (editor) {
+          editor.refresh();
+        }
+      }
+    });
+    
+    document.addEventListener("mouseup", function() {
+      if (isResizingH) {
+        isResizingH = false;
+        resizeHandle2.classList.remove("resizing");
+        document.body.classList.remove("resizing-horizontal");
+        
+        // Refresh CodeMirror after resize
+        if (editor) {
+          setTimeout(() => editor.refresh(), 10);
+        }
+      }
+    });
+  }
+});

@@ -16,7 +16,7 @@
 
 <div class="challenge-container">
   <!-- Left Panel: Problem Description -->
-  <div class="problem-panel">
+  <div class="problem-panel" id="problemPanel">
     <div class="problem-header">
       <h1 class="problem-title">{{task.title}}</h1>
       <div class="problem-meta">
@@ -57,8 +57,11 @@
     </div>
   </div>
 
+  <!-- Resize Handle -->
+  <div class="resize-handle" id="resizeHandle1"></div>
+
   <!-- Right Panel: Code Editor -->
-  <div class="editor-panel">
+  <div class="editor-panel" id="editorPanel">
     <div class="editor-header">
       <div class="editor-tabs">
         <div class="editor-tab active">
@@ -81,9 +84,12 @@
       </div>
     </div>
 
-    <div class="editor-body">
+    <div class="editor-body" id="editorBody">
       <textarea id="codeEditor">{% if tasksolution %}{{ tasksolution.code }}{% else %}{{ task.initialCode }}{% endif %}</textarea>
     </div>
+
+    <!-- Resize Handle between editor and test results -->
+    <div class="resize-handle-horizontal" id="resizeHandle2"></div>
 
     <div class="editor-footer">
       <div class="status-info">
@@ -163,7 +169,7 @@
 
     <!-- Test Results Section -->
     {% if tasksolution and tasksolution.test_results %}
-    <div class="test-results-section">
+    <div class="test-results-section" id="testResultsSection">
       <div class="test-results-header">
         <div class="test-results-title">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
