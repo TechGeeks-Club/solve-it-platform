@@ -1,0 +1,143 @@
+/* Challenges Page Specific Styles */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 80px 24px 24px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+/* Filter Section */
+.level-filter {
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.level-select {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.level-select:hover {
+  border-color: var(--primary-orange);
+}
+
+.level-select:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+/* Challenge Cards */
+.challenge-list {
+  display: grid;
+  gap: 16px;
+}
+
+.challenge-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.challenge-card:hover {
+  border-color: var(--primary-orange);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-orange-lg);
+}
+
+.challenge-info {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex: 1;
+}
+
+.challenge-details h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.challenge-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 13px;
+}
+
+.challenge-meta span {
+  color: var(--text-secondary);
+}
+
+/* Action Buttons */
+.solve-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.solve-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Button Colors */
+button[style*="background-color: #ffa50080"] {
+  background-color: var(--brown-light) !important;
+}
+
+button[style*="background-color: #46e34c"] {
+  background-color: var(--accent-green) !important;
+}
+
+button[style*="background-color: #ff4444"] {
+  background-color: var(--accent-red) !important;
+}
+
+.solve-btn:not([style]) {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.solve-btn:not([style]):hover {
+  background: var(--bg-tertiary);
+  color: #fff;
+  border-color: var(--primary-orange);
+}

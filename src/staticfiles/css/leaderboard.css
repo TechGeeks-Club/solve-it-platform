@@ -1,0 +1,436 @@
+/* Leaderboard Page Styles */
+
+.leaderboard-container {
+  margin-top: 50px;
+  padding: 40px 24px;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+/* Podium Section */
+.podium-section {
+  margin-bottom: 48px;
+}
+
+.podium-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.podium-item {
+  flex: 0 1 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Reorder: 2nd, 1st, 3rd */
+.podium-item[data-rank="1"] {
+  order: 2;
+}
+
+.podium-item[data-rank="2"] {
+  order: 1;
+}
+
+.podium-item[data-rank="3"] {
+  order: 3;
+}
+
+.podium-card {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 2px solid;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.podium-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Rank-specific styling */
+.podium-item[data-rank="1"] .podium-card {
+  border-color: #ffd700;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #3d3520 100%);
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
+}
+
+.podium-item[data-rank="2"] .podium-card {
+  border-color: #c0c0c0;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  box-shadow: 0 6px 20px rgba(192, 192, 192, 0.2);
+}
+
+.podium-item[data-rank="3"] .podium-card {
+  border-color: #cd7f32;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #3d2e20 100%);
+  box-shadow: 0 6px 20px rgba(205, 127, 50, 0.2);
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  border: 3px solid;
+}
+
+.podium-item[data-rank="1"] .rank-badge {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #1e1e1e;
+  border-color: #ffed4e;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+}
+
+.podium-item[data-rank="2"] .rank-badge {
+  background: linear-gradient(135deg, #c0c0c0, #e8e8e8);
+  color: #1e1e1e;
+  border-color: #e8e8e8;
+  box-shadow: 0 4px 12px rgba(192, 192, 192, 0.4);
+}
+
+.podium-item[data-rank="3"] .rank-badge {
+  background: linear-gradient(135deg, #cd7f32, #e89b5a);
+  color: #1e1e1e;
+  border-color: #e89b5a;
+  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.4);
+}
+
+.team-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.podium-item[data-rank="1"] .team-name {
+  color: #ffd700;
+}
+
+.score-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.total-score {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.podium-item[data-rank="1"] .total-score {
+  color: #ffd700;
+}
+
+.podium-item[data-rank="2"] .total-score {
+  color: #c0c0c0;
+}
+
+.podium-item[data-rank="3"] .total-score {
+  color: #cd7f32;
+}
+
+.score-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tasks-completed {
+  font-size: 14px;
+  color: #cccccc;
+  margin-top: 8px;
+}
+
+/* Trophy Icons */
+.trophy-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+/* Regular Rankings Table */
+.rankings-section {
+  margin-top: 48px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.rankings-table {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rankings-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.rankings-table thead {
+  background: var(--bg-dark);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.rankings-table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rankings-table th:first-child {
+  width: 80px;
+  text-align: center;
+}
+
+.rankings-table th:last-child {
+  width: 200px;
+  text-align: right;
+}
+
+.rankings-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.2s;
+}
+
+.rankings-table tbody tr:hover {
+  background: var(--bg-tertiary);
+}
+
+.rankings-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.rankings-table td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.rank-number {
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.team-name-cell {
+  font-weight: 500;
+  color: #fff;
+}
+
+.score-cell {
+  text-align: right;
+  font-weight: 600;
+  color: var(--primary-orange);
+  font-size: 16px;
+}
+
+.tasks-cell {
+  text-align: right;
+  color: var(--text-secondary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.empty-state-subtext {
+  font-size: 14px;
+}
+
+/* Rush Hour Freeze Overlay */
+.rush-hour-overlay {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 14, 39, 0.95);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.rush-hour-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 48px;
+  background: var(--bg-secondary);
+  border: 2px solid #ffd700;
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+}
+
+.rush-hour-icon {
+  font-size: 80px;
+  margin-bottom: 24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.rush-hour-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffd700;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.rush-hour-message {
+  font-size: 18px;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.rush-hour-note {
+  font-size: 14px;
+  color: #858585;
+  padding: 16px;
+  background: #0A0E27;
+  border-radius: 8px;
+  border-left: 3px solid #ffd700;
+  margin-bottom: 24px;
+}
+
+.rush-hour-button {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #1e1e1e;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.rush-hour-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 215, 0, 0.5);
+  background: linear-gradient(135deg, #ffed4e, #ffd700);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .podium-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .podium-item {
+    order: initial !important;
+    max-width: 400px;
+  }
+
+  .page-title {
+    font-size: 28px;
+  }
+
+  .rankings-table {
+    overflow-x: auto;
+  }
+
+  .rankings-table th,
+  .rankings-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+
+  .rush-hour-content {
+    margin: 24px;
+    padding: 32px 24px;
+  }
+
+  .rush-hour-icon {
+    font-size: 64px;
+  }
+
+  .rush-hour-title {
+    font-size: 24px;
+  }
+
+  .rush-hour-message {
+    font-size: 16px;
+  }
+
+  .rush-hour-button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}

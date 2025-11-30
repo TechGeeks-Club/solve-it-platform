@@ -1,0 +1,72 @@
+/* Base CSS Variables and Styles */
+:root {
+  /* Primary Colors */
+  --primary-orange: #FF6B35;
+  --primary-orange-light: #FF8555;
+  --primary-orange-hover: #E55A2A;
+  
+  /* Background Colors */
+  --bg-dark: #0A0E27;
+  --bg-secondary: #1A2332;
+  --bg-tertiary: #2C3E50;
+  
+  /* Text Colors */
+  --text-primary: #E8EDF2;
+  --text-secondary: #858585;
+  --text-light: #F0E5D8;
+  
+  /* Accent Colors */
+  --accent-green: #48BB78;
+  --accent-red: #E53E3E;
+  --accent-red-hover: #C53030;
+  --accent-cyan: #4ec9b0;
+  
+  /* Warm Browns */
+  --brown-primary: #B07856;
+  --brown-light: #D4A574;
+  --brown-lighter: #E8D5C4;
+  --brown-lightest: #F0E5D8;
+  
+  /* UI Elements */
+  --border-color: #2C3E50;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  
+  /* Orange Shadows */
+  --shadow-orange-sm: 0 2px 8px rgba(255, 107, 53, 0.3);
+  --shadow-orange-md: 0 4px 12px rgba(255, 107, 53, 0.4);
+  --shadow-orange-lg: 0 8px 24px rgba(255, 107, 53, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-orange);
+}

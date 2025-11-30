@@ -1,0 +1,103 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}Leaderboard - Solve It{% endblock %}
+
+{% block extra_css %}
+{% include "components/common-styles.html" %}
+<link rel="stylesheet" href="{% static 'css/leaderboard.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "components/navbar.html" %}
+
+<!-- Rush Hour Freeze Overlay -->
+{% if rush_hour_active %}
+<div class="rush-hour-overlay">
+  <div class="rush-hour-content">
+    <div class="rush-hour-icon">⏰</div>
+    <h1 class="rush-hour-title">Rush Hour Active!</h1>
+    <p class="rush-hour-message">
+      The leaderboard is currently frozen to build suspense during this exciting phase of the competition.
+    </p>
+    <div class="rush-hour-note">
+      💡 <strong>Note:</strong> You can still submit solutions! Your scores are being recorded and will be revealed when rush hour ends.
+    </div>
+    <a href="{% url 'tasksDisplay' %}" class="rush-hour-button">Back to Challenges</a>
+  </div>
+</div>
+{% endif %}
+
+<div class="leaderboard-container">
+  <div class="page-header">
+    <h1 class="page-title">🏆 Leaderboard</h1>
+    <p class="page-subtitle">Team rankings based on completed challenges</p>
+  </div>
+
+  {% if top_three %}
+  <div class="podium-section">
+    <div class="podium-container">
+      {% for team_data in top_three %}
+      <div class="podium-item" data-rank="{{ team_data.rank }}">
+        <div class="podium-card">
+          {% if team_data.rank == 1 %}
+          {% comment %} <div class="trophy-icon">🥇</div> {% endcomment %}
+          {% elif team_data.rank == 2 %}
+          {% comment %} <div class="trophy-icon">🥈</div> {% endcomment %}
+          {% elif team_data.rank == 3 %}
+          {% comment %} <div class="trophy-icon">🥉</div> {% endcomment %}
+          {% endif %}
+          
+          <div class="rank-badge">{{ team_data.rank }}</div>
+          <h2 class="team-name">{{ team_data.team.name }}</h2>
+          
+          <div class="score-display">
+            <div class="total-score">{{ team_data.total_score }}</div>
+            <div class="score-label">Total Points</div>
+          </div>
+          
+          <div class="tasks-completed">
+            {{ team_data.completed_tasks }} challenge{{ team_data.completed_tasks|pluralize }} completed
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if rest %}
+  <div class="rankings-section">
+    <h2 class="section-title">All Teams</h2>
+    <div class="rankings-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Team</th>
+            <th>Completed</th>
+            <th>Total Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for team_data in rest %}
+          <tr>
+            <td class="rank-number">#{{ team_data.rank }}</td>
+            <td class="team-name-cell">{{ team_data.team.name }}</td>
+            <td class="tasks-cell">{{ team_data.completed_tasks }}</td>
+            <td class="score-cell">{{ team_data.total_score }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% elif not top_three %}
+  <div class="empty-state">
+    <div class="empty-state-icon">📊</div>
+    <div class="empty-state-text">No teams have completed any challenges yet</div>
+    <div class="empty-state-subtext">Be the first to solve a challenge and claim your spot!</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

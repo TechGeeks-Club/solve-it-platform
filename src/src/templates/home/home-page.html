@@ -1,61 +1,64 @@
+{% extends "components/base.html" %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Solve It - Programming Challenge Platform</title>
-    <link rel="stylesheet" href="{% static 'css/home-page.css' %}" />
+{% block title %}Solve It - Programming Challenge Platform{% endblock %}
 
-    {% include "components/com_header.html"%}
-  </head>
-  <body>
-    <section class="all-Page">
-      
-      {% include "components/nav.html"%}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home-page.css' %}">
+<link rel="stylesheet" href="{% static 'css/messages.css' %}">
+{% endblock %}
 
-      <main>
-        <section class="hero">
-          {% include "components/error_message.html" %}
-          {% comment %} <h1>Solve It</h1> {% endcomment %}
-          <img src="{% static 'img/Logo.webp' %}" alt="Logo" style="height: 115px;margin-bottom: 25px;">
-          <p>
-            Join the Code Challenge and compete against others in a set of
-            programming problems
-          </p>
-          <div class="button-group">
-            <a href="{% url 'createParticipant' %}" class="button primary-button">Join A Team</a>
-            <a href="{% url 'createTeam' %}" class="button secondary-button">Create Team</a>
-          </div>
-        </section>
+{% block content %}
+{% include "components/navbar.html" %}
 
-        <section class="content-section">
-          <div><h2>What's Solve It?</h2></div>
-          <p>
-            The C Code Challenge is a programming competition that focuses on
-            the C language. It's a great opportunity to showcase your coding
-            skills, learn new programming techniques, and connect with other
-            developers. We'll provide a set of problems for you to solve, and
-            you'll have a limited time to complete as many as you can. The top
-            participants will receive prizes and recognition for their
-            achievements. Whether you're a seasoned developer or just getting
-            started, the C Code Challenge is a fun and rewarding way to test
-            your skills and build your portfolio.
-          </p>
-        </section>
-      </main>
-    </section>
+<main>
+  <section class="hero">
+    <div class="messages">
+      {% include "components/error_message.html" %}
+    </div>
+    <img src="{% static 'img/Logo.webp' %}" alt="Solve It Logo">
+    <h1>Solve It</h1>
+    <p>
+      Join the Code Challenge and compete against others in a set of
+      programming problems
+    </p>
+    <div class="button-group">
+      <a href="{% url 'createParticipant' %}" class="button primary-button">Join A Team</a>
+      <a href="{% url 'createTeam' %}" class="button secondary-button">Create Team</a>
+    </div>
+  </section>
 
-    <script>
-      function toggleMenu() {
-        const menu = document.getElementById("dropdownMenu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-      }
-      function closeDropDown() {
-        const menu = document.getElementById("dropdownMenu");
-        if (menu.style.display === "flex") menu.style.display = "none";
-      }
-    </script>
-  </body>
-</html>
+  <section class="content-section">
+    <h2>What's Solve It?</h2>
+    <p>
+      The C Code Challenge is a programming competition that focuses on
+      the C language. It's a great opportunity to showcase your coding
+      skills, learn new programming techniques, and connect with other
+      developers. We'll provide a set of problems for you to solve, and
+      you'll have a limited time to complete as many as you can. The top
+      participants will receive prizes and recognition for their
+      achievements. Whether you're a seasoned developer or just getting
+      started, the C Code Challenge is a fun and rewarding way to test
+      your skills and build your portfolio.
+    </p>
+  </section>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">💻</div>
+      <h3>Code Editor</h3>
+      <p>Professional IDE-like code editor with syntax highlighting and real-time feedback</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <h3>Compete & Win</h3>
+      <p>Compete with other teams, solve challenges, and climb the leaderboard</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Instant Feedback</h3>
+      <p>Get immediate results with automated testing and detailed scoring</p>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}Shop - Solve It Platform{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/shop.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "components/navbar.html" %}
+
+<div class="shop-container">
+    <!-- Coin Balance -->
+    <div class="coin-balance">
+        <div class="coin-amount">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            {{ team.coins }}
+        </div>
+        <div class="coin-label">Your Coin Balance</div>
+    </div>
+
+    <!-- Cooldown Notice -->
+    {% if not can_purchase and cooldown_remaining %}
+    <div class="cooldown-notice">
+        <strong>⏳ Cooldown Active:</strong> You can make your next purchase in {{ cooldown_remaining.total_seconds|floatformat:0|add:"60"|floatformat:0 }} seconds.
+        <br><small>The shop has a {{ cooldown_minutes }}-minute cooldown between purchases to keep things fair.</small>
+    </div>
+    {% endif %}
+
+    <!-- Powers Grid -->
+    <h2 class="section-title">Available Powers</h2>
+    
+    {% if powers %}
+    <div class="powers-grid">
+        {% for power in powers %}
+        <div class="power-card">
+            <div class="power-icon">{{ power.icon|safe }}</div>
+            <h3 class="power-name">{{ power.name }}</h3>
+            <p class="power-description">{{ power.description }}</p>
+            <div class="power-cost">
+                <span class="cost-amount">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    {{ power.cost }} coins
+                </span>
+                <form method="POST" style="margin: 0;">
+                    {% csrf_token %}
+                    <input type="hidden" name="power_id" value="{{ power.id }}">
+                    <button type="submit" class="buy-button" 
+                            {% if not can_purchase or team.coins < power.cost %}disabled{% endif %}>
+                        {% if team.coins < power.cost %}
+                            Insufficient Coins
+                        {% elif not can_purchase %}
+                            Cooldown
+                        {% else %}
+                            Purchase
+                        {% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-purchases">
+        <p>No powers available at the moment. Check back later!</p>
+    </div>
+    {% endif %}
+
+    <!-- Purchase History -->
+    <div class="purchases-section">
+        <h2 class="section-title">Purchase History</h2>
+        
+        {% if purchases %}
+        {% for purchase in purchases %}
+        <div class="purchase-item">
+            <div class="purchase-info">
+                <span class="purchase-power">{{ purchase.power.name }}</span>
+                <span class="purchase-date">{{ purchase.purchased_at|date:"M d, Y - H:i" }}</span>
+            </div>
+            <div class="purchase-cost">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+                -{{ purchase.coins_spent }}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="no-purchases">
+            <p>No purchases yet. Earn coins by completing challenges with 100% score!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

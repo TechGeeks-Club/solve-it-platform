@@ -1,124 +1,88 @@
+{% extends "components/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Challenges | Solve It</title>
-    <link rel="stylesheet" href="{% static 'css/challenge-page.css' %}" />
-    {% include "components/com_header.html"%}
 
-  </head>
-  <body>
-    <section class="all-Page">
-      {% include "components/nav.html" %}
+{% block title %}Challenges | Solve It{% endblock %}
 
-      <main class="container">
-        <div class="page-header">
-          <h1>Challenges</h1>
-        </div>
+{% block extra_css %}
+{% include "components/common-styles.html" %}
+<link rel="stylesheet" href="{% static 'css/challenges-page.css' %}">
+{% endblock %}
 
-        {% comment %} <div class="tabs">
-          <div class="level-filter">
-            <select id="phasesDropdown" class="level-select">
-              <option value="all">All Phases</option>
-              {% for phase in phases.all %} 
-                {% if not phase.is_locked %}
-                  {% if phase.name == "phase 3" %}
-                    <option value="{% url 'thirdPhase' %}">{{ phase.name }}</option>
-                  {% else %}
-                    <option value="{{ phase.name }}">{{ phase.name }}</option>
-                  {% endif %}
-                {% endif %} 
-              {% endfor %}
-            </select>
-          </div> {% endcomment %}
+{% block content %}
+{% include "components/navbar.html" %}
 
-          <div class="level-filter">
-            <select id="levelsDropdown" class="level-select">
-              <option value="all">All Levels</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
-        </div>
+<main class="container">
+  <div class="page-header">
+    <h1>Challenges</h1>
+    <p>{{ phase.name|capfirst }} - Solve programming challenges and earn points</p>
+  </div>
 
-        <div class="challenge-list">
-          {% if tasks %} 
-            {% comment %} {% for phase in phases.all %}  {% endcomment %}
-              {% comment %} {% if not phase.is_locked %}  {% endcomment %}
-                {% for task in tasks.all %}
-          <div
-            class="challenge-card"
-            data-phase="{{ phase.name }}"
-            data-level="{{ task.level|lower }}"
-          >
-            <div class="challenge-info">
-              <div class="challenge-checkbox"><input type="checkbox" /></div>
-              <div class="challenge-details">
-                <h3>{{ task.title }}</h3>
-                <div class="challenge-meta">
-                  {% if task.level %}
-                    <span class="level-tag {{ task.level|lower }}">Level: {{ task.level|capfirst }}</span>
-                  {% endif %}
+  <div class="level-filter">
+    <select id="levelsDropdown" class="level-select">
+      <option value="all">All Levels</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+  </div>
 
-                    <span>Score: {{ task.points }} points</span>
-                  {% if task.category %}
-                    <span>Category: {{ task.category }}</span>
-                  {% endif %}
-                  <span>Phase: {{ phase.name }}</span>
-                </div>
-              </div>
-            </div>
+  <div class="challenge-list">
+    {% if tasks_with_status %} 
+      {% for item in tasks_with_status %}
+        {% with task=item.task solution=item.solution %}
+    <div
+      class="challenge-card"
+      data-phase="{{ phase.name }}"
+      data-level="{{ task.level|lower }}"
+    >
+      <div class="challenge-info">
+        <div class="challenge-details">
+          <h3>{{ task.title }}</h3>
+          <div class="challenge-meta">
+            {% if task.level %}
+              <span class="level-tag {{ task.level|lower }}">{{ task.level|capfirst }}</span>
+            {% endif %}
 
-            {% if task.task_solutions.all %}
-              <div class="solve-btn" style="background-color: #46e34c69 ;">Done</div>
-              
-            {% else %}
-              <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
+            <span>{{ task.points }} points</span>
+            {% if task.category %}
+              <span>{{ task.category }}</span>
+            {% endif %}
+            
+            {% if solution %}
+              <span>Attempts: {{ item.attempts }}/{{ item.max_attempts }}</span>
+              <span>Score: {{ item.score }}%</span>
             {% endif %}
           </div>
-
-
-              {% endfor %}
-            {% comment %} {% endif %} {% endcomment %}
-           {% comment %} {% endfor %}  {% endcomment %}
-          {% endif %}
         </div>
-      </main>
-    </section>
+      </div>
 
-    <script>
-      const levelsDropdown = document.getElementById("levelsDropdown");
-    
-      function filterChallenges() {
-        const selectedLevel = levelsDropdown.value.toLowerCase();
-        const challengeCards = document.querySelectorAll(".challenge-card");
-    
-        challengeCards.forEach((card) => {
-          const cardLevel = card.getAttribute("data-level");
-          const matchesLevel = selectedLevel === "all" || cardLevel === selectedLevel;
-    
-          if (matchesLevel) {
-            card.style.display = "flex";
-          } else {
-            card.style.display = "none";
-          }
-        });
-      }
-    
-      levelsDropdown.addEventListener("change", filterChallenges);
-    
-      function toggleMenu() {
-        const menu = document.getElementById("dropdownMenu");
-        menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-      }
-    
-      function closeDropDown() {
-        const menu = document.getElementById("dropdownMenu");
-        if (menu.style.display === "flex") menu.style.display = "none";
-      }
-    </script>
-  </body>
-</html>
+      {% if solution %}
+        {% if not item.is_corrected %}
+          <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #ffa50080; color: #fff; cursor: pointer;">In Progress ({{ item.attempts }}/{{ item.max_attempts }})</button>
+        {% elif item.can_access %}
+          {% if item.score >= pass_threshold %}
+            <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #46e34c; color: #fff; cursor: pointer;">Success ({{ item.attempts }}/{{ item.max_attempts }})</button>
+          {% else %}
+            <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #ff4444; color: #fff; cursor: pointer;">Failed ({{ item.attempts }}/{{ item.max_attempts }})</button>
+          {% endif %}
+        {% else %}
+          {% if item.status_text == "Success" %}
+            <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #46e34c; color: #fff; cursor: pointer;">Success ✓</button>
+          {% else %}
+            <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn" style="background-color: #ff4444; color: #fff; cursor: pointer;">Failed ✗</button>
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <button onclick="window.location.href=`{% url 'task' task.id %}`" class="solve-btn">Solve</button>
+      {% endif %}
+    </div>
+        {% endwith %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/challenges-page.js' %}"></script>
+{% endblock %}

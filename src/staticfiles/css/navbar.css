@@ -1,0 +1,87 @@
+/* Navbar Component Styles */
+.top-nav {
+  height: 50px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.nav-logo:hover {
+  color: var(--primary-orange);
+}
+
+.nav-logo img {
+  height: 30px;
+  filter: drop-shadow(0 0 4px rgba(255, 107, 53, 0.2));
+}
+
+.nav-center {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.nav-right {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.nav-link:not(.logout)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--primary-orange);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+
+.nav-link:not(.logout):hover::after {
+  transform: scaleX(1);
+}
+
+.nav-link:hover {
+  color: var(--primary-orange);
+}
+
+.nav-link.logout {
+  background: var(--accent-red);
+  color: #fff;
+}
+
+.nav-link.logout:hover {
+  background: var(--accent-red-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.4);
+}

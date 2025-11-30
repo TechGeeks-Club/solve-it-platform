@@ -1,5 +1,5 @@
 from django.contrib.admin import SimpleListFilter
-from .models import TaskSolution,TaskCorrecton
+from .models import TaskSolution
 
 
 class TaskSolutionListFilter(SimpleListFilter):
@@ -28,6 +28,6 @@ class TaskSolutionListFilter(SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        if self.value() == "my":
-            return queryset.filter(id__in=TaskCorrecton.objects.filter(user=request.user).values_list('task_solution_id', flat=True))
+        # This filter is no longer used since manual correction tracking was removed
+        return queryset
        

@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@9al=@0xvy#m_)%8q8m=e^b3k+@-mki*zs(ch0c6d%9!l+!cy5'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-@9al=@0xvy#m_)%8q8m=e^b3k+@-mki*zs(ch0c6d%9!l+!cy5')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = [".vercel.app","localhost","127.0.0.1"]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '.vercel.app,localhost,127.0.0.1,*').split(',')
 
 LOGIN_URL = '/login'
 # Application definition
@@ -79,23 +82,19 @@ WSGI_APPLICATION = 'src.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'solveitdb'),
+        'USER': os.getenv('POSTGRES_USER', 'solveit'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'solveit123'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': "SolveItDB",
-#         'USER': "SolveItDB_owner",
-#         'PASSWORD': "v9g6CLEFscjk",
-#         'HOST': "ep-plain-water-a25evwjr.eu-central-1.aws.neon.tech",
-#         'PORT': 5432,
-#     }
-# }
+# Kafka Configuration
+KAFKA_BOOTSTRAP_SERVERS = os.getenv('KAFKA_BOOTSTRAP_SERVERS', 'localhost:9092').split(',')
+KAFKA_SUBMISSION_TOPIC = 'code-submissions'
+KAFKA_RESULT_TOPIC = 'code-results'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -133,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "src/static",
@@ -148,3 +147,73 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'colored': {
+            'format': '\033[%(color)sm[%(levelname)s]\033[0m %(asctime)s \033[95m%(name)s\033[0m %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+        'verbose': {
+            'format': '[{levelname}] {asctime} {name} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'add_color': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: setattr(record, 'color', {
+                'DEBUG': '96',    # Cyan
+                'INFO': '92',     # Green
+                'WARNING': '93',  # Yellow
+                'ERROR': '91',    # Red
+                'CRITICAL': '91;1' # Bold Red
+            }.get(record.levelname, '0')) or True
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'colored',
+            'filters': ['add_color'],
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'tasks': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'registration': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
