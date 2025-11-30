@@ -112,8 +112,8 @@ class KafkaConsumerService:
                     
                     # Determine status based on score and threshold
                     from tasks.models import Settings
-                    settings = await asyncio.to_thread(Settings.get_settings)
-                    if submission.score >= settings.pass_threshold:
+                    app_settings = await asyncio.to_thread(Settings.get_settings)
+                    if submission.score >= app_settings.pass_threshold:
                         submission.status = 'completed'
                     else:
                         submission.status = 'failed'
