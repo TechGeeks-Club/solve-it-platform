@@ -9,25 +9,34 @@
   .hero {
     text-align: center;
     padding: 120px 24px 80px;
-    background: linear-gradient(135deg, #1e1e1e 0%, #2d2d30 100%);
+    background: linear-gradient(135deg, #0A0E27 0%, #1A2332 100%);
+    border-radius: 12px;
+    margin-bottom: 40px;
   }
 
   .hero img {
-    height: 120px;
+    height: 140px;
     margin-bottom: 32px;
-    filter: drop-shadow(0 0 20px rgba(88, 166, 255, 0.3));
+    filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.4));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
   }
 
   .hero h1 {
-    font-size: 48px;
+    font-size: 56px;
     font-weight: 700;
-    color: #fff;
+    color: #F0E5D8;
     margin-bottom: 16px;
+    text-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
   }
 
   .hero p {
     font-size: 20px;
-    color: #858585;
+    color: #E8EDF2;
     max-width: 600px;
     margin: 0 auto 40px;
     line-height: 1.6;
@@ -42,63 +51,77 @@
 
   .button {
     padding: 14px 32px;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
-    transition: all 0.2s;
+    transition: all 0.3s;
     display: inline-block;
   }
 
   .primary-button {
-    background: #0e639c;
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8555 100%);
     color: #fff;
-    border: 1px solid #1177bb;
+    border: none;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
   }
 
   .primary-button:hover {
-    background: #1177bb;
+    background: linear-gradient(135deg, #FF8555 0%, #FF6B35 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(14, 99, 156, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
   }
 
   .secondary-button {
     background: transparent;
-    color: #58a6ff;
-    border: 1px solid #58a6ff;
+    color: #FF6B35;
+    border: 2px solid #FF6B35;
   }
 
   .secondary-button:hover {
-    background: #58a6ff;
+    background: #FF6B35;
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(88, 166, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
   }
 
   /* Content Section */
   .content-section {
     max-width: 900px;
-    margin: 0 auto;
-    padding: 60px 24px;
-    background: #252526;
-    border-radius: 8px;
-    margin-top: -40px;
-    margin-bottom: 60px;
-    border: 1px solid #3e3e42;
+    margin: 0 auto 60px;
+    padding: 60px 40px;
+    background: #1A2332;
+    border-radius: 16px;
+    border: 1px solid #2C3E50;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
 
   .content-section h2 {
-    font-size: 32px;
-    font-weight: 600;
-    color: #fff;
+    font-size: 36px;
+    font-weight: 700;
+    color: #F0E5D8;
     margin-bottom: 24px;
     text-align: center;
+    position: relative;
+    padding-bottom: 16px;
+  }
+
+  .content-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #FF6B35, #FF8555);
+    border-radius: 2px;
   }
 
   .content-section p {
     font-size: 16px;
     line-height: 1.8;
-    color: #cccccc;
+    color: #E8EDF2;
     text-align: center;
   }
 
@@ -113,35 +136,59 @@
   }
 
   .feature-card {
-    background: #252526;
-    border: 1px solid #3e3e42;
-    border-radius: 8px;
-    padding: 32px;
+    background: #1A2332;
+    border: 1px solid #2C3E50;
+    border-radius: 16px;
+    padding: 40px 32px;
     text-align: center;
-    transition: all 0.2s;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF6B35, #FF8555);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
   }
 
   .feature-card:hover {
-    border-color: #0e639c;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-color: #FF6B35;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(255, 107, 53, 0.3);
   }
 
   .feature-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
+    font-size: 56px;
+    margin-bottom: 20px;
+    display: inline-block;
+    transition: transform 0.3s;
+  }
+
+  .feature-card:hover .feature-icon {
+    transform: scale(1.1);
   }
 
   .feature-card h3 {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
-    color: #fff;
+    color: #F0E5D8;
     margin-bottom: 12px;
   }
 
   .feature-card p {
     font-size: 14px;
-    color: #858585;
+    color: #E8EDF2;
     line-height: 1.6;
   }
 
@@ -153,28 +200,78 @@
   }
 
   .message {
-    padding: 12px 16px;
-    border-radius: 6px;
+    padding: 14px 18px;
+    border-radius: 8px;
     margin-bottom: 12px;
     border-left: 4px solid;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .message.error {
-    background: #da363726;
-    border-color: #f85149;
-    color: #f85149;
+    background: rgba(229, 62, 62, 0.15);
+    border-color: #E53E3E;
+    color: #E53E3E;
   }
 
   .message.success {
-    background: #2ea04326;
-    border-color: #3fb950;
-    color: #3fb950;
+    background: rgba(72, 187, 120, 0.15);
+    border-color: #48BB78;
+    color: #48BB78;
   }
 
   .message.info {
-    background: #1f6feb26;
-    border-color: #58a6ff;
-    color: #58a6ff;
+    background: rgba(255, 107, 53, 0.15);
+    border-color: #FF6B35;
+    color: #FF6B35;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 80px 24px 60px;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+    }
+
+    .hero p {
+      font-size: 16px;
+    }
+
+    .hero img {
+      height: 100px;
+    }
+
+    .content-section {
+      padding: 40px 24px;
+    }
+
+    .content-section h2 {
+      font-size: 28px;
+    }
+
+    .features {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .button {
+      width: 100%;
+      max-width: 300px;
+    }
   }
 </style>
 {% endblock %}
