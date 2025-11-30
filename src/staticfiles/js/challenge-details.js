@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const editorElement = document.getElementById("codeEditor");
   if (!editorElement) return;
 
+  // Get canSubmit from window object (set by inline script in template)
+  canSubmit = window.canSubmit !== undefined ? window.canSubmit : true;
+  initialCode = window.initialCode || editorElement.value;
+
   editor = CodeMirror.fromTextArea(editorElement, {
     lineNumbers: true,
     mode: "text/x-csrc",
