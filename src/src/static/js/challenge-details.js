@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   editor = CodeMirror.fromTextArea(editorElement, {
     lineNumbers: true,
     mode: "text/x-csrc",
-    theme: "monokai",
+    theme: "material-darker",
     indentUnit: 4,
     tabSize: 4,
     matchBrackets: true,
