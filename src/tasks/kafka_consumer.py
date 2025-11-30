@@ -124,11 +124,8 @@ class KafkaConsumerService:
                     # if submission.score and submission.score > 0:
                     submission.is_corrected = True
                     
-                    # Save to database
-                    await asyncio.to_thread(submission.save)
-                    # submission.save()
-                    
                     # Award coins for 100% completion
+                    logger.info(f"Checking for coin awards for submission {submission_id} status={submission.status}")
                     if submission.score == 100 and submission.status == 'completed':
                         from registration.models import Team
                         team = await asyncio.to_thread(
@@ -138,6 +135,28 @@ class KafkaConsumerService:
                         team.coins += coins_awarded
                         await asyncio.to_thread(team.save)
                         logger.info(f"💰 Awarded {coins_awarded} coins to team {team.name} for 100% completion")
+                    
+                    # Award first solver bonus if this is the first correct solution for this task
+                    first_solver_bonus = 0
+                    if submission.status == 'completed':
+                        from django.core.cache import cache
+                        first_solver_cache_key = f"first_solver:task-{submission.task.id}"
+                        # TODO: fix a race condition here if we have time
+                        if not cache.get(first_solver_cache_key):
+                            cache.set(first_solver_cache_key, True, timeout=None)
+                            from tasks.models import TaskSolution, Settings
+                            already_solved = await asyncio.to_thread(
+                                lambda: TaskSolution.objects.filter(task=submission.task, status='completed').exclude(id=submission.id).exists()
+                            )
+                            if not already_solved:
+                                app_settings = await asyncio.to_thread(Settings.get_settings)
+                                bonus_percent = getattr(app_settings, 'first_solver_bonus_percent', 0)
+                                submission.score += bonus_percent
+                                logger.info(f"🏆 First solver bonus: score = {submission.score + bonus_percent} to team {submission.team.name} for task {submission.task.id}")
+                        else: logger.info(f"CACHE:No first solver bonus: submission {submission_id} status={submission.status}")
+
+                    # Save to database (only once)
+                    await asyncio.to_thread(submission.save)
                     
                     logger.info(
                         f"✓ Submission {submission_id} updated: "

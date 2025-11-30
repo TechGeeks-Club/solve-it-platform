@@ -7,6 +7,11 @@ from django.contrib.auth.models import User
 
 
 class Settings(models.Model):
+    first_solver_bonus_percent = models.IntegerField(
+        default=20,
+        validators=[MaxValueValidator(100)],
+        help_text="Percentage bonus for the first solver of a task."
+    )
     """Global platform settings with Redis caching"""
     
     max_attempts = models.IntegerField(
@@ -149,7 +154,7 @@ class TaskSolution(models.Model):
     attempts = models.IntegerField(default=1)  # Number of attempts made
     is_corrected = models.BooleanField(default=False)
     submitted_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(100)])
+    score = models.IntegerField(null=True, default=0, validators=[MaxValueValidator(200)]) # can be more  than 100 in case of first solver bonus
     tries = models.IntegerField(null=False, default=1, validators=[MaxValueValidator(3)])
     
     # Judge0 Integration Fields

@@ -34,6 +34,10 @@ class SettingsAdmin(ModelAdmin):
             "fields": ("shop_cooldown_minutes",),
             "description": "Cooldown period in minutes before teams can make another shop purchase."
         }),
+        ("First Solver Bonus", {
+            "fields": ("first_solver_bonus_percent",),
+            "description": "Percentage bonus for the first solver of a task."
+        }),
     )
     
     def has_add_permission(self, request):
