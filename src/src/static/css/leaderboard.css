@@ -22,7 +22,7 @@
 
 .page-subtitle {
   font-size: 16px;
-  color: #858585;
+  color: var(--text-secondary);
 }
 
 /* Podium Section */
@@ -61,7 +61,7 @@
 
 .podium-card {
   width: 100%;
-  background: #1A2332;
+  background: var(--bg-secondary);
   border: 2px solid;
   border-radius: 12px;
   padding: 24px;
@@ -77,19 +77,19 @@
 /* Rank-specific styling */
 .podium-item[data-rank="1"] .podium-card {
   border-color: #ffd700;
-  background: linear-gradient(135deg, #1A2332 0%, #3d3520 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #3d3520 100%);
   box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
 }
 
 .podium-item[data-rank="2"] .podium-card {
   border-color: #c0c0c0;
-  background: linear-gradient(135deg, #1A2332 0%, #2C3E50 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   box-shadow: 0 6px 20px rgba(192, 192, 192, 0.2);
 }
 
 .podium-item[data-rank="3"] .podium-card {
   border-color: #cd7f32;
-  background: linear-gradient(135deg, #1A2332 0%, #3d2e20 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, #3d2e20 100%);
   box-shadow: 0 6px 20px rgba(205, 127, 50, 0.2);
 }
 
@@ -144,7 +144,7 @@
   gap: 8px;
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #2C3E50;
+  border-top: 1px solid var(--border-color);
 }
 
 .total-score {
@@ -167,7 +167,7 @@
 
 .score-label {
   font-size: 13px;
-  color: #858585;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -195,13 +195,13 @@
   color: #fff;
   margin-bottom: 24px;
   padding-bottom: 12px;
-  border-bottom: 2px solid #2C3E50;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .rankings-table {
   width: 100%;
-  background: #1A2332;
-  border: 1px solid #2C3E50;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -212,8 +212,8 @@
 }
 
 .rankings-table thead {
-  background: #0A0E27;
-  border-bottom: 2px solid #2C3E50;
+  background: var(--bg-dark);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .rankings-table th {
@@ -221,7 +221,7 @@
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  color: #E8EDF2;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -237,12 +237,12 @@
 }
 
 .rankings-table tbody tr {
-  border-bottom: 1px solid #2C3E50;
+  border-bottom: 1px solid var(--border-color);
   transition: background 0.2s;
 }
 
 .rankings-table tbody tr:hover {
-  background: #2C3E50;
+  background: var(--bg-tertiary);
 }
 
 .rankings-table tbody tr:last-child {
@@ -252,13 +252,13 @@
 .rankings-table td {
   padding: 16px 20px;
   font-size: 14px;
-  color: #E8EDF2;
+  color: var(--text-primary);
 }
 
 .rank-number {
   text-align: center;
   font-weight: 600;
-  color: #858585;
+  color: var(--text-secondary);
 }
 
 .team-name-cell {
@@ -269,19 +269,19 @@
 .score-cell {
   text-align: right;
   font-weight: 600;
-  color: #FF6B35;
+  color: var(--primary-orange);
   font-size: 16px;
 }
 
 .tasks-cell {
   text-align: right;
-  color: #858585;
+  color: var(--text-secondary);
 }
 
 .empty-state {
   text-align: center;
   padding: 64px 24px;
-  color: #858585;
+  color: var(--text-secondary);
 }
 
 .empty-state-icon {
@@ -324,7 +324,7 @@
   text-align: center;
   max-width: 600px;
   padding: 48px;
-  background: #1A2332;
+  background: var(--bg-secondary);
   border: 2px solid #ffd700;
   border-radius: 16px;
   box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
