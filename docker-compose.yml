@@ -15,6 +15,8 @@ services:
       - "5432:5432"
     networks:
       - solve-it-network
+    # Create both databases on startup
+    command: ["sh", "-c", "docker-entrypoint.sh postgres & sleep 5 && psql -U $POSTGRES_USER -c 'CREATE DATABASE \"judge0\";' || true && wait"]
 
   # Redis for Judge0
   redis:
@@ -38,13 +40,13 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - POSTGRES_HOST=judge0-db
+      - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - POSTGRES_DB=${JUDGE0_DB:-judge0}
-      - POSTGRES_USER=${JUDGE0_USER:-judge0}
-      - POSTGRES_PASSWORD=${JUDGE0_PASSWORD:-judge0123}
+      - POSTGRES_USER=${POSTGRES_USER:-solveit}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-solveit123}
     depends_on:
-      - judge0-db
+      - db
       - redis
     networks:
       - solve-it-network
@@ -61,31 +63,17 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - POSTGRES_HOST=judge0-db
+      - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - POSTGRES_DB=${JUDGE0_DB:-judge0}
-      - POSTGRES_USER=${JUDGE0_USER:-judge0}
-      - POSTGRES_PASSWORD=${JUDGE0_PASSWORD:-judge0123}
+      - POSTGRES_USER=${POSTGRES_USER:-solveit}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-solveit123}
     depends_on:
-      - judge0-db
+      - db
       - redis
     networks:
       - solve-it-network
     restart: unless-stopped
-
-  # Judge0 Database
-  judge0-db:
-    image: postgres:13-alpine
-    container_name: solve-it-judge0-db
-    volumes:
-      - judge0_postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=${JUDGE0_DB:-judge0}
-      - POSTGRES_USER=${JUDGE0_USER:-judge0}
-      - POSTGRES_PASSWORD=${JUDGE0_PASSWORD:-judge0123}
-    networks:
-      - solve-it-network
-
 
   # Kafka (KRaft mode - no Zookeeper needed)
   kafka:
@@ -222,7 +210,6 @@ services:
 
 volumes:
   postgres_data:
-  judge0_postgres_data:
   redis_data:
   kafka_data:
   static_volume:
