@@ -240,3 +240,8 @@ CACHES = {
         },
     }
 }
+
+
+
+CACHE_UNLOCKED_PHASE_IDS_KEY = "unlocked_phase_ids"
+CACHE_PLATFORM_SETTINGS_KEY = "platform_settings"

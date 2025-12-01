@@ -14,16 +14,27 @@
 <main class="container">
   <div class="page-header">
     <h1>Challenges</h1>
-    <p>{{ phase.name|capfirst }} - Solve programming challenges and earn points</p>
+    <p>Solve programming challenges and earn points</p>
   </div>
 
-  <div class="level-filter">
-    <select id="levelsDropdown" class="level-select">
-      <option value="all">All Levels</option>
-      <option value="easy">Easy</option>
-      <option value="medium">Medium</option>
-      <option value="hard">Hard</option>
-    </select>
+  <div class="filters-row" style="display: flex; gap: 16px; margin-bottom: 18px;">
+    <div class="level-filter">
+      <select id="levelsDropdown" class="level-select">
+        <option value="all">All Levels</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <div class="status-filter">
+      <select id="statusDropdown" class="level-select">
+        <option value="all">All Statuses</option>
+        <option value="solved">Solved</option>
+        <option value="unsolved">Unsolved</option>
+        <option value="completed">Completed</option>
+        <option value="failed">Failed</option>
+      </select>
+    </div>
   </div>
 
   <div class="challenge-list">
@@ -32,8 +43,9 @@
         {% with task=item.task solution=item.solution %}
     <div
       class="challenge-card"
-      data-phase="{{ phase.name }}"
+      data-phase="{{ task.phase.name }}"
       data-level="{{ task.level|lower }}"
+      data-status="{{ item.status_val }}"
     >
       <div class="challenge-info">
         <div class="challenge-details">
@@ -42,7 +54,6 @@
             {% if task.level %}
               <span class="level-tag {{ task.level|lower }}">{{ task.level|capfirst }}</span>
             {% endif %}
-
             <span>{{ task.points }} points</span>
             {% if task.category %}
               <span>{{ task.category }}</span>

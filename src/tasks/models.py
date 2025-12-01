@@ -2,6 +2,10 @@ from django.db import models
 from django.core.cache import cache
 from registration.models import Participant, Team
 from django.core.validators import MaxValueValidator
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+
+from django.conf import settings
 
 
 
@@ -23,7 +27,7 @@ class Settings(models.Model):
     )
     manual_correction = models.BooleanField(
         default=False,
-        help_text="Enable manual correction by admins (allows editing score and is_correct)",
+        help_text="Enable manual correction by admins (allows editing score and is_corrected)",
     )
     rush_hour = models.BooleanField(
         default=False,
@@ -46,16 +50,16 @@ class Settings(models.Model):
                 "Settings instance already exists. Update the existing one."
             )
         super().save(*args, **kwargs)
-        # Clear cache when settings are updated
-        cache.delete("platform_settings")
+
+        cache.delete(settings.CACHE_PLATFORM_SETTINGS_KEY)
 
     @classmethod
     def get_settings(cls):
         """Get settings from cache or database"""
-        settings = cache.get("platform_settings")
+        settings = cache.get(settings.CACHE_PLATFORM_SETTINGS_KEY)
         if settings is None:
             settings, _ = cls.objects.get_or_create(pk=1)
-            cache.set("platform_settings", settings, timeout=300)  # Cache for 5 minutes
+            cache.set(settings.CACHE_PLATFORM_SETTINGS_KCACHE_PLATFORM_SETTINGS_KEYEY, settings)
         return settings
 
     def __str__(self):
@@ -66,15 +70,23 @@ class Phase(models.Model):
     name = models.CharField(max_length=128)
     is_locked = models.BooleanField(default=False)
 
-    #  update function
-
     def save(self, *args, **kwargs):
-        if not self.is_locked:
-            Phase.objects.all().update(is_locked=True)
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+        # Update unlocked phase IDs cache after save
+        from django.core.cache import cache
+        unlocked_phase_ids = list(Phase.objects.filter(is_locked=False).values_list('id', flat=True))
+        cache.set(settings.CACHE_UNLOCKED_PHASE_IDS_KEY, unlocked_phase_ids)
 
     def __str__(self):
         return self.name
+
+
+# Optionally, also update cache on delete
+@receiver(post_delete, sender=Phase)
+def update_unlocked_phase_ids_on_delete(sender, instance, **kwargs):
+    from django.core.cache import cache
+    unlocked_phase_ids = list(Phase.objects.filter(is_locked=False).values_list('id', flat=True))
+    cache.set(settings.CACHE_UNLOCKED_PHASE_IDS_KEY, unlocked_phase_ids)
 
 
 class Task(models.Model):
