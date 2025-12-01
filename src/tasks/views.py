@@ -52,19 +52,26 @@ def tasksDisplayView(request: HttpRequest):
         # Determine status based on database status field and threshold
         status_text = None
         status_class = None
+        status_val = "unsolved"
         if task_solution:
             if task_solution.status == "completed":
                 status_text = "Success"
                 status_class = "success"
+                status_val = "solved completed"
             elif task_solution.status == "failed":
                 status_text = "Failed"
                 status_class = "failed"
+                status_val = "unsolved failed"
             elif task_solution.status == "processing":
                 status_text = "In Progress"
                 status_class = "in-progress"
+                status_val = "unsolved"
             elif not task_solution.is_corrected:
                 status_text = "In Progress"
                 status_class = "in-progress"
+                status_val = "unsolved"
+        else:
+            status_val = "unsolved"
 
         tasks_with_status.append(
             {
@@ -78,6 +85,7 @@ def tasksDisplayView(request: HttpRequest):
                 "status_class": status_class,
                 "score": task_solution.score if task_solution else 0,
                 "is_corrected": task_solution.is_corrected if task_solution else False,
+                "status_val": status_val,
             }
         )
 

@@ -17,13 +17,25 @@
     <p>{{ phase.name|capfirst }} - Solve programming challenges and earn points</p>
   </div>
 
-  <div class="level-filter">
-    <select id="levelsDropdown" class="level-select">
-      <option value="all">All Levels</option>
-      <option value="easy">Easy</option>
-      <option value="medium">Medium</option>
-      <option value="hard">Hard</option>
-    </select>
+
+  <div class="filters-row" style="display: flex; gap: 16px; margin-bottom: 18px;">
+    <div class="level-filter">
+      <select id="levelsDropdown" class="level-select">
+        <option value="all">All Levels</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+    </div>
+    <div class="status-filter">
+      <select id="statusDropdown" class="level-select">
+        <option value="all">All Statuses</option>
+        <option value="solved">Solved</option>
+        <option value="unsolved">Unsolved</option>
+        <option value="completed">Completed</option>
+        <option value="failed">Failed</option>
+      </select>
+    </div>
   </div>
 
   <div class="challenge-list">
@@ -34,6 +46,7 @@
       class="challenge-card"
       data-phase="{{ phase.name }}"
       data-level="{{ task.level|lower }}"
+      data-status="{{ item.status_val }}"
     >
       <div class="challenge-info">
         <div class="challenge-details">
@@ -85,4 +98,28 @@
 
 {% block extra_js %}
 <script src="{% static 'js/challenges-page.js' %}"></script>
+<script>
+// Filtering logic for level and status
+const levelDropdown = document.getElementById('levelsDropdown');
+const statusDropdown = document.getElementById('statusDropdown');
+const cards = document.querySelectorAll('.challenge-card');
+
+function filterChallenges() {
+  const level = levelDropdown.value;
+  const status = statusDropdown.value;
+  cards.forEach(card => {
+    const cardLevel = card.getAttribute('data-level');
+    const cardStatus = card.getAttribute('data-status');
+    // Level filter
+    const levelMatch = (level === 'all' || cardLevel === level);
+    // Status filter (status can be multiple words)
+    let statusMatch = false;
+    if (status === 'all') statusMatch = true;
+    else statusMatch = cardStatus && cardStatus.split(' ').includes(status);
+    card.style.display = (levelMatch && statusMatch) ? '' : 'none';
+  });
+}
+levelDropdown.addEventListener('change', filterChallenges);
+statusDropdown.addEventListener('change', filterChallenges);
+</script>
 {% endblock %}
