@@ -1,11 +1,10 @@
 from django.contrib.admin import SimpleListFilter
-from .models import TaskSolution
 
 
 class TaskSolutionListFilter(SimpleListFilter):
     # Human-readable title which will be displayed in the
     # right admin sidebar just above the filter options.
-    title = ("My Tasks")
+    title = "My Tasks"
 
     # Parameter for the filter that will be used in the URL query.
     parameter_name = "f1"
@@ -30,4 +29,3 @@ class TaskSolutionListFilter(SimpleListFilter):
         """
         # This filter is no longer used since manual correction tracking was removed
         return queryset
-       

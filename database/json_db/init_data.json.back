@@ -46,9 +46,34 @@
 
 
     {
+        "model": "tasks.category",
+        "pk": 1,
+        "fields": {
+            "name": "Math Problems"
+        }
+    },
+    {
+        "model": "tasks.category",
+        "pk": 2,
+        "fields": {
+            "name": "Arrays & Strings"
+        }
+    },
+    {
+        "model": "tasks.category",
+        "pk": 3,
+        "fields": {
+            "name": "Control Structures"
+        }
+    },
+
+
+
+    {
         "model": "tasks.Task",
         "pk": 1,
         "fields": {
+            "category": 1,
             "context": "Write an algorithm to convert Cartesian coordinates (x, y) to polar coordinates (r, t). The conversion formulas are as follows:\r\n\r\n1. r = sqrt(x^2 + y^2)\r\n2. If x = 0, then:\r\n   - t = π/2 if y > 0,\r\n   - t = -π/2 if y < 0,\r\n   - t is undefined if y = 0.\r\n3. Otherwise, t = arctan(y/x), and add π if x < 0.\r\n\r\nInput: Two real numbers x and y (Cartesian coordinates)\r\nOutput: Two real numbers r and t (polar coordinates) with 2 decimal places, separated by space",
             "initialCode": "#include <stdio.h>\n#include <math.h>\n\nint main() {\n    float x, y, r, t;\n    scanf(\"%f %f\", &x, &y);\n    \n    // Your code here\n    // Use sqrt() for square root and atan() for arctan\n    \n    return 0;\n}",
             "level": "easy",
@@ -128,6 +153,7 @@
         "model": "tasks.Task",
         "pk": 2,
         "fields": {
+            "category": 1,
             "context": "Write an algorithm that calculates the number of bits needed to encode an integer N in binary.\r\nIt is not necessary to provide the binary representation of N.\r\n\r\nExample: If N = 13, then the result must be 4, because in binary, the number 13 is 1101.\r\n\r\nInput: A positive integer N\r\nOutput: The number of bits needed to represent N",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -207,6 +233,7 @@
         "model": "tasks.Task",
         "pk": 3,
         "fields": {
+            "category": 1,
             "context": "Write an algorithm to enter a positive non-zero real number, and to calculate and display its integer part.\r\n\r\nInput: A positive real number\r\nOutput: The integer part of the number",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    float num;\n    scanf(\"%f\", &num);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -286,6 +313,7 @@
         "model": "tasks.Task",
         "pk": 4,
         "fields": {
+            "category": 1,
             "context": "Write an algorithm that reads a positive non-zero integer N and a base B less than 10, then checks and displays whether N belongs to base B or not.\r\n\r\nExample: N = 743\r\n743 belongs to the octal base B = 8 because the digits of 743 (3, 4, and 7) are all less than 8.\r\nBut 743 does not belong to the base B = 4 nor to the base B = 7.\r\n\r\nInput: Two integers N and B separated by space\r\nOutput: Print \"Yes\" if N belongs to base B, \"No\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n, b;\n    scanf(\"%d %d\", &n, &b);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -365,6 +393,7 @@
         "model": "tasks.Task",
         "pk": 5,
         "fields": {
+            "category": 1,
             "context": "Write an algorithm to solve the following inequation: ax + b > 0\r\nwith a, b two real numbers entered by the user.\r\n\r\nInput: Two real numbers a and b separated by space\r\nOutput: The solution set as a string:\r\n  - If a > 0: print \"x > \" followed by -b/a (2 decimals)\r\n  - If a < 0: print \"x < \" followed by -b/a (2 decimals)\r\n  - If a = 0 and b > 0: print \"All x\"\r\n  - If a = 0 and b <= 0: print \"No solution\"",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    float a, b;\n    scanf(\"%f %f\", &a, &b);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -444,6 +473,7 @@
         "model": "tasks.Task",
         "pk": 6,
         "fields": {
+            "category": 1,
             "context": "Write an algorithm that allows you to enter a positive non-zero integer `N`, check whether it represents a binary number or not, and then calculate and display the number of zeros (0) and ones (1) it contains.\r\n\r\nInput: A positive integer N\r\nOutput: If N is binary, print two numbers: count of zeros and count of ones separated by space. If not binary, print \"Not Binary\"",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -523,6 +553,7 @@
         "model": "tasks.Task",
         "pk": 7,
         "fields": {
+            "category": 1,
             "context": "A number `N` is said to be balanced if it contains the same number of odd and even digits. Write an algorithm to enter a positive non-zero integer `M`, then display all balanced numbers less than or equal to `M`.\r\n\r\nInput: A positive integer M\r\nOutput: Print all balanced numbers from 1 to M, separated by spaces. If none exist, print \"None\"",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int m;\n    scanf(\"%d\", &m);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -602,6 +633,7 @@
         "model": "tasks.Task",
         "pk": 8,
         "fields": {
+            "category": 3,
             "context": "Check Even or Odd\r\nProblem Statement:\r\nWrite a program to check if a given integer  `n` is even or odd.\r\n\r\nInput: A single integer n\r\nOutput: Print \"Even\" if n is even, \"Odd\" if n is odd",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -681,6 +713,7 @@
         "model": "tasks.Task",
         "pk": 9,
         "fields": {
+            "category": 3,
             "context": "Sum of Natural Numbers\r\nProblem Statement:\r\nWrite a program to find the sum of the first  `n` natural numbers.\r\n\r\nInput: A positive integer n\r\nOutput: The sum of numbers from 1 to n",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -747,6 +780,7 @@
         "model": "tasks.Task",
         "pk": 10,
         "fields": {
+            "category": 3,
             "context": "Check Prime\r\nProblem Statement:\r\nWrite a program to check if a given number `n` is a prime number.\r\nA prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.\r\n\r\nInput: A positive integer n\r\nOutput: Print \"Prime\" if n is prime, \"Not Prime\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -826,6 +860,7 @@
         "model": "tasks.Task",
         "pk": 11,
         "fields": {
+            "category": 3,
             "context": "Print a Right-Angled Triangle\r\nProblem Statement:\r\nWrite a program to print a right-angled triangle pattern of stars (*) with n rows.\r\n\r\nInput: A positive integer n (number of rows)\r\nOutput: Print n lines where line i contains i stars",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -905,6 +940,7 @@
         "model": "tasks.Task",
         "pk": 12,
         "fields": {
+            "category": 3,
             "context": "Number Pyramid\r\nProblem Statement:\r\nWrite a program to print a pyramid pattern of numbers where each row i contains numbers from 1 to i.\r\n\r\nInput: A positive integer n (number of rows)\r\nOutput: Print n lines where line i contains numbers from 1 to i separated by spaces",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -984,6 +1020,7 @@
         "model": "tasks.Task",
         "pk": 13,
         "fields": {
+            "category": 3,
             "context": "Factorial Calculation\r\nProblem Statement:\r\nWrite a program to calculate the factorial of a given number `n`.\r\nThe factorial of n (written as n!) is the product of all positive integers less than or equal to n.\r\n\r\nInput: A non-negative integer n (0 <= n <= 20)\r\nOutput: The factorial of n",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1063,6 +1100,7 @@
         "model": "tasks.Task",
         "pk": 14,
         "fields": {
+            "category": 3,
             "context": "Write a program in c to enter three digits A, B, C (a digit is a number between 0 and 9) and calculates and displays the largest number that can be formed using A, B and C.\r\n\r\nInput: Three single digits (0-9) separated by spaces\r\nOutput: The largest number that can be formed using these three digits",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int a, b, c;\n    scanf(\"%d %d %d\", &a, &b, &c);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1142,6 +1180,7 @@
         "model": "tasks.Task",
         "pk": 15,
         "fields": {
+            "category": 3,
             "context": "3 segments can form a triangle if the sum of the lengths of the two shorter sides is greater than the length of the longest side.\r\nWrite a program in c to read three non-zero positive real numbers, and verify that they can be the lengths of the sides of a triangle.\r\n\r\nInput: Three positive real numbers (side lengths) separated by spaces\r\nOutput: Print \"Triangle\" if they can form a triangle, \"Not Triangle\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    float a, b, c;\n    scanf(\"%f %f %f\", &a, &b, &c);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1221,6 +1260,7 @@
         "model": "tasks.Task",
         "pk": 16,
         "fields": {
+            "category": 2,
             "context": "Find an Element in an Array\r\nProblem Statement:\r\nWrite a program to check if an element exists in an array.\r\n\r\nInput: First line contains n (size of array), second line contains n integers, third line contains the element to search\r\nOutput: Print \"Found\" if element exists, \"Not Found\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n, element;\n    scanf(\"%d\", &n);\n    int arr[n];\n    \n    for(int i = 0; i < n; i++) {\n        scanf(\"%d\", &arr[i]);\n    }\n    scanf(\"%d\", &element);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1300,6 +1340,7 @@
         "model": "tasks.Task",
         "pk": 17,
         "fields": {
+            "category": 2,
             "context": "Count Vowels in a String\r\nProblem Statement:\r\nWrite a program to count the number of vowels (a, e, i, o, u) in a given string. Count both uppercase and lowercase vowels.\r\n\r\nInput: A string (without spaces, max 100 characters)\r\nOutput: The number of vowels in the string",
             "initialCode": "#include <stdio.h>\n#include <string.h>\n\nint main() {\n    char str[101];\n    scanf(\"%s\", str);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1379,6 +1420,7 @@
         "model": "tasks.Task",
         "pk": 18,
         "fields": {
+            "category": 2,
             "context": "Reverse an Array\r\nProblem Statement:\r\nWrite a program to reverse a given array of integers and print the reversed array.\r\n\r\nInput: First line contains n (size of array), second line contains n integers separated by spaces\r\nOutput: Print the reversed array elements separated by spaces",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int arr[n];\n    \n    for(int i = 0; i < n; i++) {\n        scanf(\"%d\", &arr[i]);\n    }\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1458,6 +1500,7 @@
         "model": "tasks.Task",
         "pk": 19,
         "fields": {
+            "category": 2,
             "context": "Stack Operations\r\nProblem Statement:\r\nImplement basic stack operations. Read n operations where each operation is either 'push x' (push x onto stack) or 'pop' (remove and print top element). If stack is empty during pop, print 'Empty'.\r\n\r\nInput: First line contains n (number of operations), next n lines contain operations\r\nOutput: For each pop operation, print the popped element or 'Empty'",
             "initialCode": "#include <stdio.h>\n#include <string.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int stack[100], top = -1;\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1537,6 +1580,7 @@
         "model": "tasks.Task",
         "pk": 20,
         "fields": {
+            "category": 2,
             "context": "Given an array A of 8 integers, Write a program in c for entering the array A, calculating, and display the greatest sum of two consecutive elements in A.\r\n\r\nInput: 8 integers separated by spaces\r\nOutput: The maximum sum of two consecutive elements",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int arr[8];\n    for(int i = 0; i < 8; i++) {\n        scanf(\"%d\", &arr[i]);\n    }\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1616,6 +1660,7 @@
         "model": "tasks.Task",
         "pk": 22,
         "fields": {
+            "category": 2,
             "context": "Given a square matrix M(N, N) of integers (N=5). Write an algorithm that permutes the elements of the main diagonal with the elements of the secondary diagonal.\r\n\r\nInput: 25 integers (5x5 matrix) entered row by row, separated by spaces\r\nOutput: Print the matrix after swapping diagonals (5 rows, each with 5 integers separated by spaces)",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int m[5][5];\n    for(int i = 0; i < 5; i++) {\n        for(int j = 0; j < 5; j++) {\n            scanf(\"%d\", &m[i][j]);\n        }\n    }\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "easy",
@@ -1695,6 +1740,7 @@
         "model": "tasks.Task",
         "pk": 23,
         "fields": {
+            "category": null,
             "context": "Write a program in c to determine whether an integer is a perfect square. A perfect square is an integer that can be expressed as the square of another integer. For example, 0, 1, 4, 9, 16, 25, 36 and 49 are all perfect squares.\r\nUse of the sqrt() function is prohibited. The use of loops is mandatory.\r\n\r\nInput: A non-negative integer N\r\nOutput: Print \"Perfect Square\" if N is a perfect square, \"Not Perfect Square\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here (no sqrt() allowed, use loops)\n    \n    return 0;\n}",
             "level": "medium",
@@ -1774,6 +1820,7 @@
         "model": "tasks.Task",
         "pk": 24,
         "fields": {
+            "category": null,
             "context": "A positive integer N (where N>0) is called an automorphic number if its square (N²) ends with the number N itself. Examples: The numbers 25, 76, and 890625 are automorphic because:\r\n 25² = 625 (the square ends with 25)\r\n 76² = 5776 (the square ends with 76)\r\n 890625² = 793212890625 (the square ends with 890625)\r\n\r\nInput: A positive integer N\r\nOutput: Print \"Automorphic\" if N is automorphic, \"Not Automorphic\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    long long n;\n    scanf(\"%lld\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "medium",
@@ -1853,6 +1900,7 @@
         "model": "tasks.Task",
         "pk": 25,
         "fields": {
+            "category": null,
             "context": "A rational number is the quotient of two integers: a numerator and a denominator.\r\nWrite a program that simplifies a fraction (rational number).\r\nOptional hint: Use a GCD (Greatest Common Divisor) function.\r\n\r\nInput: Two integers (numerator and denominator) separated by space\r\nOutput: Two integers (simplified numerator and denominator) separated by space",
             "initialCode": "#include <stdio.h>\n\nint gcd(int a, int b) {\n    // Helper function to find GCD\n    if (b == 0) return a;\n    return gcd(b, a % b);\n}\n\nint main() {\n    int num, den;\n    scanf(\"%d %d\", &num, &den);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "medium",
@@ -1932,6 +1980,7 @@
         "model": "tasks.Task",
         "pk": 26,
         "fields": {
+            "category": null,
             "context": "An integer is said to be well-ordered if its digits, read from right to left, are in descending order.\r\nExample:\r\nThe number 249 is well-ordered because 9>4>2\r\nThe number 36478 is not well-ordered because 4≤6\r\n\r\nInput: A positive non-zero integer\r\nOutput: Print \"Well-Ordered\" if the number is well-ordered, \"Not Well-Ordered\" otherwise",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "medium",
@@ -2011,6 +2060,7 @@
         "model": "tasks.Task",
         "pk": 27,
         "fields": {
+            "category": null,
             "context": "Given a square matrix M(N, N) of integers (N=5). Write a program in C that permutes (swaps) the elements of the main diagonal with the elements of the secondary diagonal.\r\n\r\nInput: 25 integers (5x5 matrix) entered row by row, space-separated\r\nOutput: The matrix after swapping diagonals, printed row by row",
             "initialCode": "#include <stdio.h>\n#define N 5\n\nint main() {\n    int M[N][N];\n    \n    // Read the matrix\n    for (int i = 0; i < N; i++) {\n        for (int j = 0; j < N; j++) {\n            scanf(\"%d\", &M[i][j]);\n        }\n    }\n    \n    // Your code here to swap diagonals\n    // Main diagonal: M[i][i]\n    // Secondary diagonal: M[i][N-1-i]\n    \n    // Print the matrix\n    for (int i = 0; i < N; i++) {\n        for (int j = 0; j < N; j++) {\n            printf(\"%d \", M[i][j]);\n        }\n        printf(\"\\n\");\n    }\n    \n    return 0;\n}",
             "level": "medium",
@@ -2090,6 +2140,7 @@
         "model": "tasks.Task",
         "pk": 28,
         "fields": {
+            "category": null,
             "context": "Write a function nb_Occ(ch, n) which calculates and returns the number of occurrences of the digit ch (0 ≤ ch ≤ 9) in the positive non-zero integer n.\r\n\r\nInput: Two integers separated by space - digit ch and number n\r\nOutput: The number of occurrences of digit ch in n",
             "initialCode": "#include <stdio.h>\n\nint nb_Occ(int ch, int n) {\n    // Your recursive or iterative code here\n}\n\nint main() {\n    int ch, n;\n    scanf(\"%d %d\", &ch, &n);\n    \n    printf(\"%d\", nb_Occ(ch, n));\n    \n    return 0;\n}",
             "level": "medium",
@@ -2169,6 +2220,7 @@
         "model": "tasks.Task",
         "pk": 29,
         "fields": {
+            "category": null,
             "context": "Calculate an approximate value of π using the mathematical expression:\r\nπ/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ...\r\nThe calculation stops when the difference between two consecutive terms becomes strictly less than 10^-3 (0.001).\r\n\r\nInput: None (no input required)\r\nOutput: The approximate value of π with 3 decimal places",
             "initialCode": "#include <stdio.h>\n#include <math.h>\n\nint main() {\n    // Your code here\n    // Calculate π/4 series until difference < 0.001\n    // Then multiply by 4 to get π\n    \n    return 0;\n}",
             "level": "medium",
@@ -2248,6 +2300,7 @@
         "model": "tasks.Task",
         "pk": 30,
         "fields": {
+            "category": null,
             "context": "Consider a grayscale image represented by an integer matrix with 3 rows and 4 columns. The values of this matrix range from 0 to 255.\r\nThe histogram is an array H of 256 integers (0..255), where H[i] represents the number of occurrences of value i in the matrix.\r\n\r\nInput: 12 integers (3x4 matrix) entered row by row\r\nOutput: Only print histogram values H[i] where count > 0, in format \"value: count\"",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int Im[3][4];\n    int H[256] = {0}; // Initialize histogram to 0\n    \n    // Read the image matrix\n    for (int i = 0; i < 3; i++) {\n        for (int j = 0; j < 4; j++) {\n            scanf(\"%d\", &Im[i][j]);\n        }\n    }\n    \n    // Your code here to calculate histogram\n    \n    // Print histogram (only non-zero values)\n    for (int i = 0; i < 256; i++) {\n        if (H[i] > 0) {\n            printf(\"%d: %d\\n\", i, H[i]);\n        }\n    }\n    \n    return 0;\n}",
             "level": "medium",
@@ -2327,6 +2380,7 @@
         "model": "tasks.Task",
         "pk": 31,
         "fields": {
+            "category": null,
             "context": "A CCP postal current account number consists of 6, 7 or 8 digits. Calculate the key using:\r\nS = (digit1 from right)*4 + (digit2 from right)*5 + (digit3 from right)*6 + ...\r\nThe key is the last two digits of S.\r\n\r\nExample: CCP=6132756 \u2192 S=6*4+5*5+7*6+2*7+3*8+1*9+6*10=198 \u2192 key=98\r\n\r\nInput: An integer with 6-8 digits\r\nOutput: Two-digit key (pad with 0 if needed, e.g., \"05\")",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    long long n;\n    scanf(\"%lld\", &n);\n    \n    // Your code here\n    // Extract digits from right, multiply by 4,5,6...\n    // Get last 2 digits of sum\n    \n    return 0;\n}",
             "level": "medium",
@@ -2406,6 +2460,7 @@
         "model": "tasks.Task",
         "pk": 32,
         "fields": {
+            "category": null,
             "context": "Simplified version: Given a 2x3 matrix, center and reduce it.\r\nSteps: 1) Calculate column means, 2) Subtract mean from each element, 3) Calculate std dev, 4) Divide by std dev\r\n\r\nInput: 6 numbers (2x3 matrix) row by row\r\nOutput: Centered and reduced matrix with 2 decimal places",
             "initialCode": "#include <stdio.h>\n#include <math.h>\n\nint main() {\n    double A[2][3];\n    double mean[3] = {0};\n    double stddev[3] = {0};\n    \n    // Read matrix\n    for (int i = 0; i < 2; i++) {\n        for (int j = 0; j < 3; j++) {\n            scanf(\"%lf\", &A[i][j]);\n        }\n    }\n    \n    // Your code here\n    // 1. Calculate column means\n    // 2. Center the matrix\n    // 3. Calculate std deviation\n    // 4. Reduce the matrix\n    \n    // Print result\n    for (int i = 0; i < 2; i++) {\n        for (int j = 0; j < 3; j++) {\n            printf(\"%.2f \", A[i][j]);\n        }\n        printf(\"\\n\");\n    }\n    \n    return 0;\n}",
             "level": "medium",
@@ -2485,6 +2540,7 @@
         "model": "tasks.Task",
         "pk": 33,
         "fields": {
+            "category": null,
             "context": "Simplified: Given array, replace duplicates with 0 (keep first occurrence), then move all zeros to the end.\r\n\r\nExample: [8,3,2,3,4,8,8,5,4] → [8,3,2,0,4,0,0,5,0] → [8,3,2,4,5,0,0,0,0]\r\n\r\nInput: First integer n (array size), then n integers\r\nOutput: Final array after moving zeros to end",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    int T[n];\n    \n    // Read array\n    for (int i = 0; i < n; i++) {\n        scanf(\"%d\", &T[i]);\n    }\n    \n    // Your code here\n    // Step 1: Replace duplicates with 0\n    // Step 2: Move all 0s to the end\n    \n    // Print final result\n    for (int i = 0; i < n; i++) {\n        printf(\"%d \", T[i]);\n    }\n    \n    return 0;\n}",
             "level": "medium",
@@ -2564,6 +2620,7 @@
         "model": "tasks.Task",
         "pk": 34,
         "fields": {
+            "category": null,
             "context": "Two words are anagrams if they contain the same letters with the same frequencies.\r\nExamples: CHIEN and CHINE are anagrams, LISTEN and SILENT are anagrams.\r\n\r\nInput: Two strings (uppercase letters only, no spaces)\r\nOutput: \"Anagram\" or \"Not Anagram\"",
             "initialCode": "#include <stdio.h>\n#include <string.h>\n\nint main() {\n    char s1[100], s2[100];\n    scanf(\"%s %s\", s1, s2);\n    \n    // Your code here\n    // Check if same length\n    // Count character frequencies\n    // Compare frequencies\n    \n    return 0;\n}",
             "level": "medium",
@@ -2643,6 +2700,7 @@
         "model": "tasks.Task",
         "pk": 35,
         "fields": {
+            "category": null,
             "context": "Simplified: Given a 2x2 matrix Mat, create Mat2 where Mat2[i][j] = sum of row i + sum of column j in Mat.\r\n\r\nInput: 4 integers (2x2 matrix) row by row\r\nOutput: Mat2 (2x2 matrix) with cross sums",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int Mat[2][2], Mat2[2][2];\n    int rowSum[2] = {0}, colSum[2] = {0};\n    \n    // Read matrix\n    for (int i = 0; i < 2; i++) {\n        for (int j = 0; j < 2; j++) {\n            scanf(\"%d\", &Mat[i][j]);\n        }\n    }\n    \n    // Your code here\n    // Calculate row sums and column sums\n    // Mat2[i][j] = rowSum[i] + colSum[j]\n    \n    // Print Mat2\n    for (int i = 0; i < 2; i++) {\n        for (int j = 0; j < 2; j++) {\n            printf(\"%d \", Mat2[i][j]);\n        }\n        printf(\"\\n\");\n    }\n    \n    return 0;\n}",
             "level": "medium",
@@ -2722,6 +2780,7 @@
         "model": "tasks.Task",
         "pk": 36,
         "fields": {
+            "category": null,
             "context": "A positive integer N is said to be pronic (almost square) if it is the product of two consecutive numbers k and (k+1), i.e. N = k * (k+1).\r\nFor example, the integers 0, 2, 6, 12, 20, 30 and 42 are pronic numbers.\r\n\r\nInput: A non-negative integer N\r\nOutput: Print \"Pronic\" if N is pronic, \"Not Pronic\" otherwise. If pronic, also print k on the next line",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    // Your code here\n    \n    return 0;\n}",
             "level": "medium",
@@ -2801,6 +2860,7 @@
         "model": "tasks.Task",
         "pk": 37,
         "fields": {
+            "category": null,
             "context": "Simplified: Find elements that are maximum of BOTH their row AND column.\r\n\r\nInput: First two integers (rows, cols), then the matrix\r\nOutput: Count of elements that are max of both their row and column",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int rows, cols;\n    scanf(\"%d %d\", &rows, &cols);\n    int A[rows][cols];\n    \n    // Read matrix\n    for (int i = 0; i < rows; i++) {\n        for (int j = 0; j < cols; j++) {\n            scanf(\"%d\", &A[i][j]);\n        }\n    }\n    \n    // Your code here\n    // For each element, check if it's max of its row AND max of its column\n    \n    return 0;\n}",
             "level": "hard",
@@ -2880,6 +2940,7 @@
         "model": "tasks.Task",
         "pk": 38,
         "fields": {
+            "category": null,
             "context": "Two integers are siblings if each digit in one number appears in the other.\r\nExamples: 1164 and 641 are siblings (digits 1,6,4 in both), 405 and 554 are not (0 missing from 554).\r\n\r\nInput: Two positive integers\r\nOutput: \"Siblings\" or \"Not Siblings\"",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    long long n1, n2;\n    scanf(\"%lld %lld\", &n1, &n2);\n    \n    // Your code here\n    // Extract unique digits from each number\n    // Check if all digits of n1 are in n2 and vice versa\n    \n    return 0;\n}",
             "level": "hard",
@@ -3154,6 +3215,7 @@
         "model": "tasks.Task",
         "pk": 39,
         "fields": {
+            "category": null,
             "context": "Write a program that calculates the determinant of a given square matrix. The matrix will be represented as a 2D array, and your program should output the determinant value of the matrix.\r\n\r\n# Input:\r\n- A square matrix A of size n \u00d7 n (where n \u2265 1)\r\n- The matrix will be given as a 2D array of integers\r\n\r\n# Output:\r\n- The determinant of the given matrix A\r\n\r\n# Constraints:\r\n- The size of the matrix n can range from 1 to 10\r\n- The elements of the matrix will be integers\r\n\r\n# Explanation:\r\nThe determinant of a 3\u00d73 matrix is calculated as:\r\n\r\ndeterminant = 1 * (5 * 9 - 6 * 8) - 2 * (4 * 9 - 6 * 7) + 3 * (4 * 8 - 5 * 7) = 0\r\n\r\nThe determinant of a 2\u00d72 matrix is calculated as:\r\n\r\ndeterminant = 1 * 4 - 2 * 3 = -2\r\n\r\nYou can use either a recursive approach or LU decomposition for the determinant calculation.\r\n\r\n\r\n# Note:\r\nThis problem can be solved using:\r\n1. Recursive Method\r\n2. LU Decomposition\r\n\r\nThe solution should handle different matrix sizes efficiently and provide accurate results for all valid input cases.",
             "initialCode": "#include <stdio.h>\n\nint determinant(int matrix[10][10], int n) {\n    // Your code here\n    return 0;\n}\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    int matrix[10][10];\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            scanf(\"%d\", &matrix[i][j]);\n        }\n    }\n    \n    int det = determinant(matrix, n);\n    printf(\"%d\\n\", det);\n    \n    return 0;\n}",
             "level": "hard",
@@ -3168,6 +3230,7 @@
         "model": "tasks.Task",
         "pk": 40,
         "fields": {
+            "category": null,
             "context": "We define a magic square to be an n \u00d7 n matrix of distinct positive integers from 1 to n\u00b2 where the sum of any row, column, or diagonal of length n is always equal to the same number: the magic constant.\r\n\r\nYou will be given a 3 \u00d7 3 matrix s of integers in the inclusive range [1, 9]. We can convert any digit a to any other digit b in the range [1, 9] at a cost of |a - b|. Given s, convert it into a magic square at minimal cost. Print this cost on a new line.\r\n\r\nNote:\r\nThe resulting magic square must contain distinct integers in the inclusive range [1, 9].\r\n\r\nExample:\r\n\r\nInput matrix like this:\r\n[ [5, 3, 4],\r\n  [1, 5, 8],\r\n  [6, 4, 2] ]\r\n\r\nWe can convert it to the following magic square:\r\n[ [8, 3, 4],\r\n  [1, 5, 9],\r\n  [6, 7, 2] ]\r\n\r\nThis took three replacements at a cost of |5 - 8| + |8 - 9| + |4 - 7| = 7.\r\n\r\nFunction Description:\r\nComplete the formingMagicSquare function in the editor below.\r\n\r\nformingMagicSquare has the following parameter(s):\r\n- int s[3][3]: a 3 \u00d7 3 array of integers\r\n\r\nReturns:\r\n- int: the minimal total cost of converting the input square to a magic square\r\n\r\nInput Format:\r\nEach of the 3 lines contains three space-separated integers of row s[i].\r\n\r\nConstraints:\r\n- s[i][j] \u2208 [1, 9]\r\n\r\nSample Input 0:\r\n[ [4, 9, 2],\r\n  [3, 5, 7],\r\n  [8, 1, 5] ]\r\n\r\nSample Output 0:\r\n1\r\n\r\nExplanation 0:\r\nIf we change the bottom right value, s[2][2], from 5 to 6 at a cost of |6 - 5| = 1, s becomes a magic square at the minimum possible cost.\r\n\r\nSample Input 1:\r\n[ [4, 8, 2],\r\n  [4, 5, 7],\r\n  [6, 1, 6] ]\r\n\r\nSample Output 1:\r\n4\r\n\r\nExplanation 1:\r\nUsing 0-based indexing, if we make:\r\n- s[0][1] \u2192 9 at a cost of |9 - 8| = 1\r\n- s[1][0] \u2192 3 at a cost of |3 - 4| = 1\r\n- s[2][0] \u2192 8 at a cost of |8 - 6| = 2\r\n\r\nThen the total cost will be 1 + 1 + 2 = 4.",
             "initialCode": "#include <stdio.h>\n#include <stdlib.h>\n\nint formingMagicSquare(int s[3][3]) {\n    // Your code here\n    return 0;\n}\n\nint main() {\n    int s[3][3];\n    \n    for (int i = 0; i < 3; i++) {\n        for (int j = 0; j < 3; j++) {\n            scanf(\"%d\", &s[i][j]);\n        }\n    }\n    \n    int cost = formingMagicSquare(s);\n    printf(\"%d\\n\", cost);\n    \n    return 0;\n}",
             "level": "hard",
@@ -3182,6 +3245,7 @@
         "model": "tasks.Task",
         "pk": 41,
         "fields": {
+            "category": null,
             "context": "You are tasked with solving the **Traveling Salesman Problem (TSP)**, which requires finding the shortest possible route that visits all cities exactly once and returns to the origin city. The cities and their distances are represented by a distance matrix. Your program should calculate the shortest route and output the total distance of the route.\r\n\r\n### Input:\r\n- The input will consist of:\r\n  1. An integer n representing the number of cities (where n >= 2).\r\n  2. A 2D array (matrix) of size n x n where each element D[i][j] represents the distance between city i and city j.\r\n\r\n### Output:\r\n- The shortest possible distance that visits all cities exactly once and returns to the starting city.\r\n\r\n### Constraints:\r\n- The number of cities n will be between 2 and 10.\r\n- The distance between two cities will be a positive integer.\r\n- The distance from a city to itself (i.e., D[i][i]) will be 0.\r\n\r\n### Example 1:\r\n#### Input:\r\n0 10 15 20\r\n10 0 35 25\r\n15 35 0 30\r\n20 25 30 0\r\n\r\n#### Output:\r\n80\r\n\r\n#### Explanation:\r\nFor a 4-city problem with the given distance matrix, the shortest route is:\r\nCity 1 \u2192 City 2 \u2192 City 4 \u2192 City 3 \u2192 City 1, and the total distance is 80.\r\n\r\n### Example 2:\r\n#### Input:\r\n0   5  10\r\n5   0   8\r\n10 8   0\r\n\r\n#### Output:\r\n23\r\n\r\n#### Explanation:\r\nFor a 3-city problem with the given distance matrix, the shortest route is:\r\nCity 1 \u2192 City 2 \u2192 City 3 \u2192 City 1, and the total distance is 23.",
             "initialCode": "#include <stdio.h>\n#include <limits.h>\n\nint tsp(int dist[10][10], int n) {\n    // Your code here\n    return 0;\n}\n\nint main() {\n    int n;\n    scanf(\"%d\", &n);\n    \n    int dist[10][10];\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            scanf(\"%d\", &dist[i][j]);\n        }\n    }\n    \n    int min_distance = tsp(dist, n);\n    printf(\"%d\\n\", min_distance);\n    \n    return 0;\n}",
             "level": "hard",
@@ -3196,6 +3260,7 @@
         "model": "tasks.Task",
         "pk": 42,
         "fields": {
+            "category": null,
             "context": "Rotate a 2D matrix anti-clockwise by r rotations.\r\n\r\nInput: m (rows), n (cols), r (rotations), then m*n matrix elements\r\nOutput: Rotated matrix",
             "initialCode": "#include <stdio.h>\n\nint main() {\n    int m, n, r;\n    scanf(\"%d %d %d\", &m, &n, &r);\n    int matrix[m][n];\n    \n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            scanf(\"%d\", &matrix[i][j]);\n        }\n    }\n    \n    // Your code here\n    // Rotate layer by layer\n    \n    // Print result\n    for (int i = 0; i < m; i++) {\n        for (int j = 0; j < n; j++) {\n            printf(\"%d \", matrix[i][j]);\n        }\n        printf(\"\\n\");\n    }\n    \n    return 0;\n}",
             "level": "hard",

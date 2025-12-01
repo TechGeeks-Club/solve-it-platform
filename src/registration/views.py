@@ -3,8 +3,7 @@ from django.shortcuts import render
 from django.db import transaction
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
-from django.contrib.auth.forms import AuthenticationForm 
-from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 
 from django.contrib.auth.decorators import login_required
@@ -12,84 +11,82 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 
+from .forms import TeamCreationForm, TeamForm, CreateUserForm, CustomAuthenticationForm
 
-from .forms import TeamCreationForm,TeamForm,CreateUserForm,CustomAuthenticationForm
-
-from .models import Team,Participant
-
+from .models import Team, Participant
 
 
-
-def createTeamView(request:HttpRequest):
+def createTeamView(request: HttpRequest):
     if not request.user.is_authenticated:
-
         form = TeamCreationForm(request.POST or None)
         # err = None
-        if request.method == "POST" :
-            try :
+        if request.method == "POST":
+            try:
                 with transaction.atomic():
-                    if( form.is_valid() ):
+                    if form.is_valid():
                         form.save()
                         return redirect("home")
-                    else :
-                        messages.error(request, "Form validation failed. Please verify your inputs.")
-            except Exception as exp:
+                    else:
+                        messages.error(
+                            request,
+                            "Form validation failed. Please verify your inputs.",
+                        )
+            except Exception:
                 messages.error(request, "some thing went wrong")
 
         context = {
-            "form" : form,        
+            "form": form,
             # "err" : err
         }
 
-        return render(request,"registration/createTeam.html",context)
+        return render(request, "registration/createTeam.html", context)
 
-    return redirect('tasksDisplay')
-    
-
+    return redirect("tasksDisplay")
 
 
-
-def getTeam(teamForm:TeamForm):
+def getTeam(teamForm: TeamForm):
     try:
         dbTeam = Team.objects.get(name=teamForm.data["teamName"])
-    except :    
+    except:
         raise ValidationError("Team didn't exist, maybe the team name is wrong")
     if not check_password(teamForm.data["teamPassword"], dbTeam.password):
         raise ValidationError("Team password is wrong")
     return dbTeam
 
-def createParticipantView(request:HttpRequest):
-    if not request.user.is_authenticated:
 
+def createParticipantView(request: HttpRequest):
+    if not request.user.is_authenticated:
         userForm = CreateUserForm(request.POST or None)
         teamForm = TeamForm(request.POST or None)
         err = None
 
-        if request.method == "POST" :
-            try :
+        if request.method == "POST":
+            try:
                 with transaction.atomic():
                     teamObj = getTeam(teamForm)
 
-                    if( userForm.is_valid() ):
+                    if userForm.is_valid():
                         userObj = userForm.save()
                         Participant(user=userObj, team=teamObj).save()
                         login(request, userObj)
                         return redirect("home")
-                    else :
-                        messages.error(request, "Form validation failed. Please verify your inputs.")
+                    else:
+                        messages.error(
+                            request,
+                            "Form validation failed. Please verify your inputs.",
+                        )
 
             except Exception as exp:
                 msg = exp.__str__()[2:-2]
                 messages.error(request, msg)
         context = {
-            "teamForm" : teamForm,        
-            "userForm" : userForm,        
+            "teamForm": teamForm,
+            "userForm": userForm,
         }
-        
 
-        return render(request,"registration/signup.html",context)
-    
-    return redirect('tasksDisplay')
+        return render(request, "registration/signup.html", context)
+
+    return redirect("tasksDisplay")
 
 
 # def participantLoginView(request : HttpRequest):
@@ -125,40 +122,38 @@ def createParticipantView(request:HttpRequest):
 #                 login(request, user)
 #                 return redirect('home')
 #             else:
-                
+
 #                 messages.error(request, "Form validation failed. Please verify your inputs.")
 #                 return render(request, "registration/login.html")
 #         return render(request, "registration/login.html")
 #     return redirect('home')
 
 
-
-def participantLoginView(request : HttpRequest):
-    form = CustomAuthenticationForm(request,request.POST or None)
+def participantLoginView(request: HttpRequest):
+    form = CustomAuthenticationForm(request, request.POST or None)
 
     context = {
-        "form" : form,
+        "form": form,
     }
 
-    if request.method == "POST" :
-        if( form.is_valid() ):
-            try :
+    if request.method == "POST":
+        if form.is_valid():
+            try:
                 login(request, form.get_user())
                 context = {
-                    "form" : form,
+                    "form": form,
                 }
                 return redirect("tasksDisplay")
-            except Exception as e :
+            except Exception as e:
                 messages.error(request, f"An error occurred: {e}")
-        else :
-            messages.error(request, "Form validation failed. Please verify your inputs.")
-    return render(request,"registration/login.html",context)
-
-
-
+        else:
+            messages.error(
+                request, "Form validation failed. Please verify your inputs."
+            )
+    return render(request, "registration/login.html", context)
 
 
 @login_required
 def logoutview(request: HttpRequest):
     logout(request)
-    return redirect('home')
+    return redirect("home")
