@@ -98,28 +98,4 @@
 
 {% block extra_js %}
 <script src="{% static 'js/challenges-page.js' %}"></script>
-<script>
-// Filtering logic for level and status
-const levelDropdown = document.getElementById('levelsDropdown');
-const statusDropdown = document.getElementById('statusDropdown');
-const cards = document.querySelectorAll('.challenge-card');
-
-function filterChallenges() {
-  const level = levelDropdown.value;
-  const status = statusDropdown.value;
-  cards.forEach(card => {
-    const cardLevel = card.getAttribute('data-level');
-    const cardStatus = card.getAttribute('data-status');
-    // Level filter
-    const levelMatch = (level === 'all' || cardLevel === level);
-    // Status filter (status can be multiple words)
-    let statusMatch = false;
-    if (status === 'all') statusMatch = true;
-    else statusMatch = cardStatus && cardStatus.split(' ').includes(status);
-    card.style.display = (levelMatch && statusMatch) ? '' : 'none';
-  });
-}
-levelDropdown.addEventListener('change', filterChallenges);
-statusDropdown.addEventListener('change', filterChallenges);
-</script>
 {% endblock %}
