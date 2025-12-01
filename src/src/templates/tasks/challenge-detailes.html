@@ -166,9 +166,25 @@
       </button>
       {% endif %}
     </div>
-
+    
     <!-- Test Results Section -->
-    {% if tasksolution and tasksolution.test_results %}
+    {% if tasksolution and tasksolution.error_message and tasksolution.error_message|length > 0 %}
+    <div class="test-results-section" id="testResultsSection">
+      <div class="test-results-header">
+        <div class="test-results-title" style="color:#f85149;display:flex;align-items:center;gap:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <circle cx="12" cy="16" r="1"/>
+          </svg>
+          Compilation Error
+        </div>
+      </div>
+      <div class="compilation-error-box" style="background:#2d2d2d;border:1.5px solid #f85149;border-radius:8px;padding:20px 24px;margin:18px 0 0 0;box-shadow:0 2px 8px #0002;">
+        <pre style="margin:0;color:#f85149;font-family:monospace;font-size:1.05em;white-space:pre-wrap;word-break:break-word;">{{ tasksolution.error_message|linebreaksbr }}</pre>
+      </div>
+    </div>
+    {% elif tasksolution and tasksolution.test_results %}
     <div class="test-results-section" id="testResultsSection">
       <div class="test-results-header">
         <div class="test-results-title">
