@@ -14,9 +14,8 @@
 <main class="container">
   <div class="page-header">
     <h1>Challenges</h1>
-    <p>{{ phase.name|capfirst }} - Solve programming challenges and earn points</p>
+    <p>Solve programming challenges and earn points</p>
   </div>
-
 
   <div class="filters-row" style="display: flex; gap: 16px; margin-bottom: 18px;">
     <div class="level-filter">
@@ -44,7 +43,7 @@
         {% with task=item.task solution=item.solution %}
     <div
       class="challenge-card"
-      data-phase="{{ phase.name }}"
+      data-phase="{{ task.phase.name }}"
       data-level="{{ task.level|lower }}"
       data-status="{{ item.status_val }}"
     >
@@ -55,7 +54,6 @@
             {% if task.level %}
               <span class="level-tag {{ task.level|lower }}">{{ task.level|capfirst }}</span>
             {% endif %}
-
             <span>{{ task.points }} points</span>
             {% if task.category %}
               <span>{{ task.category }}</span>

@@ -4,7 +4,7 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 import logging
-
+from django.conf import settings
 
 from .models import Phase, Task, TaskSolution, Settings
 from .kafka_producer import send_submission_sync
@@ -21,14 +21,13 @@ from django.contrib import messages
 
 @login_required
 def tasksDisplayView(request: HttpRequest):
-    try:
-        phase = Phase.objects.get(is_locked=False)
-        print("donn")
-    except:
-        messages.error(request, "wait please")
-        return redirect("home")
-    if phase.name == "phase 3":
-        return redirect("task-display")
+    from django.core.cache import cache
+    # Cache only the list of unlocked phase IDs
+    unlocked_phase_ids = cache.get(settings.CACHE_UNLOCKED_PHASE_IDS_KEY)
+    if unlocked_phase_ids is None:
+        unlocked_phase_ids = list(Phase.objects.filter(is_locked=False).values_list('id', flat=True))
+        cache.set(settings.CACHE_UNLOCKED_PHASE_IDS_KEY, unlocked_phase_ids)
+    phases = Phase.objects.filter(id__in=unlocked_phase_ids)
 
     # Get current user's team
     try:
@@ -38,8 +37,8 @@ def tasksDisplayView(request: HttpRequest):
         messages.error(request, "You must be part of a team to view challenges")
         return redirect("home")
 
-    # Get tasks with solutions for the user's team
-    tasks = Task.objects.filter(phase=phase).prefetch_related("task_solutions")
+    # Get tasks with solutions for the user's team, only for unlocked phases
+    tasks = Task.objects.filter(phase__in=phases).prefetch_related("task_solutions")
 
     # Get settings for pass/fail logic
     settings_obj = Settings.get_settings()
@@ -91,7 +90,7 @@ def tasksDisplayView(request: HttpRequest):
 
     context = {
         "tasks_with_status": tasks_with_status,
-        "phase": phase,
+        "phases": phases,
         "max_attempts": settings_obj.max_attempts,
         "pass_threshold": settings_obj.pass_threshold,
     }
