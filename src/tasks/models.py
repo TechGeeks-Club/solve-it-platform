@@ -56,11 +56,11 @@ class Settings(models.Model):
     @classmethod
     def get_settings(cls):
         """Get settings from cache or database"""
-        settings = cache.get(settings.CACHE_PLATFORM_SETTINGS_KEY)
-        if settings is None:
-            settings, _ = cls.objects.get_or_create(pk=1)
-            cache.set(settings.CACHE_PLATFORM_SETTINGS_KCACHE_PLATFORM_SETTINGS_KEYEY, settings)
-        return settings
+        cached_settings = cache.get(settings.CACHE_PLATFORM_SETTINGS_KEY)
+        if cached_settings is None:
+            cached_settings, _ = cls.objects.get_or_create(pk=1)
+            cache.set(settings.CACHE_PLATFORM_SETTINGS_KEY, cached_settings)
+        return cached_settings
 
     def __str__(self):
         return f"Platform Settings (max_attempts: {self.max_attempts}, pass_threshold: {self.pass_threshold}%, manual_correction: {self.manual_correction}, rush_hour: {self.rush_hour})"
